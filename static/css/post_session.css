@@ -1,0 +1,3 @@
+/* Spécifiques à l’onglet Post-séance */
+#mailPreview h1, #mailPreview h2 { margin: 8px 0; }
+#mailPreview p { margin: 10px 0; }

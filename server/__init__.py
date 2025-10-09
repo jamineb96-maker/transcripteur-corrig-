@@ -22,7 +22,7 @@ from functools import wraps
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, render_template
 
 from .transcriber import Transcriber, Segment
 from .pipeline import ResearchPipeline, FinalPipeline
@@ -420,8 +420,21 @@ def create_app(upload_dir: Optional[str] = None, archive_dir: Optional[str] = No
     # ----------------------------------------------------------------------
     @app.get("/")
     def index_page():
-        """Serve the main HTML page for the post‑session assistant."""
-        return send_file(client_dir / "index.html")
+        """Serve the main HTML page for the SPA with asset versioning."""
+        try:
+            from server.services.assets import get_asset_version, detect_tab_duplicates
+            asset_version = get_asset_version(static_dir=str(client_dir))
+            tab_duplicates = detect_tab_duplicates(static_dir=str(client_dir))
+        except Exception:
+            asset_version = str(int(time.time()))
+            tab_duplicates = []
+        return render_template(
+            "index.html",
+            asset_version=asset_version,
+            api_base_url="/",
+            tab_duplicates=tab_duplicates,
+            config=app.config,
+        )
 
 
     return app
