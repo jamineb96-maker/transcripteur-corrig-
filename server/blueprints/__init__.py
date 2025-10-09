@@ -19,6 +19,7 @@ from .patients_api import bp as patients_api_v2_bp
 from .post_session import bp as post_session_legacy_bp
 from .post_v2_api import bp as post_v2_api_bp
 from .research_api import bp as research_api_bp
+from .research_web import bp as research_web_bp
 from .pre_session import bp as pre_session_bp
 # [pipeline-v3 begin]
 from .pipeline_v3 import bp as pipeline_v3_bp
@@ -47,6 +48,7 @@ def get_blueprints() -> List[Blueprint]:
         post_session_bp,
         post_v2_api_bp,
         research_api_bp,
+        research_web_bp,
         budget_bp,
         journal_critique_bp,
         documents_aide_bp,

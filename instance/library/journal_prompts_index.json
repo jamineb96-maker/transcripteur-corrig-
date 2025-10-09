@@ -1,0 +1,61 @@
+[
+  {
+    "id": "externalisation-probleme",
+    "title": "Externalisation du problème",
+    "family": "externalisation",
+    "familyLabel": "Externalisation",
+    "tags": [
+      "externalisation",
+      "positionnement"
+    ],
+    "reading_level": "accessible",
+    "budget_profile": "léger"
+  },
+  {
+    "id": "cartographie-somato",
+    "title": "Cartographie somato-cognitive",
+    "family": "somatique",
+    "familyLabel": "Somatique",
+    "tags": [
+      "somatique",
+      "auto-observation"
+    ],
+    "reading_level": "accessible",
+    "budget_profile": "léger"
+  },
+  {
+    "id": "remembering-alliances",
+    "title": "Re-membering des alliances",
+    "family": "alliances",
+    "familyLabel": "Alliances",
+    "tags": [
+      "relationnel",
+      "alliances"
+    ],
+    "reading_level": "accessible",
+    "budget_profile": "moyen"
+  },
+  {
+    "id": "resultats-uniques",
+    "title": "Résultats uniques",
+    "family": "resultats_uniques",
+    "familyLabel": "Résultats uniques",
+    "tags": [
+      "narratif"
+    ],
+    "reading_level": "intermédiaire",
+    "budget_profile": "moyen"
+  },
+  {
+    "id": "lettre-au-probleme",
+    "title": "Lettre au problème",
+    "family": "politique",
+    "familyLabel": "Positionnement politique",
+    "tags": [
+      "politique",
+      "valeurs"
+    ],
+    "reading_level": "intermédiaire",
+    "budget_profile": "moyen"
+  }
+]

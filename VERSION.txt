@@ -1,0 +1,3 @@
+nouveau-transcripteur
+FIX PACK 2025-10-09
+Includes: ARCHIVES_ROOT fix, prompt v2 template z2, web search ddg robust, audio chunking, Windows/Linux safe paths.

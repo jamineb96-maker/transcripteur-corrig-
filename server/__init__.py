@@ -152,7 +152,9 @@ def create_app() -> Flask:
     allowed_origins = list(dict.fromkeys(settings.ALLOWED_ORIGINS))
     resolved_port = int(os.getenv("PORT", settings.PORT))
     openai_configured = is_openai_configured()
-    post_max_size_mb = int(os.getenv("POST_MAX_SIZE_MB", "300"))
+    # Limite globale pour les uploads audio/POST.  On privilégie AUDIO_MAX_MB
+    # pour l'audio mais conservons POST_MAX_SIZE_MB comme valeur de secours.
+    post_max_size_mb = int(os.getenv("AUDIO_MAX_MB", os.getenv("POST_MAX_SIZE_MB", "300")))
 
     config_path = base_dir / "config" / "app_config.json"
     features = {}
@@ -218,6 +220,8 @@ def create_app() -> Flask:
     else:
         library_fs_sharding = bool(sharding_flag)
 
+    # Configurer la taille maximale du contenu et le timeout des requêtes
+    request_timeout = int(os.getenv("REQUEST_TIMEOUT_SECONDS", "120"))
     app.config.update(
         ASSET_VERSION=asset_version,
         SECRET_KEY=os.getenv("SECRET_KEY", "dev-secret"),
@@ -232,6 +236,7 @@ def create_app() -> Flask:
         OPENAI_CONFIGURED=openai_configured,
         TAB_DUPLICATES=tab_duplicates,
         MAX_CONTENT_LENGTH=post_max_size_mb * 1024 * 1024,
+        REQUEST_TIMEOUT_SECONDS=request_timeout,
         LIBRARY_ROOT=str(library_root),
         LIBRARY_EXTRACTED_ROOT=str(extracted_root),
         LIBRARY_LOG_ROOT=str(logs_root),

@@ -600,57 +600,56 @@ def _generate_queries(plan_text: str, patient: str | None = None) -> List[str]:
     return unique[:10]
 
 
-def _compose_prompt(patient: str, plan_text: str, queries: Iterable[str], style: str) -> Tuple[str, str]:
-    safe_patient_subject = patient or "la personne"
+def _compose_prompt(patient: str, plan_text: str, queries: list[str], style: str) -> tuple[str, str]:
+    """
+    Compose un prompt structuré pour le flux post‑séance (version z2). Ce
+    format garantit la conformité aux règles stylistiques, l'ajout d'un
+    marqueur de version et une structure de sortie stable. Il renvoie un
+    tuple contenant le prompt et l'objet de mail suggéré.
+    """
+    # Préparation des champs patient et contexte
     safe_patient = (patient or "").strip()
     display_name = safe_patient if safe_patient else "—"
-
-    # Assainir le contexte (pas de backticks ni markdown)
-    plan_plain = (plan_text or "").replace("```", "").strip()
-    q_plain = [
-        q.strip()
-        for q in (queries or [])
-        if isinstance(q, str) and q.strip()
-    ]
+    # Nettoyer le plan et les requêtes (suppression de backticks)
+    plan_plain = (plan_text or "").replace("```,", "").replace("```", "").strip()
+    q_plain = [q.strip() for q in (queries or []) if isinstance(q, str) and q.strip()]
     q_sentence = " ; ".join(q_plain)
 
-    template = (
-        '=== SYSTEM (obligatoire) ===\n'
-        "Tu es chargé d'écrire un compte-rendu de séance en français qui reformule avec précision le contenu fourni.\n"
-        "Tu n'inventes rien. Tu ne prescris rien. Tu ne poses pas de diagnostic. "
-        "Tu relies systématiquement les phénomènes au contexte matériel, social, institutionnel quand c'est pertinent.\n\n"
+    # Marqueur de version pour audit
+    version = "PROMPT_TEMPLATE_VERSION=2025-10-09-z2"
+    salutation = f'Bonjour {safe_patient},' if safe_patient else "Bonjour,"
 
-        '=== STYLE_GUARD (obligatoire) ===\n'
-        'Règles strictes de sortie :\n'
-        '1) Guillemets : utiliser exclusivement " ... ". Interdiction de « » et de “ ”.\n'
-        '2) Interdiction du tiret long et de la séquence --. Utiliser des parenthèses ( ... ) ou des virgules.\n'
+    template = (
+        f"=== VERSION === {version}\n"
+        "=== SYSTEM (obligatoire) ===\n"
+        "Tu es chargé d'écrire un compte-rendu de séance en français qui reformule avec précision le contenu fourni.\n"
+        "Tu n'inventes rien. Tu ne prescris rien. Tu ne poses pas de diagnostic. Tu relies systématiquement les phénomènes au contexte matériel, social, institutionnel quand c'est pertinent.\n\n"
+
+        "=== STYLE_GUARD (obligatoire) ===\n"
+        "Règles strictes de sortie :\n"
+        "1) Guillemets obligatoires : utiliser exclusivement \" ... \". Interdiction de « » et de “ ”.\n"
+        "2) Interdiction du tiret long et de la séquence --. Utiliser des parenthèses ( ... ) pour les incises, ou des virgules.\n"
         "3) Pas de listes à puces ni de markdown. Paragraphes en prose, une seule ligne vide entre eux.\n"
-        "4) Pas de double espace. Pas d'emoji. Pas de ton infantilisant.\n"
-        '5) Voix située autorisée : tu peux employer "je" pour expliciter une hypothèse, une incertitude ou une limite de sécurité.\n'
+        "4) Pas de double espace. Pas d'émojis. Pas de ton infantilisant.\n"
+        "5) Voix située autorisée : tu peux employer \"je\" pour expliciter une hypothèse, une incertitude ou une limite de sécurité.\n"
         "6) Zéro pathologisation. Lecture matérialiste et anti-individualisante.\n\n"
 
-        '=== TONE_PROFILE (obligatoire) ===\n'
-        'Sobre, humain, analytique sans surplomb. Préférer : "vous décrivez", "vous soulignez", "cela éclaire", "cela interroge".\n'
-        'Éviter : "il faut", "vous devez", "cela prouve", "clairement".\n\n'
+        "=== TONE_PROFILE (obligatoire) ===\n"
+        "Sobre, humain, analytique sans surplomb. Préférer : \"vous décrivez\", \"vous soulignez\", \"cela éclaire\", \"cela interroge\".\n"
+        "Éviter : \"il faut\", \"vous devez\", \"cela prouve\", \"clairement\".\n\n"
 
-        '=== OUTPUT_RULES (obligatoire) ===\n'
-        "But : un texte immédiatement collable dans un mail, sans markdown.\n"
+        "=== OUTPUT_RULES (obligatoire) ===\n"
+        "But : produire un texte immédiatement collable dans un mail, sans markdown.\n"
         "Structure exacte :\n"
-        f'1) Salutation : "Bonjour {safe_patient}," si disponible sinon "Bonjour," ; puis : '
-        '"Comme d'habitude, ce texte sert de mémoire ; corrigez si besoin."\n'
-        '2) Titre sur sa propre ligne : Ce que vous avez exprimé et ce que j\'en ai compris\n'
-        "   Contenu : 2 à 4 paragraphes courts (3–5 lignes chacun), en prose. "
-        "Inclure au moins une phrase qui relie explicitement les phénomènes à des conditions matérielles/institutionnelles.\n"
-        '3) Titre sur sa propre ligne : Pistes de lecture et repères\n'
-        "   Contenu : 3 à 7 paragraphes courts. "
-        "Chaque paragraphe commence par un micro-sous-titre conceptuel suivi d’un deux-points (ex. "
-        '"Balises mnésiques : …", "Économie de seuils : …", "Effet blouse blanche : …"), sans gras ni puces. '
-        "Autorisé exceptionnellement : une séquence d’options en 1 à 3 lignes (chaque ligne = une phrase autonome), "
-        "si et seulement si cela clarifie des chemins alternatifs ; pas de puces.\n"
-        '4) Clôture : "Bien à vous," puis "Benjamin."\n'
-        "Bornes : 550 à 1000 mots. Aucune numérotation ni encart.\n\n"
+        f"1) Salutation : \"{salutation}\" sur une ligne. Puis une phrase brève de cadrage : \"Comme d'habitude, ce texte sert de mémoire ; corrigez si besoin.\"\n"
+        "2) Section 1, titre exact sur sa propre ligne : Ce que vous avez exprimé et ce que j'en ai compris\n"
+        "   Contenu : 2 à 4 paragraphes courts (3–5 lignes chacun). Inclure au moins une phrase reliant explicitement les phénomènes à des conditions matérielles/institutionnelles.\n"
+        "3) Section 2, titre exact sur sa propre ligne : Pistes de lecture et repères\n"
+        "   Contenu : 3 à 7 paragraphes courts. Chaque paragraphe commence par un micro‑sous‑titre conceptuel suivi d’un deux‑points (ex. \"Balises mnésiques : …\", \"Économie de seuils : …\", \"Effet blouse blanche : …\"), sans gras ni puces. Autorisé exceptionnellement : une séquence d’options en 1 à 3 lignes (chaque ligne = une phrase autonome), sans puces.\n"
+        "4) Clôture : \"Bien à vous,\" puis \"Benjamin.\"\n"
+        "Bornes : 550 à 1000 mots au total. Pas de numérotation ni d'encart.\n\n"
 
-        '=== CONTEXTE DISPONIBLE ===\n'
+        "=== CONTEXTE DISPONIBLE ===\n"
         f"[Patient·e] : {display_name}\n"
         "[Plan court consolidé] :\n"
         f"{plan_plain}\n\n"
@@ -659,21 +658,20 @@ def _compose_prompt(patient: str, plan_text: str, queries: Iterable[str], style:
 
         "=== TÂCHE (obligatoire) ===\n"
         "Rédige MAINTENANT le mail final en respectant STRICTEMENT SYSTEM, STYLE_GUARD, TONE_PROFILE et OUTPUT_RULES.\n"
-        'Contraintes fermes : guillemets droits " " ; aucune séquence — ni -- ; pas de puces ; pas de markdown ; '
-        "aucune invention de contenu ; deux sections exactement avec les titres imposés ; "
-        "micro-sous-titres exigés en tête des paragraphes de la section 2 ; "
-        "inclure au moins une phrase d’ancrage matériel par section.\n\n"
+        "Contraintes fermes : utiliser uniquement des guillemets droits \" \" ; aucune séquence — ni -- ; pas de puces ni de markdown ; aucune invention de contenu ; deux sections exactement avec les titres imposés ; micro‑sous‑titres exigés en tête des paragraphes de la section 2 ; inclure au moins une phrase d’ancrage matériel par section.\n\n"
 
         "=== QA-CHECKS (auto-contrôle) ===\n"
-        '1) Le texte commence par "Bonjour" et contient les deux titres exacts.\n'
-        '2) Il n’emploie que des guillemets droits " " ; il n’emploie ni — ni --.\n'
-        "3) Il ne contient aucune puce (*, -, •) ni balise markdown.\n"
-        "4) Dans la section 2, au moins deux paragraphes commencent par un mot/une locution suivie de deux-points.\n"
-        "5) Chaque section contient au moins une phrase reliant phénomènes ↔ déterminants matériels/institutionnels."
+        "Vérifie que le texte final :\n"
+        "- Commence par \"Bonjour\" et contient les deux titres exacts.\n"
+        "- N'emploie ni — ni -- et utilise uniquement des guillemets droits \" \".\n"
+        "- Ne contient aucune puce (*, -, •) ni balise markdown.\n"
+        "- Dans la section 2, au moins deux paragraphes commencent par un mot/une locution suivie de deux‑points.\n"
+        "- Chaque section contient au moins une phrase reliant phénomènes ↔ déterminants matériels/institutionnels."
     ).strip()
 
     prompt = template
-    subject = f"Compte-rendu bref — {safe_patient_subject}" if patient else "Compte-rendu bref — séance"
+    # Choisir l'objet du mail en fonction du patient renseigné
+    subject = f"Compte-rendu — {safe_patient}" if safe_patient else "Compte-rendu — séance"
     return prompt, subject
 
 
