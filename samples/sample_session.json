@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "session_id": "example123",
+    "hash": "example123",
+    "date": "2025-10-10",
+    "prenom": "Alice",
+    "register": "vous"
+  },
+  "evidence_sheet": "Exemple d'évidence...",
+  "critical_sheet": "Analyse critique...",
+  "lenses_used": [
+    "matérialisme",
+    "histoire du sujet"
+  ],
+  "reperes_candidates": [
+    "Clarifier les ressources disponibles"
+  ],
+  "points_mail": [
+    "Point clef 1",
+    "Point clef 2"
+  ],
+  "chapters": [
+    {
+      "t": [
+        0.0,
+        1.0
+      ],
+      "title": "Introduction",
+      "summary": "Résumé du début."
+    }
+  ]
+}
