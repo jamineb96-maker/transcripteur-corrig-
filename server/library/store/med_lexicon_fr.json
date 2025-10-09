@@ -1,0 +1,102 @@
+[
+  {
+    "name_norm": "Methylphenidate",
+    "aliases": ["Ritaline", "Rilatine", "Méthylphénidate", "Méthylphenidate"],
+    "form": null
+  },
+  {
+    "name_norm": "Alprazolam",
+    "aliases": ["Xanax", "Alprazolam"],
+    "form": null
+  },
+  {
+    "name_norm": "Cyamémazine",
+    "aliases": ["Tercian", "Cyamezazine", "Cyamémazine"],
+    "form": null
+  },
+  {
+    "name_norm": "Lithium Carbonate",
+    "aliases": ["Téralithe", "Carbonate de lithium", "Lithium"],
+    "form": null
+  },
+  {
+    "name_norm": "Aripiprazole",
+    "aliases": ["Abilify", "Aripiprazole"],
+    "form": null
+  },
+  {
+    "name_norm": "Fluvoxamine",
+    "aliases": ["Floxyfral", "Fluvoxamine"],
+    "form": null
+  },
+  {
+    "name_norm": "Fluoxetine",
+    "aliases": ["Prozac", "Fluoxétine", "Fluoxetine"],
+    "form": null
+  },
+  {
+    "name_norm": "Paroxetine",
+    "aliases": ["Deroxat", "Paroxétine", "Paroxetine"],
+    "form": null
+  },
+  {
+    "name_norm": "Lormetazepam",
+    "aliases": ["Noctamide", "Lormétazépam", "Lormetazepam"],
+    "form": null
+  },
+  {
+    "name_norm": "Clonidine",
+    "aliases": ["Catapressan", "Clonidine"],
+    "form": null
+  },
+  {
+    "name_norm": "Methadone",
+    "aliases": ["Méthadone", "Methadone"],
+    "form": null
+  },
+  {
+    "name_norm": "Diazepam",
+    "aliases": ["Valium", "Diazépam", "Diazepam"],
+    "form": null
+  },
+  {
+    "name_norm": "Quetiapine",
+    "aliases": ["Séroquel", "Quétiapine", "Quetiapine"],
+    "form": null
+  },
+  {
+    "name_norm": "Mianserin",
+    "aliases": ["Miansérine", "Mianserin"],
+    "form": null
+  },
+  {
+    "name_norm": "Venlafaxine",
+    "aliases": ["Effexor", "Venlafaxine"],
+    "form": null
+  },
+  {
+    "name_norm": "Escitalopram",
+    "aliases": ["Seroplex", "Escitalopram"],
+    "form": null
+  },
+  {
+    "name_norm": "Duloxetine",
+    "aliases": ["Cymbalta", "Duloxétine", "Duloxetine"],
+    "form": null
+  },
+  {
+    "name_norm": "Sertraline",
+    "aliases": ["Zoloft", "Sertraline"],
+    "form": null
+  },
+  {
+    "name_norm": "Chlorpromazine",
+    "aliases": ["Largactil", "Chlorpromazine"],
+    "form": null
+  },
+  {
+    "name_norm": "Ketamine",
+    "aliases": ["Kétamine", "Ketamine"],
+    "form": null
+  }
+]

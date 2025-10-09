@@ -1,0 +1,126 @@
+<section class="facturation" aria-labelledby="facturation-title">
+  <header class="facturation__header">
+    <div>
+      <h1 id="facturation-title">Facturation autonome</h1>
+      <p class="facturation__intro">
+        Créez des factures PDF fidèles, gérez vos actifs graphiques et suivez vos paiements en un clin d’œil.
+      </p>
+    </div>
+    <div class="facturation__diagnostics" data-role="diagnostics">
+      <div data-role="diagnostics-content">Diagnostic en cours…</div>
+      <button type="button" class="ghost facturation__diagnostics-action" data-action="purge-cache">
+        Purger le cache
+      </button>
+      <p class="facturation__diagnostics-status" data-role="diagnostics-status" hidden></p>
+    </div>
+  </header>
+
+  <div class="facturation__grid">
+    <section class="facturation-panel" aria-labelledby="assets-title">
+      <header class="facturation-panel__header">
+        <h2 id="assets-title">Actifs</h2>
+        <p>Le logo reste vectoriel dans le PDF final. Remplacez-le ici si nécessaire.</p>
+      </header>
+      <div class="assets-grid">
+        <article class="asset-card" data-kind="logo">
+          <h3>Logo</h3>
+          <div class="asset-frame" data-role="logo-frame">
+            <img data-role="logo-preview" src="" alt="Logo violet" loading="lazy" />
+          </div>
+          <button type="button" class="ghost" data-action="replace-logo">Remplacer</button>
+        </article>
+        <article class="asset-card" data-kind="signature">
+          <h3>Signature</h3>
+          <div class="asset-frame asset-frame--signature" data-role="signature-frame">
+            <img data-role="signature-preview" src="" alt="Signature manuscrite" loading="lazy" />
+          </div>
+          <button type="button" class="ghost" data-action="replace-signature">Remplacer</button>
+        </article>
+      </div>
+      <p class="asset-hint">Astuce : ajoutez <code>?v=Date.now()</code> à l’URL pour forcer l’actualisation d’une vignette.</p>
+    </section>
+
+    <section class="facturation-panel" aria-labelledby="editor-title">
+      <header class="facturation-panel__header">
+        <h2 id="editor-title">Nouvelle facture</h2>
+        <p>Saisissez les informations du patient, ajoutez vos lignes et générez le PDF.</p>
+      </header>
+      <form class="invoice-form" data-role="invoice-form">
+        <div class="form-row">
+          <label for="invoice-date">Date</label>
+          <input type="date" id="invoice-date" name="date" required />
+        </div>
+        <div class="form-row">
+          <label for="patient-name">Patient</label>
+          <input type="text" id="patient-name" name="patient_name" autocomplete="off" required />
+        </div>
+        <div class="form-row">
+          <label for="patient-address">Adresse</label>
+          <textarea id="patient-address" name="patient_address" rows="3" required></textarea>
+        </div>
+        <fieldset class="numbering-fieldset">
+          <legend>Numérotation</legend>
+          <label><input type="radio" name="number_mode" value="auto" checked /> Automatique</label>
+          <label><input type="radio" name="number_mode" value="manual" /> Manuelle</label>
+          <input type="text" name="number" data-role="manual-number" placeholder="F2025-TEST" aria-hidden="true" />
+        </fieldset>
+        <div class="lines" data-role="line-items">
+          <header>
+            <span>Prestation</span>
+            <span>Qté</span>
+            <span>PU (€)</span>
+            <span></span>
+          </header>
+          <div class="line" data-index="0">
+            <input type="text" name="lines[0][label]" value="Séance psychopraticien 60 min" required />
+            <input type="number" name="lines[0][qty]" min="0" step="0.5" value="1" required />
+            <input type="number" name="lines[0][unit_price]" min="0" step="0.1" value="60" required />
+            <input type="hidden" name="lines[0][vat_rate]" value="0" />
+            <button type="button" class="ghost" data-action="remove-line" aria-label="Supprimer la ligne">✕</button>
+          </div>
+        </div>
+        <button type="button" class="ghost" data-action="add-line">Ajouter une ligne</button>
+        <div class="form-actions">
+          <button type="button" data-action="preview">Aperçu</button>
+          <button type="submit" class="primary">Générer le PDF</button>
+        </div>
+        <p class="form-alert" data-role="form-alert" hidden></p>
+      </form>
+      <div class="preview" aria-live="polite">
+        <div class="preview__banner">L’aperçu est rasterisé ; le PDF final conserve le logo vectoriel.</div>
+        <div class="preview__canvas">
+          <img data-role="preview-image" src="" alt="Aperçu de la facture" hidden />
+        </div>
+      </div>
+    </section>
+
+    <section class="facturation-panel" aria-labelledby="list-title">
+      <header class="facturation-panel__header">
+        <h2 id="list-title">Historique</h2>
+        <form class="filters" data-role="filters">
+          <label>
+            Patient
+            <input type="search" name="patient" placeholder="Filtrer par nom" />
+          </label>
+          <label>
+            Du
+            <input type="date" name="from" />
+          </label>
+          <label>
+            Au
+            <input type="date" name="to" />
+          </label>
+          <label>
+            Statut
+            <select name="paid">
+              <option value="">Tous</option>
+              <option value="false">À régler</option>
+              <option value="true">Payées</option>
+            </select>
+          </label>
+        </form>
+      </header>
+      <div class="invoice-list" data-role="invoice-list"></div>
+    </section>
+  </div>
+</section>

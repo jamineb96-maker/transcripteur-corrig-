@@ -1,0 +1,14 @@
+1) **Reformulation fidèle :**
+Nelle a arrêté la myrtazapine il y a quatre jours, et elle ressent des réveils plus faciles et une certaine légèreté, bien qu'elle ait traversé des phases d'euphorie. Elle a des difficultés à se projeter dans des projets de vie à long terme et rumine sur son passé avec son ex-femme Sina, notamment sur des comportements de domination qu'elle a eus. Elle ressent une dissonance cognitive entre sa transidentité actuelle et sa masculinité passée, ce qui est exacerbé par une mémoire traumatique. Nelle travaille à réparer sa relation avec Milo, mais elle trouve difficile de construire un présent stable. Elle a du mal à accéder à sa mémoire émotionnelle et réagit souvent sans comprendre ses émotions. Elle explore des moyens de gérer sa mémoire traumatique, notamment en créant des contextes sécurisants, en racontant son histoire de manière non rationnelle, et en envisageant le BDSM comme outil de régulation. Elle organise des partouzes comme geste militant, mais ne participe pas toujours. Elle a acquis une certaine stabilité émotionnelle, mais ressent de la frustration quant à la vitesse de son progrès.
+
+2) **Pistes de lecture evidence-based et repères :**
+   - Pour la gestion de la mémoire traumatique, vous pourriez explorer des approches basées sur la thérapie d'exposition prolongée ou la thérapie de désensibilisation et retraitement par les mouvements oculaires (EMDR), qui ont montré leur efficacité dans le traitement du PTSD.
+   - La thérapie centrée sur les émotions pourrait être utile pour aider Nelle à accéder à sa mémoire émotionnelle et à mieux comprendre ses réactions.
+   - Les travaux sur la narration et la reconstruction de l'identité, comme ceux de Dan P. McAdams sur la narration de soi, pourraient offrir des perspectives intéressantes pour aider Nelle à réconcilier son passé et son présent.
+   - Pour la création de contextes sécurisants, la théorie polyvagale de Stephen Porges pourrait fournir des insights sur la régulation du système nerveux autonome.
+
+3) **Objectifs pour la suite, concrets et ajustables :**
+   - **Gestion de la mémoire traumatique :** Explorer des thérapies spécifiques comme l'EMDR ou la thérapie d'exposition prolongée pour aider Nelle à traiter les souvenirs traumatiques.
+   - **Accès à la mémoire émotionnelle :** Introduire des exercices de pleine conscience ou de thérapie centrée sur les émotions pour aider Nelle à mieux comprendre et réguler ses émotions.
+   - **Stabilisation émotionnelle et cognitive :** Encourager la pratique régulière de techniques de relaxation et de régulation émotionnelle pour renforcer la stabilité acquise.
+   - **Création de contextes sécurisants :** Travailler avec Nelle pour identifier et créer des environnements où elle se sent en sécurité, tant physiquement qu'émotionnellement. Cela pourrait inclure des espaces sociaux ou des pratiques personnelles qui favorisent le calme et la sécurité.

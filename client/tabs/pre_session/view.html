@@ -1,0 +1,136 @@
+<div class="pre-session" data-module="pre-session">
+  <div class="pre-session__layout">
+    <section class="pre-session__section" data-section="context">
+      <header class="pre-session__section-header">
+        <div>
+          <h3>Matériau brut</h3>
+          <p class="pre-session__section-subtitle">Renseigne les éléments transmis avant séance.</p>
+        </div>
+      </header>
+      <div class="pre-session__section-body pre-session__grid">
+        <label class="pre-session__field">
+          <span>Mails bruts</span>
+          <textarea id="ps-mail-brut" class="pre-session__textarea" spellcheck="false" placeholder="Copie du mail ou du message brut reçu."></textarea>
+        </label>
+        <label class="pre-session__field">
+          <span>État depuis la dernière séance</span>
+          <textarea id="ps-etat" class="pre-session__textarea" spellcheck="false" placeholder="Observations partagées par la personne depuis la dernière séance."></textarea>
+        </label>
+        <label class="pre-session__field">
+          <span>Notes thérapeutiques</span>
+          <textarea id="ps-notes" class="pre-session__textarea" spellcheck="false" placeholder="Repères thérapeutiques ou éléments cliniques à garder en tête."></textarea>
+        </label>
+      </div>
+      <footer class="pre-session__section-footer">
+        <button type="button" id="ps-btn-plan" class="primary">Valider le plan</button>
+        <div class="pre-session__alert" data-role="plan-alert" hidden></div>
+      </footer>
+    </section>
+
+    <section class="pre-session__section" data-section="plan">
+      <header class="pre-session__section-header">
+        <div>
+          <h3>Plan préparatoire</h3>
+          <p class="pre-session__section-subtitle">Modifie au besoin avant recherche.</p>
+        </div>
+      </header>
+      <div class="pre-session__section-body">
+        <form id="ps-plan-form" class="pre-session__form">
+          <label>
+            <span>Orientation</span>
+            <input type="text" id="ps-plan-orientation" />
+          </label>
+          <label>
+            <span>Objectif prioritaire</span>
+            <input type="text" id="ps-plan-objectif" />
+          </label>
+          <label>
+            <span>Cadre de travail</span>
+            <textarea id="ps-plan-cadre" class="pre-session__textarea pre-session__textarea--small"></textarea>
+          </label>
+          <label>
+            <span>Situation actuelle</span>
+            <textarea id="ps-plan-situation" class="pre-session__textarea pre-session__textarea--small"></textarea>
+          </label>
+          <label>
+            <span>Tensions principales</span>
+            <textarea id="ps-plan-tensions" class="pre-session__textarea pre-session__textarea--small"></textarea>
+          </label>
+          <label>
+            <span>Axes de travail</span>
+            <textarea id="ps-plan-axes" class="pre-session__textarea pre-session__textarea--small"></textarea>
+          </label>
+          <label>
+            <span>Clôture attendue</span>
+            <input type="text" id="ps-plan-cloture" />
+          </label>
+        </form>
+      </div>
+      <footer class="pre-session__section-footer">
+        <div class="pre-session__diff">
+          <h4>Différences avec le plan précédent</h4>
+          <pre id="ps-plan-diff" class="pre-session__diff-content" aria-live="polite"></pre>
+        </div>
+      </footer>
+    </section>
+
+    <section class="pre-session__section" data-section="research">
+      <header class="pre-session__section-header">
+        <div>
+          <h3>Recherche documentaire</h3>
+          <p class="pre-session__section-subtitle">Priorise la librairie locale. Active internet si nécessaire.</p>
+        </div>
+        <div class="pre-session__toggle-group">
+          <label class="pre-session__toggle">
+            <input type="checkbox" id="ps-allow-internet" checked /> Autoriser internet
+          </label>
+          <label class="pre-session__toggle" data-library-toggle>
+            <input type="checkbox" id="ps-library-toggle" checked /> Bibliothèque validée
+          </label>
+        </div>
+      </header>
+      <div class="pre-session__section-body pre-session__research">
+        <label class="pre-session__field">
+          <span>Extraits librairie locale</span>
+          <textarea id="ps-research-local" class="pre-session__textarea pre-session__textarea--notes" readonly></textarea>
+        </label>
+        <label class="pre-session__field" data-library-field>
+          <span>Bibliothèque validée</span>
+          <textarea id="ps-research-library" class="pre-session__textarea pre-session__textarea--notes" readonly></textarea>
+        </label>
+        <label class="pre-session__field">
+          <span>Synthèses internet</span>
+          <textarea id="ps-research-web" class="pre-session__textarea pre-session__textarea--notes" readonly></textarea>
+        </label>
+        <label class="pre-session__field">
+          <span>Notes d’intégration</span>
+          <textarea id="ps-research-notes" class="pre-session__textarea pre-session__textarea--notes" readonly></textarea>
+        </label>
+      </div>
+      <footer class="pre-session__section-footer">
+        <button type="button" id="ps-btn-research" class="primary" disabled>Lancer la recherche</button>
+        <div class="pre-session__alert" data-role="research-alert" hidden></div>
+      </footer>
+    </section>
+
+    <section class="pre-session__section" data-section="prompt">
+      <header class="pre-session__section-header">
+        <div>
+          <h3>Prompt final</h3>
+          <p class="pre-session__section-subtitle">Texte à copier tel quel.</p>
+        </div>
+        <div class="pre-session__actions">
+          <button type="button" id="ps-btn-copy" class="ghost" disabled>Copier</button>
+          <button type="button" id="ps-btn-export" class="ghost" disabled>Exporter .txt</button>
+        </div>
+      </header>
+      <div class="pre-session__section-body">
+        <textarea id="ps-prompt-final" class="pre-session__textarea pre-session__textarea--prompt" readonly placeholder="Génère d’abord le plan puis la recherche pour activer le prompt."></textarea>
+      </div>
+      <footer class="pre-session__section-footer">
+        <button type="button" id="ps-btn-prompt" class="primary" disabled>Composer le prompt final</button>
+        <div class="pre-session__alert" data-role="prompt-alert" hidden></div>
+      </footer>
+    </section>
+  </div>
+</div>

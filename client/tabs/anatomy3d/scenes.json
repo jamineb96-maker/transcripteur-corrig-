@@ -1,0 +1,145 @@
+[
+  {
+    "id": "douleur",
+    "title": "Douleur chronique",
+    "camera": { "position": [0.5, 1.4, 2.4], "target": [0, 1.2, 0], "fov": 38 },
+    "visibility": [
+      { "node": "Cortex_Frontal_L", "visible": true },
+      { "node": "Cortex_Frontal_R", "visible": true },
+      { "node": "Basal_Ganglia", "visible": true }
+    ],
+    "opacity": [
+      { "node": "Cortex_Parietal_L", "alpha": 0.25 },
+      { "node": "Cortex_Parietal_R", "alpha": 0.25 }
+    ],
+    "notes": [
+      { "title": "Sensibilisation", "text": "- Plasticité maladaptative\n- Perception modulée par les attentes" }
+    ],
+    "myths": [
+      { "claim": "La douleur chronique reflète toujours une lésion active.", "correction": "Les réseaux cérébraux participent à l'entretien de la perception douloureuse." }
+    ],
+    "questions": [
+      "Quels circuits modulent la perception de la douleur ?",
+      "Comment intégrer la dimension cognitive dans la prise en charge ?"
+    ],
+    "glossary_keys": ["cortex_prefrontal", "noyaux_gris", "systeme_limbique"]
+  },
+  {
+    "id": "stress_aigu_chronique",
+    "title": "Stress aigu vs chronique",
+    "camera": { "position": [-0.3, 1.5, 2.2], "target": [0, 1.1, 0], "fov": 42 },
+    "visibility": [
+      { "node": "Hypothalamus", "visible": true },
+      { "node": "Brainstem", "visible": true }
+    ],
+    "opacity": [
+      { "node": "Cortex_Frontal_L", "alpha": 0.4 },
+      { "node": "Cortex_Frontal_R", "alpha": 0.4 }
+    ],
+    "notes": [
+      { "title": "Boucle HPA", "text": "- Hypothalamus\n- Hypophyse\n- Surrénales" }
+    ],
+    "myths": [
+      { "claim": "Le stress chronique n'a qu'un effet psychologique.", "correction": "Il modifie structurellement certaines régions." }
+    ],
+    "questions": [
+      "Comment différencier stress aigu et chronique ?",
+      "Quels leviers thérapeutiques proposer ?"
+    ],
+    "glossary_keys": ["hypothalamus", "tronc_cerebral"]
+  },
+  {
+    "id": "sommeil",
+    "title": "Sommeil et régulation",
+    "camera": { "position": [0.2, 1.3, 2.6], "target": [0, 1.0, 0], "fov": 40 },
+    "visibility": [
+      { "node": "Thalamus_L", "visible": true },
+      { "node": "Thalamus_R", "visible": true }
+    ],
+    "opacity": [
+      { "node": "Cortex_Occipital_L", "alpha": 0.3 },
+      { "node": "Cortex_Occipital_R", "alpha": 0.3 }
+    ],
+    "notes": [
+      { "title": "Architecture", "text": "- Alternance REM/NREM\n- Rôle du thalamus" }
+    ],
+    "myths": [
+      { "claim": "Dormir 4h suffit si on s'habitue.", "correction": "Le manque chronique perturbe mémoire et attention." }
+    ],
+    "questions": [
+      "Quel rôle joue le thalamus pendant le sommeil ?",
+      "Comment expliquer les troubles du sommeil aux patient·es ?"
+    ],
+    "glossary_keys": ["thalamus", "cortex_occipital"]
+  },
+  {
+    "id": "attention_charge",
+    "title": "Attention et charge cognitive",
+    "camera": { "position": [-0.4, 1.6, 2.5], "target": [0, 1.2, 0], "fov": 37 },
+    "visibility": [
+      { "node": "Cortex_Frontal_L", "visible": true },
+      { "node": "Cortex_Parietal_R", "visible": true }
+    ],
+    "opacity": [
+      { "node": "Basal_Ganglia", "alpha": 0.5 }
+    ],
+    "notes": [
+      { "title": "Réseaux attentionnels", "text": "- Dorsal\n- Ventral\n- Équilibre charge/cible" }
+    ],
+    "myths": [
+      { "claim": "On peut réellement faire du multitâche efficace.", "correction": "Le cerveau bascule rapidement mais ne traite pas deux tâches complexes à la fois." }
+    ],
+    "questions": [
+      "Comment expliquer la fatigue attentionnelle ?",
+      "Quels outils pour visualiser la charge cognitive ?"
+    ],
+    "glossary_keys": ["cortex_parietal", "cortex_prefrontal"]
+  },
+  {
+    "id": "motricite_volontaire",
+    "title": "Motricité volontaire",
+    "camera": { "position": [0.1, 1.7, 2.1], "target": [0, 1.3, 0], "fov": 36 },
+    "visibility": [
+      { "node": "Cortex_Frontal_L", "visible": true },
+      { "node": "Cortex_Frontal_R", "visible": true },
+      { "node": "Brainstem", "visible": true }
+    ],
+    "opacity": [
+      { "node": "Basal_Ganglia", "alpha": 0.8 }
+    ],
+    "notes": [
+      { "title": "Boucle motrice", "text": "- Cortex moteur\n- Ganglions de la base\n- Thalamus" }
+    ],
+    "myths": [
+      { "claim": "Les automatismes ne mobilisent pas le cortex.", "correction": "L'apprentissage modifie la distribution mais ne l'annule pas." }
+    ],
+    "questions": [
+      "Quels relais assurent la commande volontaire ?",
+      "Comment représenter la plasticité motrice ?"
+    ],
+    "glossary_keys": ["noyaux_gris", "thalamus"]
+  },
+  {
+    "id": "langage",
+    "title": "Langage et communication",
+    "camera": { "position": [-0.2, 1.4, 2.3], "target": [0, 1.1, 0], "fov": 39 },
+    "visibility": [
+      { "node": "Cortex_Frontal_L", "visible": true },
+      { "node": "Cortex_Temporal_L", "visible": true }
+    ],
+    "opacity": [
+      { "node": "Cortex_Frontal_R", "alpha": 0.4 }
+    ],
+    "notes": [
+      { "title": "Aires clés", "text": "- Aire de Broca\n- Aire de Wernicke\n- Faisceau arqué" }
+    ],
+    "myths": [
+      { "claim": "Le langage est uniquement à gauche.", "correction": "Les deux hémisphères participent, notamment pour la prosodie." }
+    ],
+    "questions": [
+      "Comment la communication non verbale est-elle représentée ?",
+      "Quels impacts d'une lésion temporale gauche ?"
+    ],
+    "glossary_keys": ["aire_broca", "aire_wernicke"]
+  }
+]

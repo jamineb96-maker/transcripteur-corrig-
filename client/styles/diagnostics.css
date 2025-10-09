@@ -1,0 +1,56 @@
+.diag-panel { position: fixed; right: 16px; bottom: 16px;
+  width: 360px; max-height: 70vh; overflow: auto;
+  z-index: 950; border-radius: 12px; background: var(--card);
+  border: 1px solid var(--border); box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+  color: var(--text); display: flex; flex-direction: column; gap: 12px;
+  padding: 16px; }
+.diag-toggle { position: fixed; right: 16px; bottom: 16px;
+  z-index: 960; }
+.modal-backdrop, .modal { z-index: 1000; }
+body.diag-collapsed .diag-panel { display: none; }
+.app-header .diag-toggle { position: static; margin-left: 8px; }
+
+.diag-panel[aria-hidden="true"] { display: none; }
+
+.diag-panel .diagnostics__header { display: flex; justify-content: space-between; align-items: center; }
+.diag-panel .diagnostics__subtitle { margin: 0; font-size: 0.75rem; color: var(--muted); }
+.diag-panel .diagnostics__header h3 { margin: 0; font-size: 1rem; }
+.diag-panel .diagnostics__actions { display: flex; gap: 8px; }
+.diag-panel .diagnostics__action,
+.diag-panel .diagnostics__close { border: 1px solid var(--border); background: transparent;
+  color: var(--text); font-size: 0.75rem; padding: 4px 8px; border-radius: 6px;
+  cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+.diag-panel .diagnostics__close { font-weight: 600; }
+.diag-panel .diagnostics__action:hover,
+.diag-panel .diagnostics__close:hover { background: rgba(0,0,0,0.05); }
+
+.diag-panel .diagnostics__meta-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; font-size: 0.75rem; color: var(--muted); }
+
+.diag-panel .diagnostics__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.diag-panel .diagnostics__patients { border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; background: rgba(255,255,255,0.45); }
+:root[data-theme='dark'] .diag-panel .diagnostics__patients { background: rgba(23,26,33,0.6); }
+.diag-panel .diagnostics__patients header { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.8rem; }
+.diag-panel .diagnostics__roots { margin: 8px 0 0; padding-left: 16px; font-size: 0.75rem; color: var(--muted); }
+.diag-panel .diagnostics__roots li { margin: 2px 0; }
+.diag-panel .diagnostics__item { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.55); backdrop-filter: blur(6px); }
+:root[data-theme='dark'] .diag-panel .diagnostics__item { background: rgba(23, 26, 33, 0.65); }
+
+.diag-panel .diagnostics__item--ok { border-color: rgba(46, 204, 113, 0.45); }
+.diag-panel .diagnostics__item--warning { border-color: rgba(243, 156, 18, 0.45); }
+.diag-panel .diagnostics__item--error { border-color: rgba(231, 76, 60, 0.45); }
+
+.diag-panel .diagnostics__badge { width: 10px; height: 10px; border-radius: 999px; grid-row: span 2; }
+.diag-panel .diagnostics__item--loading .diagnostics__badge { background: linear-gradient(90deg, var(--border), var(--muted)); animation: diagnosticsPulse 1.2s infinite ease-in-out; }
+.diag-panel .diagnostics__item--ok .diagnostics__badge { background-color: #2ecc71; }
+.diag-panel .diagnostics__item--warning .diagnostics__badge { background-color: #f39c12; }
+.diag-panel .diagnostics__item--error .diagnostics__badge { background-color: #e74c3c; }
+
+.diag-panel .diagnostics__details { display: flex; flex-direction: column; gap: 2px; }
+.diag-panel .diagnostics__label { font-weight: 600; }
+.diag-panel .diagnostics__meta { font-size: 0.75rem; color: var(--muted); }
+.diag-panel .diagnostics__extra { font-size: 0.7rem; color: var(--muted); }
+.diag-panel .diagnostics__endpoint { grid-column: 1 / -1; font-size: 0.7rem; color: var(--muted); word-break: break-all; }
+
+.diag-panel .diagnostics__footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); }
+
+@keyframes diagnosticsPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }

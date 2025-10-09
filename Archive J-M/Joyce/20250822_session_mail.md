@@ -1,0 +1,12 @@
+1) **Reformulation fidèle :**
+Joyce n'a pas progressé dans la mise en place de son mi-temps thérapeutique, notamment parce qu'elle n'a pas pris rendez-vous avec la médecine du travail, ce qu'elle justifie par une vision fataliste des choses. Elle ressent une fatigue persistante, un désintérêt pour ses activités, et une nostalgie pour ses études où elle se sentait en sécurité. Elle est tiraillée entre des pensées paradoxales sur la sécurité et le suicide, et sa rupture amoureuse a eu un impact significatif sur son bien-être émotionnel. Joyce exprime aussi le besoin de solutions pour gérer son anxiété et ses comportements compulsifs, comme se mordre les joues.
+
+2) **Pistes de lecture evidence-based et repères :**
+   - **Burn-out et fatigue chronique :** Consulter des ressources sur le burn-out, notamment dans le contexte de l'autisme, pourrait être utile. Le livre "The Burnout Society" de Byung-Chul Han offre une perspective critique sur le burn-out dans notre société.
+   - **Gestion de l'anxiété et des comportements compulsifs :** Les techniques de pleine conscience et la thérapie comportementale et cognitive (TCC) sont souvent recommandées pour gérer l'anxiété et les comportements compulsifs. Le livre "The Happiness Trap" de Russ Harris peut être une introduction accessible à ces techniques.
+   - **Deuil et rupture amoureuse :** Le processus de deuil après une rupture peut être long et complexe. "The Grief Recovery Handbook" de John W. James et Russell Friedman est une ressource utile pour comprendre et naviguer le deuil.
+
+3) **Objectifs pour la suite, concrets et ajustables :**
+   - **Soutien administratif :** Identifier des ressources ou des services qui peuvent aider Joyce avec les démarches administratives, notamment en lien avec sa naturalisation et son emploi.
+   - **Reformulation des pensées absolues :** Travailler avec Joyce pour identifier et reformuler ses pensées absolues, en utilisant des techniques de TCC pour encourager une pensée plus nuancée.
+   - **Stratégies pour arrêter de se mordre les joues :** Explorer des techniques de gestion du stress et des comportements compulsifs, comme la pleine conscience ou des exercices de relaxation, pour aider Joyce à réduire ce comportement.

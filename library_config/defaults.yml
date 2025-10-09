@@ -1,0 +1,36 @@
+# Règles de métadonnées par défaut pour la bibliothèque
+
+type_to_level:
+  "Méta-analyse": "Très élevé"
+  "Revue systématique": "Élevé"
+  "Essai randomisé": "Élevé"
+  "Observationnelle": "Modéré"
+  "Cas clinique": "Faible"
+  "Qualitatif": "Modéré"
+  "Guide": "Modéré"
+  "Article": "Théorique"
+
+toggle_rules:
+  pre:
+    default: false
+    allow:
+      - "Guide"
+      - "Revue systématique"
+      - "Méta-analyse"
+  post:
+    default: false
+    allow:
+      - "Guide"
+      - "Méta-analyse"
+      - "Essai randomisé"
+
+pseudonymize_triggers:
+  - "case report"
+  - "étude de cas"
+  - "vignette"
+  - "n=1"
+  - "single case"
+
+keyword:
+  max_terms: 12
+  min_len: 3

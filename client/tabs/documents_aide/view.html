@@ -1,0 +1,113 @@
+<section class="documents-aide">
+  <header class="documents-aide__header">
+    <div>
+      <h1>Documents d’aide</h1>
+      <p class="documents-aide__subtitle">Atelier pour générer des supports personnalisés.</p>
+    </div>
+    <div class="documents-aide__actions">
+      <label>
+        Patient
+        <select id="docAidePatientSelect"></select>
+      </label>
+      <button id="docAideNewButton" class="btn primary">Nouveau document</button>
+    </div>
+  </header>
+  <div class="documents-aide__diagnostics" id="docAideDiagnostics" role="status" aria-live="polite" hidden></div>
+
+  <div class="documents-aide__layout">
+    <aside class="documents-aide__context">
+      <h2>Contexte patient</h2>
+      <div class="context-block" id="docAideProfileBlock"></div>
+      <div class="context-block" id="docAideSuggestions"></div>
+      <div class="context-block" id="docAideLastNotes"></div>
+    </aside>
+    <div class="documents-aide__main">
+      <section class="documents-aide__catalog">
+        <div class="catalog-toolbar">
+          <input type="search" id="docAideSearch" placeholder="Rechercher un modèle" />
+          <select id="docAideCategoryFilter">
+            <option value="">Toutes les catégories</option>
+          </select>
+        </div>
+        <div id="docAideCatalogGrid" class="catalog-grid"></div>
+      </section>
+      <section class="documents-aide__history">
+        <header>
+          <h2>Historique</h2>
+          <button id="docAideRefreshHistory" class="btn ghost">Actualiser</button>
+        </header>
+        <table>
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Modèle</th>
+              <th>Date</th>
+              <th>Format</th>
+              <th>Taille</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="docAideHistoryBody"></tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <dialog id="docAideWizard" class="documents-aide__wizard">
+    <form method="dialog">
+      <header>
+        <h2 id="docAideWizardTitle">Créer un document</h2>
+        <button class="btn ghost" value="cancel" type="submit">Fermer</button>
+      </header>
+      <nav class="wizard-steps">
+        <button type="button" data-step="1" class="active">Champs</button>
+        <button type="button" data-step="2">Aperçu</button>
+        <button type="button" data-step="3">Exporter</button>
+      </nav>
+      <section class="wizard-content">
+        <div class="wizard-step" data-step="1">
+          <div id="docAideFormContainer"></div>
+        </div>
+        <div class="wizard-step" data-step="2">
+          <iframe id="docAidePreview" title="Aperçu document"></iframe>
+        </div>
+        <div class="wizard-step" data-step="3">
+          <div class="export-options">
+            <label>Format
+              <select id="docAideFormat">
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+              </select>
+            </label>
+            <div class="profile-override">
+              <h3>Personnalisation linguistique</h3>
+              <div class="grid">
+                <label>Pronom
+                  <select id="docAidePronoun">
+                    <option value="il">il</option>
+                    <option value="elle">elle</option>
+                    <option value="iel">iel</option>
+                  </select>
+                </label>
+                <label>Genre
+                  <select id="docAideGender">
+                    <option value="m">masculin</option>
+                    <option value="f">féminin</option>
+                    <option value="n">neutralisé</option>
+                  </select>
+                </label>
+                <label>Adresse
+                  <select id="docAideTV">
+                    <option value="tu">Tutoiement</option>
+                    <option value="vous">Vouvoiement</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <button type="button" id="docAideGenerate" class="btn primary">Générer et archiver</button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </dialog>
+</section>

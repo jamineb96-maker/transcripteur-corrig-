@@ -1,0 +1,36 @@
+{% extends 'documents_aide/base_doc.html.j2' %}
+{% block body %}
+<section class="doc-section">
+  <p>Cette carte recense les coûts invisibles qui pèsent sur {{ ton('ton', 'votre') }} énergie même lorsqu'une tâche semble "simple" pour les autres.</p>
+</section>
+<section class="doc-section">
+  <h2>Checklist des coûts</h2>
+  {% set couts = [
+    ('Masquage social', inputs.get('cout_masquage', False) or context.couts.masquage),
+    ('Surcharge sociale', inputs.get('cout_social', False) or context.couts.social),
+    ('Imprévus / transitions rapides', inputs.get('cout_imprevus', False) or context.couts.imprevus),
+    ('Bruit, lumière, textures agressives', inputs.get('cout_sensoriel', False) or context.couts.sensoriel),
+    ('Temps de récupération invisible', inputs.get('cout_recup', False) or context.couts.recuperation),
+    ('Navigation administrative', inputs.get('cout_admin', False) or context.couts.administratif)
+  ] %}
+  <ul class="checklist">
+    {% for label, checked in couts %}
+    <li>
+      <svg viewBox="0 0 20 20">
+        <rect x="1" y="1" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.5" />
+        {% if checked %}<polyline points="4,11 8,15 16,5" fill="none" stroke="currentColor" stroke-width="2" />{% endif %}
+      </svg>
+      <span>{{ label }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+<section class="doc-section">
+  <h2>Compteur de cuillères</h2>
+  <p>Une tâche mobilise environ {{ inputs.get('cuilleres', context.couts.cuilleres or '...') }} cuillères. Ajuste selon {{ ton('ton ressenti', 'votre ressenti') }}.</p>
+</section>
+<section class="doc-section">
+  <h2>Stratégies pour alléger</h2>
+  <div class="notes-block">{{ inputs.get('strategies') or context.couts.strategies or '' }}</div>
+</section>
+{% endblock %}

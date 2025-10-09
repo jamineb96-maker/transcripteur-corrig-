@@ -1,0 +1,11 @@
+1) Caroline a exprimé des difficultés à créer des espaces de sécurité dans ses relations, notamment avec Thomas, où elle ressent une incompréhension et une blessure émotionnelle. Elle a interrompu une relation potentiellement positive avec Marie en raison d'un manque de clarté avec Arnaud. Caroline se sent plus à l'aise dans des relations non amoureuses et éprouve des difficultés à s'adapter aux attentes sociales et relationnelles, particulièrement avec des personnes neurotypiques. Elle a du mal à reconnaître et légitimer ses propres émotions et jugements, ressentant une pression de performance dans ses interactions sociales. Enfin, Caroline a des difficultés à se reconnaître dans ses interactions avec les femmes, malgré sa bisexualité. Si cette reformulation ne correspond pas à votre ressenti, n'hésitez pas à me le signaler.
+
+2) Pour approfondir ces sujets, je recommande de lire des ouvrages sur la neurodiversité et les relations interpersonnelles, tels que "NeuroTribes" de Steve Silberman, qui explore l'histoire et la culture de l'autisme. "The Autism-Friendly Guide to Periods" de Robyn Steward peut également offrir des perspectives utiles sur la gestion des relations et des attentes sociales. En termes de cadres critiques, la théorie des cuillères, qui aide à comprendre la gestion de l'énergie sociale, pourrait être pertinente. Enfin, des recherches sur la bisexualité et les dynamiques de genre pourraient éclairer les difficultés de Caroline à se reconnaître dans ses interactions avec les femmes.
+
+3) Pour la suite, nous pourrions envisager les objectifs suivants :
+   - Clarifier les attentes relationnelles de Caroline, en identifiant ce qui est important pour elle dans ses relations.
+   - Développer des espaces de sécurité, en explorant des stratégies pour se sentir en sécurité émotionnellement et physiquement dans ses interactions.
+   - Renforcer la confiance en son jugement, en travaillant sur la reconnaissance et la légitimation de ses émotions et perceptions.
+   - Explorer les relations non amoureuses, en identifiant ce qui fonctionne bien dans ces interactions et comment ces éléments peuvent être intégrés dans d'autres types de relations.
+
+Ces objectifs sont ajustables en fonction de l'évolution de votre situation et de vos besoins.

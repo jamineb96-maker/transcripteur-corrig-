@@ -1,0 +1,156 @@
+<div class="post-session-v2 post-session" data-app="post-session-v2" data-ps-root>
+  <header class="ps-header">
+    <h1>Post‑séance</h1>
+    <p class="ps-subtitle">Transcrire, résumer, analyser la pharmacologie et compiler un méga-prompt prêt à coller.</p>
+    <p id="ps-llm-warning" class="ps-warning" hidden>
+      Les fonctionnalités LLM sont désactivées car aucune clé OpenAI n’a été détectée.
+    </p>
+  </header>
+
+  <section class="ps-card" id="ps-audio">
+    <h2>1. Transcription</h2>
+    <div class="ps-audio-actions">
+      <div class="dropzone" id="ps-drop" tabindex="0" aria-label="Zone de dépôt audio">
+        <input type="file" id="ps-file" accept="audio/*" hidden />
+        <button id="ps-choose" class="btn" type="button">Choisir un fichier audio</button>
+        <p class="hint">Glissez un fichier ou cliquez pour sélectionner. Formats courants acceptés.</p>
+      </div>
+      <div id="ps-auto-badge" class="ps-auto-badge" hidden>
+        <span data-badge-label>Patient auto-sélectionné</span>
+        <button id="ps-auto-reset" class="btn ghost" type="button">Annuler</button>
+      </div>
+    </div>
+    <div class="progress" id="ps-progress" hidden aria-hidden="true">
+      <div class="bar"></div>
+    </div>
+    <textarea
+      id="ps-transcript"
+      class="mono"
+      rows="12"
+      placeholder="Transcript (éditable)…"
+      data-transcript
+    ></textarea>
+    <div class="actions">
+      <button id="ps-clean-transcript" class="btn ghost" type="button">Nettoyer ponctuation légère</button>
+    </div>
+    <details id="ps-segments">
+      <summary>Segments (optionnel)</summary>
+      <div id="ps-seglist"></div>
+    </details>
+  </section>
+
+  <section class="ps-card" id="ps-plan">
+    <h2>2. Résumé clinique</h2>
+    <div class="ps-card-actions">
+      <button id="ps-make-plan" class="btn primary" type="button">Générer le résumé</button>
+      <span class="ps-hint">Ctrl/Cmd+Entrée → Générer</span>
+    </div>
+    <textarea
+      id="ps-plan-text"
+      class="mono"
+      rows="10"
+      placeholder="Résumé clinique en 10–15 lignes…"
+      data-max-lines="15"
+    ></textarea>
+  </section>
+
+  <section class="ps-card" id="ps-research">
+    <h2>3. Recherche</h2>
+    <div class="ps-research-grid">
+      <div class="ps-research-column" id="ps-pharma-column">
+        <header class="ps-column-header">
+          <h3>Pharmacologie</h3>
+          <button id="ps-run-pharma" class="btn" type="button">Analyser la pharmacologie</button>
+        </header>
+        <div class="ps-include-toggle">
+          <label><input type="checkbox" id="ps-include-pharma" checked /> Inclure dans le méga-prompt</label>
+        </div>
+        <div class="ps-table-wrapper">
+          <table class="ps-table">
+            <thead>
+              <tr>
+                <th>Incl.</th>
+                <th>DCI</th>
+                <th>Classe</th>
+                <th>EI / RDR</th>
+              </tr>
+            </thead>
+            <tbody id="ps-pharma-rows"></tbody>
+          </table>
+        </div>
+        <label for="ps-pharma-text">Bloc pharmacologie</label>
+        <textarea id="ps-pharma-text" class="mono" rows="6" readonly placeholder="[PHARMA_MEMO]\n— néant explicite —"></textarea>
+      </div>
+
+      <div class="ps-research-column" id="ps-biblio-column">
+        <header class="ps-column-header">
+          <h3>Bibliothèque / Web</h3>
+          <button id="ps-run-biblio" class="btn" type="button">Chercher dans la bibliothèque</button>
+        </header>
+        <div class="ps-biblio-filters">
+          <label>
+            Année min.
+            <input type="number" id="ps-filter-year" placeholder="2018" />
+          </label>
+          <label>
+            Niv. preuve
+            <select id="ps-filter-evidence">
+              <option value="">Tous</option>
+              <option value="meta">Méta-analyses</option>
+              <option value="guideline">Guidelines</option>
+              <option value="study">Études</option>
+            </select>
+          </label>
+          <label>
+            Domaines
+            <input type="text" id="ps-filter-domains" placeholder="douleur, sommeil…" />
+          </label>
+        </div>
+        <div class="ps-include-toggle">
+          <label><input type="checkbox" id="ps-include-biblio" checked /> Inclure dans le méga-prompt</label>
+        </div>
+        <ul id="ps-biblio-list" class="ps-biblio-list"></ul>
+        <label for="ps-biblio-text">Bloc bibliographie</label>
+        <textarea
+          id="ps-biblio-text"
+          class="mono"
+          rows="8"
+          readonly
+          placeholder="[EXTRAITS BIBLIO]\n– Auteur, année — Titre, p.xx : « … »"
+        ></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section class="ps-card" id="ps-prompt">
+    <h2>4. Méga-prompt</h2>
+    <div class="ps-card-actions">
+      <button id="ps-compose" class="btn" type="button">Composer le méga-prompt</button>
+      <div class="ps-prompt-actions">
+        <button id="ps-copy-prompt" class="btn primary" type="button">Copier</button>
+        <button id="ps-export-prompt" class="btn" type="button">Exporter .txt</button>
+      </div>
+    </div>
+    <textarea
+      id="ps-prompt-text"
+      class="mono"
+      rows="14"
+      readonly
+      placeholder="[RÉSUMÉ CLINIQUE]…"
+    ></textarea>
+  </section>
+
+  <div class="ps-toast" id="ps-toast" role="status" aria-live="polite"></div>
+
+  <dialog id="ps-patient-dialog">
+    <form method="dialog" class="ps-dialog">
+      <h3>Sélection du patient</h3>
+      <p>Plusieurs patient·e·s correspondent au prénom détecté. Choisissez la bonne fiche.</p>
+      <div id="ps-patient-options" class="ps-dialog-options"></div>
+      <menu class="ps-dialog-actions">
+        <button value="cancel" class="btn ghost" type="reset">Annuler</button>
+        <button value="confirm" class="btn primary" type="submit">Confirmer</button>
+      </menu>
+    </form>
+  </dialog>
+</div>

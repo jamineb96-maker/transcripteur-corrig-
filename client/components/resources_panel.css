@@ -1,0 +1,14 @@
+/* Styles spécifiques au panneau de ressources.
+ * Ce fichier est volontairement léger car la majorité des styles est
+ * définie dans la feuille de base.  Il permet d'isoler le panneau
+ * visuellement si besoin.  Ajoutez ici des personnalisations si
+ * nécessaire.
+ */
+
+.resources-panel {
+  /* Ajoute un fond distinct pour différencier du reste de l'onglet */
+  background-color: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}

@@ -1,0 +1,140 @@
+[
+  {
+    "id": "fatigue_eval",
+    "title": "Évaluation de la fatigue après une activité",
+    "category": "Observation",
+    "source": "Atelier énergie",
+    "inputs": [
+      {"name": "activite", "label": "Activité réalisée", "type": "text"},
+      {"name": "date", "label": "Date", "type": "date"},
+      {"name": "imm_fatigue_phys", "label": "Fatigue physique (0-5)", "type": "number", "min": 0, "max": 5},
+      {"name": "imm_fatigue_ment", "label": "Fatigue mentale (0-5)", "type": "number", "min": 0, "max": 5},
+      {"name": "imm_pause", "label": "Besoin de pause/repli (0-5)", "type": "number", "min": 0, "max": 5},
+      {"name": "imm_irrit", "label": "Irritabilité (0-5)", "type": "number", "min": 0, "max": 5},
+      {"name": "imm_clarte", "label": "Clarté de pensée (0-5)", "type": "number", "min": 0, "max": 5},
+      {"name": "imm_commentaire", "label": "Comment je me sens tout de suite", "type": "textarea"},
+      {"name": "lendemain_reveil", "label": "Réveil (lendemain)", "type": "textarea"},
+      {"name": "lendemain_tensions", "label": "Tensions corporelles", "type": "textarea"},
+      {"name": "lendemain_clarte", "label": "Clarté de pensée (lendemain)", "type": "textarea"},
+      {"name": "lendemain", "label": "Notes du lendemain", "type": "textarea"},
+      {"name": "lendemain_actions", "label": "Ajustements à prévoir", "type": "textarea"}
+    ],
+    "template": "fatigue_eval.html.j2"
+  },
+  {
+    "id": "couts_energie",
+    "title": "Comprendre mes coûts en énergie",
+    "category": "Énergie",
+    "inputs": [
+      {"name": "contextes_plus2", "label": "+2 (ce qui recharge)", "type": "textarea"},
+      {"name": "contextes_moins2", "label": "−2 (ce qui coûte)", "type": "textarea"},
+      {"name": "signaux_corp", "label": "Signaux corporels repérés", "type": "textarea"},
+      {"name": "signaux_emo", "label": "Signaux émotionnels repérés", "type": "textarea"},
+      {"name": "signaux_arret", "label": "Mes signaux d’arrêt", "type": "textarea"}
+    ],
+    "template": "couts_energie.html.j2"
+  },
+  {
+    "id": "pauses_sensorielles",
+    "title": "Installer et ritualiser les pauses sensorielles",
+    "category": "Auto-soin",
+    "inputs": [
+      {"name": "rituel_1", "label": "Rituel 1", "type": "text"},
+      {"name": "duree_1", "label": "Durée 1", "type": "text"},
+      {"name": "frequence_1", "label": "Fréquence 1", "type": "text"},
+      {"name": "materiel_1", "label": "Matériel 1", "type": "text"},
+      {"name": "rituel_2", "label": "Rituel 2", "type": "text"},
+      {"name": "duree_2", "label": "Durée 2", "type": "text"},
+      {"name": "frequence_2", "label": "Fréquence 2", "type": "text"},
+      {"name": "materiel_2", "label": "Matériel 2", "type": "text"},
+      {"name": "rituel_3", "label": "Rituel 3", "type": "text"},
+      {"name": "duree_3", "label": "Durée 3", "type": "text"},
+      {"name": "frequence_3", "label": "Fréquence 3", "type": "text"},
+      {"name": "materiel_3", "label": "Matériel 3", "type": "text"},
+      {"name": "opt_silence", "label": "Silence / bruit blanc", "type": "checkbox"},
+      {"name": "opt_lumiere", "label": "Lumière douce", "type": "checkbox"},
+      {"name": "opt_contact", "label": "Contact profond / étirements", "type": "checkbox"},
+      {"name": "opt_proprio", "label": "Soutien proprioceptif", "type": "checkbox"},
+      {"name": "opt_odeur", "label": "Odeur ancrage", "type": "checkbox"},
+      {"name": "opt_mouvement", "label": "Mouvement rythmé", "type": "checkbox"},
+      {"name": "trousse", "label": "Trousse sensorielle", "type": "textarea"}
+    ],
+    "template": "pauses_sensorielles.html.j2"
+  },
+  {
+    "id": "deadlines_souples",
+    "title": "Les deadlines souples",
+    "category": "Organisation",
+    "inputs": [
+      {"name": "jalon_1", "label": "Jalon 1", "type": "text"},
+      {"name": "deadline_1", "label": "Deadline 1", "type": "date"},
+      {"name": "fenetre_1", "label": "Fenêtre souple 1", "type": "text"},
+      {"name": "planb_1", "label": "Plan B 1", "type": "text"},
+      {"name": "jalon_2", "label": "Jalon 2", "type": "text"},
+      {"name": "deadline_2", "label": "Deadline 2", "type": "date"},
+      {"name": "fenetre_2", "label": "Fenêtre souple 2", "type": "text"},
+      {"name": "planb_2", "label": "Plan B 2", "type": "text"},
+      {"name": "jalon_3", "label": "Jalon 3", "type": "text"},
+      {"name": "deadline_3", "label": "Deadline 3", "type": "date"},
+      {"name": "fenetre_3", "label": "Fenêtre souple 3", "type": "text"},
+      {"name": "planb_3", "label": "Plan B 3", "type": "text"},
+      {"name": "jalon_4", "label": "Jalon 4", "type": "text"},
+      {"name": "deadline_4", "label": "Deadline 4", "type": "date"},
+      {"name": "fenetre_4", "label": "Fenêtre souple 4", "type": "text"},
+      {"name": "planb_4", "label": "Plan B 4", "type": "text"},
+      {"name": "communication", "label": "Messages à prévoir", "type": "textarea"},
+      {"name": "signaux", "label": "Signaux d'alerte", "type": "textarea"}
+    ],
+    "template": "deadlines_souples.html.j2"
+  },
+  {
+    "id": "carte_couts_invisibles",
+    "title": "Carte des coûts invisibles",
+    "category": "Énergie",
+    "inputs": [
+      {"name": "cout_masquage", "label": "Masquage social", "type": "checkbox"},
+      {"name": "cout_social", "label": "Surcharge sociale", "type": "checkbox"},
+      {"name": "cout_imprevus", "label": "Imprévus / transitions", "type": "checkbox"},
+      {"name": "cout_sensoriel", "label": "Bruit / lumière / textures", "type": "checkbox"},
+      {"name": "cout_recup", "label": "Temps de récupération invisible", "type": "checkbox"},
+      {"name": "cout_admin", "label": "Navigation administrative", "type": "checkbox"},
+      {"name": "cuilleres", "label": "Nombre de cuillères", "type": "number", "min": 0},
+      {"name": "strategies", "label": "Stratégies pour alléger", "type": "textarea"}
+    ],
+    "template": "carte_couts_invisibles.html.j2"
+  },
+  {
+    "id": "grille_cause_consequence",
+    "title": "Grille quotidienne cause/conséquence",
+    "category": "Observation",
+    "inputs": [
+      {"name": "situation_1", "label": "Situation 1", "type": "text"},
+      {"name": "ressenti_1", "label": "Ressenti 1", "type": "text"},
+      {"name": "reaction_1", "label": "Réaction 1", "type": "text"},
+      {"name": "consequence_1", "label": "Conséquence 1", "type": "text"},
+      {"name": "besoin_1", "label": "Besoin/Ajustement 1", "type": "text"},
+      {"name": "situation_2", "label": "Situation 2", "type": "text"},
+      {"name": "ressenti_2", "label": "Ressenti 2", "type": "text"},
+      {"name": "reaction_2", "label": "Réaction 2", "type": "text"},
+      {"name": "consequence_2", "label": "Conséquence 2", "type": "text"},
+      {"name": "besoin_2", "label": "Besoin/Ajustement 2", "type": "text"},
+      {"name": "situation_3", "label": "Situation 3", "type": "text"},
+      {"name": "ressenti_3", "label": "Ressenti 3", "type": "text"},
+      {"name": "reaction_3", "label": "Réaction 3", "type": "text"},
+      {"name": "consequence_3", "label": "Conséquence 3", "type": "text"},
+      {"name": "besoin_3", "label": "Besoin/Ajustement 3", "type": "text"},
+      {"name": "situation_4", "label": "Situation 4", "type": "text"},
+      {"name": "ressenti_4", "label": "Ressenti 4", "type": "text"},
+      {"name": "reaction_4", "label": "Réaction 4", "type": "text"},
+      {"name": "consequence_4", "label": "Conséquence 4", "type": "text"},
+      {"name": "besoin_4", "label": "Besoin/Ajustement 4", "type": "text"},
+      {"name": "situation_5", "label": "Situation 5", "type": "text"},
+      {"name": "ressenti_5", "label": "Ressenti 5", "type": "text"},
+      {"name": "reaction_5", "label": "Réaction 5", "type": "text"},
+      {"name": "consequence_5", "label": "Conséquence 5", "type": "text"},
+      {"name": "besoin_5", "label": "Besoin/Ajustement 5", "type": "text"},
+      {"name": "observations", "label": "Observations générales", "type": "textarea"}
+    ],
+    "template": "grille_cause_consequence.html.j2"
+  }
+]

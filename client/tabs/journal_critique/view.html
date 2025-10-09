@@ -1,0 +1,147 @@
+<div class="journal-critique panel">
+  <div class="journal-critique__header">
+    <h2>Journal critique</h2>
+    <p class="journal-critique__lead">
+      Composez des invitations d’écriture narratives situées pour soutenir la re-authorisation.
+      Les paramètres linguistiques et la charge cognitive sont adaptés à chaque patient·e.
+    </p>
+    <p class="journal-critique__status" data-status aria-live="polite"></p>
+  </div>
+
+  <section class="journal-entries" data-journal-app>
+    <header class="journal-entries__header">
+      <div>
+        <h3>Notes sauvegardées</h3>
+        <p>Consignez vos réflexions critiques et réutilisez-les dans la pré-séance et la post-séance.</p>
+      </div>
+      <div class="journal-entries__actions">
+        <button type="button" class="ghost" data-action="refresh-notes">Actualiser</button>
+        <button type="button" class="ghost" data-action="reindex-notes">Réindexer</button>
+        <button type="button" class="primary" data-action="new-note">Nouvelle note</button>
+      </div>
+    </header>
+    <div class="journal-entries__feedback" data-feedback role="status" hidden></div>
+    <div class="journal-entries__loading" data-loading hidden>
+      <span class="journal-entries__spinner" aria-hidden="true"></span>
+      <span>Chargement des notes…</span>
+    </div>
+    <div class="journal-entries__body" data-content hidden>
+      <aside class="journal-entries__list" data-list aria-live="polite"></aside>
+      <div class="journal-entries__empty" data-empty hidden>
+        <p>Aucune note enregistrée pour le moment.</p>
+        <button type="button" class="ghost" data-action="new-note">Nouvelle note</button>
+      </div>
+      <form class="journal-entries__form" data-form novalidate>
+        <input type="hidden" data-field="id" />
+        <label>
+          <span>Titre</span>
+          <input type="text" data-field="title" required />
+        </label>
+        <label>
+          <span>Contenu (Markdown)</span>
+          <textarea rows="6" data-field="body_md" placeholder="Rédigez la note critique en Markdown."></textarea>
+        </label>
+        <label>
+          <span>Tags (séparés par des virgules)</span>
+          <input type="text" data-field="tags" placeholder="ex: somatique, politique" />
+        </label>
+        <label>
+          <span>Concepts (séparés par des virgules)</span>
+          <input type="text" data-field="concepts" placeholder="ex: masking social" />
+        </label>
+        <label>
+          <span>Sources (une par ligne, format « Label|URL »)</span>
+          <textarea rows="2" data-field="sources" placeholder="Revue Santé|https://example.org"></textarea>
+        </label>
+        <label>
+          <span>Patients (une par ligne, format « Identifiant|Nom »)</span>
+          <textarea rows="2" data-field="patients" placeholder="abc123|Patiente Demo"></textarea>
+        </label>
+        <div class="journal-entries__form-actions">
+          <button type="submit" class="primary" data-action="save-note">Enregistrer</button>
+          <button type="button" class="ghost" data-action="delete-note" disabled>Supprimer</button>
+          <button type="button" class="ghost" data-action="cancel-note">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="journal-critique__parameters" aria-label="Paramètres linguistiques">
+    <fieldset>
+      <legend>Civilité</legend>
+      <label><input type="radio" name="jc-langage" value="tu" data-field="langage" checked /> Tutoiement</label>
+      <label><input type="radio" name="jc-langage" value="vous" data-field="langage" /> Vouvoiement</label>
+    </fieldset>
+    <fieldset>
+      <legend>Genre grammatical</legend>
+      <label><input type="radio" name="jc-genre" value="neutral" data-field="genre" checked /> Neutre</label>
+      <label><input type="radio" name="jc-genre" value="feminine" data-field="genre" /> Féminin</label>
+      <label><input type="radio" name="jc-genre" value="masculine" data-field="genre" /> Masculin</label>
+    </fieldset>
+    <fieldset>
+      <legend>Budget cognitif</legend>
+      <label><input type="radio" name="jc-budget" value="faible" data-field="budget" /> Faible</label>
+      <label><input type="radio" name="jc-budget" value="moyen" data-field="budget" checked /> Moyen</label>
+      <label><input type="radio" name="jc-budget" value="eleve" data-field="budget" /> Élevé</label>
+    </fieldset>
+    <div class="journal-critique__energy" data-field="charge">
+      Charge estimée : <span data-charge-value>0</span>
+    </div>
+  </section>
+
+  <section class="journal-critique__workspace">
+    <div class="journal-critique__catalog">
+      <div class="catalog-controls">
+        <label class="search">
+          <span class="sr-only">Rechercher un prompt</span>
+          <input type="search" placeholder="Rechercher par titre, tags ou famille" data-field="search" />
+        </label>
+        <button type="button" class="ghost" data-action="refresh-prompts">Rafraîchir</button>
+        <button type="button" class="ghost" data-action="fetch-suggestions">Suggestions Post‑séance</button>
+      </div>
+      <div class="catalog-prompts" data-prompts-list aria-live="polite"></div>
+      <div class="catalog-suggestions" data-suggestions aria-live="polite"></div>
+    </div>
+    <aside class="journal-critique__selection" aria-label="Prompts sélectionnés">
+      <h3>Prompts retenus</h3>
+      <ol class="selection-list" data-selected-list aria-live="polite"></ol>
+      <div class="selection-coverage">
+        <h4>Couverture critique</h4>
+        <dl data-coverage></dl>
+        <ul class="alerts" data-alerts></ul>
+      </div>
+      <details class="artefacts-panel">
+        <summary>Artefacts Post‑séance (JSON)</summary>
+        <textarea rows="6" data-field="artefacts" placeholder="Collez ici les artefacts (objectifs_extraits, indices_somatiques…)."></textarea>
+        <button type="button" data-action="parse-artefacts">Analyser</button>
+      </details>
+      <label class="notes">
+        <span>Notes praticien·ne (annexes facultatives)</span>
+        <textarea rows="4" data-field="notes"></textarea>
+      </label>
+    </aside>
+  </section>
+
+  <section class="journal-critique__actions">
+    <button type="button" class="ghost" data-action="preview">Prévisualiser</button>
+    <button type="button" class="primary" data-action="generate">Générer PDF + DOCX</button>
+    <button type="button" data-action="clear-selection">Réinitialiser</button>
+  </section>
+
+  <section class="journal-critique__preview" data-preview hidden>
+    <h3>Aperçu PDF</h3>
+    <p class="preview-hint">L’aperçu rapide est encodé en base64. Copiez ce lien pour ouvrir le document temporaire.</p>
+    <textarea data-preview-output rows="5" readonly></textarea>
+  </section>
+
+  <section class="journal-critique__history" aria-label="Historique des exports">
+    <h3>Historique des journaux générés</h3>
+    <ul data-history-list></ul>
+  </section>
+
+  <section class="journal-critique__recommendations" aria-label="Gabarits recommandés">
+    <h3>Enrichir la bibliothèque</h3>
+    <p>Si une dimension est peu couverte, ajoutez un prompt en vous appuyant sur ces gabarits.</p>
+    <div data-recommendations></div>
+  </section>
+</div>

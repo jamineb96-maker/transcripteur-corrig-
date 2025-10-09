@@ -1,0 +1,43 @@
+# Taxonomie contrôlée des domaines cliniques
+trauma:
+  label: "Trauma"
+  synonyms:
+    any:
+      - "trauma"
+      - "traumatisme"
+      - "traumatic stress"
+complex_trauma:
+  label: "Trauma complexe"
+  synonyms:
+    any:
+      - "complex trauma"
+      - "cptsd"
+      - "desnos"
+    fr:
+      - "trauma complexe"
+      - "traumatismes complexes"
+attachment:
+  label: "Attachement"
+  synonyms:
+    any:
+      - "attachment"
+      - "attachement"
+    fr:
+      - "théorie de l'attachement"
+neurodiversity:
+  label: "Neurodiversité"
+  synonyms:
+    any:
+      - "neurodiversity"
+      - "neurodiversité"
+      - "autisme"
+      - "tsa"
+    fr:
+      - "spectre autistique"
+      - "trouble du spectre de l'autisme"
+resilience:
+  label: "Résilience"
+  synonyms:
+    any:
+      - "resilience"
+      - "résilience"

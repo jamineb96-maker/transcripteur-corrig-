@@ -1,0 +1,47 @@
+[
+  {
+    "id": "spoon_theory",
+    "title": "Théorie des cuillères",
+    "description": "Repères situés pour gérer l'énergie quotidienne et nommer le budget disponible.",
+    "file": "library/modules/spoon_theory.md",
+    "tags": ["energie", "psychoeducation", "budget_cognitif", "lens:validisme"],
+    "level": "base",
+    "contraindications": []
+  },
+  {
+    "id": "somatic_breaks",
+    "title": "Pauses somatiques",
+    "description": "Balises concrètes pour ajuster les pauses corporelles selon l'activation.",
+    "file": "library/modules/somatic_breaks.md",
+    "tags": ["somatique", "auto_soin", "budget_faible"],
+    "level": "base",
+    "contraindications": []
+  },
+  {
+    "id": "cognitive_signals",
+    "title": "Repérage des signaux cognitifs",
+    "description": "Identifier les signaux de surcharge et sécuriser la prise de décision.",
+    "file": "library/modules/cognitive_signals.md",
+    "tags": ["cognitif", "budget_cognitif", "auto_evaluation"],
+    "level": "intermediaire",
+    "contraindications": []
+  },
+  {
+    "id": "boundaries",
+    "title": "Poser ses limites",
+    "description": "Scénarios concrets pour formuler ses besoins non négociables.",
+    "file": "library/modules/boundaries.md",
+    "tags": ["boundaries", "communication", "autoprotection"],
+    "level": "intermediaire",
+    "contraindications": []
+  },
+  {
+    "id": "safety_material_context",
+    "title": "Encadré validisme et matérialité",
+    "description": "Contextualiser les contraintes matérielles et validistes qui impactent les stratégies.",
+    "file": "library/modules/safety_material_context.md",
+    "tags": ["lens:validisme", "contextualisation", "evidence"],
+    "level": "base",
+    "contraindications": []
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "p1": {
+    "objectifs_extraits": ["Stabiliser l'énergie quotidienne", "Nommer les limites au travail"],
+    "contradiction_spans": ["pression hiérarchie"],
+    "indices_somatiques": ["fatigue", "douleurs"],
+    "indices_cognitifs": ["brouillard", "trous de mémoire"],
+    "lenses_used": ["validisme"],
+    "reperes_candidates": ["micro-pauses sensorielles 30-90 sec"],
+    "ai_requests": ["outil budget cognitif"],
+    "evidence_sheet": [{"title": "Chronic fatigue pacing", "author": "Nguyen", "year": 2021}],
+    "historique": ["Suivi fatigue chronique, besoin de structurer les pauses."],
+    "notes": "analyse complète"
+  },
+  "p2": {
+    "objectifs_extraits": ["Structurer les signaux cognitifs"],
+    "contradiction_spans": [],
+    "indices_somatiques": [],
+    "indices_cognitifs": ["surcharge"],
+    "lenses_used": ["patriarcat"],
+    "reperes_candidates": ["Repères limites clairs"],
+    "ai_requests": [],
+    "evidence_sheet": [],
+    "historique": ["Discussion sur la surcharge cognitive après réunions."],
+    "notes": "focus cognitif"
+  },
+  "p3": {
+    "objectifs_extraits": ["Clarifier les besoins non négociables"],
+    "contradiction_spans": ["demandes familiales"],
+    "indices_somatiques": ["tension"],
+    "indices_cognitifs": [],
+    "lenses_used": [],
+    "reperes_candidates": [],
+    "ai_requests": ["scénarios limites"],
+    "evidence_sheet": [],
+    "historique": ["Besoin d'outils pour dire non."],
+    "notes": "suivi limites"
+  }
+}

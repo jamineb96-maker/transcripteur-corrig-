@@ -1,0 +1,219 @@
+<div class="anatomy3d" data-anatomy3d-root>
+  <header class="anatomy3d__header" role="presentation">
+    <div class="anatomy3d__header-left">
+      <h2>Onglet Anatomie 3D</h2>
+      <p class="anatomy3d__disclaimer">Outil pédagogique. Ne remplace pas un dispositif médical.</p>
+      <span class="anatomy3d__mode" data-anatomy3d-mode-ribbon>Mode global</span>
+    </div>
+    <div class="anatomy3d__header-right">
+      <button type="button" class="button" data-action="open-selftest">Tests rapides</button>
+      <button type="button" class="ghost" data-action="open-credits">Crédits et licences</button>
+    </div>
+  </header>
+  <div class="anatomy3d__layout">
+    <aside class="anatomy3d__sidebar" aria-label="Scènes pédagogiques">
+      <div class="panel" data-scene-palette>
+        <header class="panel__header">
+          <h3>Scènes</h3>
+        </header>
+        <div class="panel__content">
+          <ul class="scene-list" data-scene-list></ul>
+          <div class="scene-actions">
+            <button type="button" data-action="reset-scene" class="button secondary">Réinitialiser la scène</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel" data-layer-palette aria-label="Couches anatomiques">
+        <header class="panel__header">
+          <h3>Couches</h3>
+        </header>
+        <div class="panel__content" data-layer-list></div>
+        <footer class="panel__footer">
+          <button type="button" class="button secondary" data-action="isolate-group">Isoler</button>
+          <button type="button" class="button secondary" data-action="ghost-others">Fantomiser</button>
+        </footer>
+      </div>
+        <div class="panel" data-advanced-options hidden>
+        <header class="panel__header">
+          <h3>Options avancées</h3>
+        </header>
+        <div class="panel__content">
+          <label class="toggle">
+            <input type="checkbox" data-pref="high-contrast">
+            <span>Contraste élevé</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" data-pref="laser-pointer">
+            <span>Activer pointeur laser</span>
+          </label>
+        </div>
+      </div>
+      <div class="panel" data-usage-limits>
+        <header class="panel__header">
+          <h3>Usage</h3>
+        </header>
+        <div class="panel__content">
+          <h4>Ce que montre ce modèle</h4>
+          <ul>
+            <li>Volumes macroscopiques</li>
+            <li>Relations fonctionnelles simplifiées</li>
+            <li>Points d'appui pour la pédagogie</li>
+          </ul>
+          <h4>Ce qu'il ne montre pas</h4>
+          <ul>
+            <li>Activité électrophysiologique</li>
+            <li>Variabilité interindividuelle</li>
+            <li>Diagnostic médical</li>
+          </ul>
+          <h4>Neuromythes à éviter</h4>
+          <ol>
+            <li>On n'utilise que 10 % du cerveau.</li>
+            <li>Un hémisphère est purement créatif ou logique.</li>
+            <li>Les neurones ne se régénèrent jamais.</li>
+          </ol>
+        </div>
+      </div>
+    </aside>
+    <section class="anatomy3d__main" aria-label="Visualisation 3D">
+      <div class="anatomy3d__canvas" data-canvas-container>
+        <div class="anatomy3d__loader" data-loader>
+          <div class="loader-bar" role="progressbar" aria-live="polite" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+          <p data-loader-text>Préparation du modèle…</p>
+        </div>
+        <canvas data-renderer tabindex="0" aria-label="Scene 3D"></canvas>
+        <div class="anatomy3d__fallback" data-fallback hidden>
+          <img data-fallback-image alt="Fallback anatomie" hidden>
+          <p data-fallback-message>Affichage de secours (WebGL non disponible).</p>
+        </div>
+        <div class="anatomy3d__laser" data-laser hidden></div>
+      </div>
+      <section class="anatomy3d__actions" aria-label="Commandes">
+        <div class="action-group">
+          <h3>Recherche</h3>
+          <div class="search-box">
+            <input type="search" data-search-input placeholder="Rechercher une structure" aria-label="Rechercher une structure">
+            <ul class="search-suggestions" data-search-suggestions hidden></ul>
+          </div>
+        </div>
+        <div class="action-group">
+          <h3>Glossaire</h3>
+          <div class="glossary" data-glossary></div>
+        </div>
+        <div class="action-group">
+          <h3>Annotations</h3>
+          <div class="annotations" data-annotations>
+            <p class="muted">Cliquez dans la scène pour ajouter une annotation.</p>
+            <ul data-annotation-list></ul>
+            <div class="annotation-actions">
+              <button type="button" class="button secondary" data-action="export-annotations">Exporter</button>
+              <label class="button secondary" data-action="import-annotations">Importer
+                <input type="file" accept="application/json" hidden>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="action-group">
+          <h3>Snapshots</h3>
+          <div class="snapshots" data-snapshots>
+            <div class="snapshot-actions">
+              <button type="button" class="button secondary" data-action="add-snapshot">Enregistrer la vue</button>
+              <button type="button" class="button secondary" data-action="export-snapshots">Exporter</button>
+              <label class="button secondary" data-action="import-snapshots">Importer
+                <input type="file" accept="application/json" hidden>
+              </label>
+            </div>
+            <ul data-snapshot-list></ul>
+          </div>
+        </div>
+        <div class="action-group">
+          <h3>Captures &amp; exports</h3>
+          <div class="captures" data-captures>
+            <button type="button" class="button" data-action="capture-png">Capture PNG</button>
+            <button type="button" class="button" data-action="export-pdf">Handout PDF</button>
+            <button type="button" class="button" data-action="link-to-notes">Insérer dans le journal</button>
+          </div>
+        </div>
+        <div class="action-group">
+          <h3>Parcours pédagogiques</h3>
+          <div class="sequences" data-sequence-editor>
+            <button type="button" class="button secondary" data-action="open-sequence-editor">Composer un parcours</button>
+            <ul data-sequence-list></ul>
+          </div>
+        </div>
+      </section>
+      <section class="anatomy3d__notes" aria-label="Notes pédagogiques">
+        <div class="notes-panel" data-scene-notes></div>
+        <div class="questions-panel" data-scene-questions></div>
+        <div class="myths-panel" data-scene-myths></div>
+      </section>
+    </section>
+  </div>
+  <dialog class="anatomy3d__dialog" data-credits-dialog>
+    <article>
+      <header>
+        <h3>Crédits et licences</h3>
+      </header>
+      <div class="dialog-content" data-credits-content>
+        <p>Données indisponibles.</p>
+      </div>
+      <footer>
+        <button type="button" class="button" data-action="close-dialog">Fermer</button>
+      </footer>
+    </article>
+  </dialog>
+  <dialog class="anatomy3d__dialog" data-selftest-dialog>
+    <article>
+      <header>
+        <h3>Tests rapides</h3>
+      </header>
+      <div class="dialog-content">
+        <iframe src="/static/tabs/anatomy3d/selftest.html" title="Selftest" loading="lazy"></iframe>
+      </div>
+      <footer>
+        <button type="button" class="button" data-action="close-dialog">Fermer</button>
+      </footer>
+    </article>
+  </dialog>
+</div>
+<script type="importmap">
+{
+  "imports": {
+    "three": "/static/vendor/three/build/three.module.js",
+    "three/examples/jsm/": "/static/vendor/three/examples/jsm/"
+  }
+}
+</script>
+<script>
+(function () {
+  const testUrl = "/static/vendor/three/build/three.module.js";
+  window.__THREE_IMPORT_MAP_CDN__ = false;
+  fetch(testUrl, { method: "HEAD" }).then(response => {
+    if (!response || !response.ok) {
+      const map = document.createElement("script");
+      map.type = "importmap";
+      window.__THREE_IMPORT_MAP_CDN__ = true;
+      map.textContent = JSON.stringify({
+        imports: {
+          three: "https://unpkg.com/three@0.159.0/build/three.module.js",
+          "three/examples/jsm/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+        }
+      });
+      document.currentScript.after(map);
+      console.warn("Import-map CDN de secours activé pour Three.js");
+    }
+  }).catch(() => {
+    const map = document.createElement("script");
+    map.type = "importmap";
+    window.__THREE_IMPORT_MAP_CDN__ = true;
+    map.textContent = JSON.stringify({
+      imports: {
+        three: "https://unpkg.com/three@0.159.0/build/three.module.js",
+        "three/examples/jsm/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+      }
+    });
+    document.currentScript.after(map);
+    console.warn("Import-map CDN de secours activé pour Three.js (fetch HEAD a échoué)");
+  });
+})();
+</script>
+<script type="module" src="/static/tabs/anatomy3d/bootstrap.js"></script>

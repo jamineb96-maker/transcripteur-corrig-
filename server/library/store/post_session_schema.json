@@ -1,0 +1,224 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Post‑séance v2 schema",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "prenom": {"type": ["string", "null"]},
+        "register": {"type": "string", "enum": ["tu", "vous"]},
+        "date_local": {"type": "string", "format": "date"},
+        "tz": {"type": "string"},
+        "previous_mail_hash": {"type": ["string", "null"]},
+        "memory": {},
+        "schema_version": {"type": "string"}
+      },
+      "required": ["register", "date_local", "tz"]
+    },
+    "diff": {
+      "type": "object",
+      "properties": {
+        "meds_added": {"type": "array", "items": {}},
+        "meds_removed": {"type": "array", "items": {}},
+        "meds_changed": {"type": "array", "items": {}},
+        "new_symptoms": {"type": "array", "items": {}},
+        "resolved_symptoms": {"type": "array", "items": {}},
+        "decisions": {"type": "array", "items": {}},
+        "tasks_carried": {"type": "array", "items": {}},
+        "tasks_missed": {"type": "array", "items": {}}
+      },
+      "required": [
+        "meds_added",
+        "meds_removed",
+        "meds_changed",
+        "new_symptoms",
+        "resolved_symptoms",
+        "decisions",
+        "tasks_carried",
+        "tasks_missed"
+      ]
+    },
+    "speakers": {
+      "type": "object",
+      "properties": {
+        "pt": {"type": "string"},
+        "ther": {"type": "string"},
+        "debug": {"type": "string"}
+      },
+      "required": ["pt", "ther"]
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "speaker": {"type": "string", "enum": ["pt", "ther"]},
+          "text": {"type": "string"},
+          "span": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2}
+        },
+        "required": ["speaker", "text", "span"]
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "by": {"type": "string", "enum": ["pt", "ther", "co"]},
+          "what": {"type": "string"},
+          "due": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}]}
+        },
+        "required": ["by", "what"]
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "required": ["text", "confidence"]
+      }
+    },
+    "medications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name_reported": {"type": "string"},
+          "name_norm": {"type": ["string", "null"]},
+          "verified": {"type": "boolean"},
+          "form": {"type": ["string", "null"]},
+          "dose": {"type": ["string", "null"]},
+          "schedule": {"type": ["string", "null"]},
+          "change": {"type": ["string", "null"]},
+          "delta": {"type": ["string", "null"]},
+          "side_effects": {"type": "array", "items": {}},
+          "parse_warnings": {"type": "array", "items": {}}
+        },
+        "required": ["name_reported", "verified"]
+      }
+    },
+    "quotes": {
+      "type": "object",
+      "properties": {
+        "pt": {"type": "array", "items": {"type": "string"}},
+        "ther": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["pt", "ther"]
+    },
+    "critical": {
+      "type": "object",
+      "properties": {
+        "risk": {"type": "array", "items": {}},
+        "admin": {"type": "array", "items": {}}
+      }
+    },
+    "confidential": {
+      "type": "object",
+      "properties": {
+        "pseudonymize": {"type": "boolean"},
+        "third_parties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "role": {"type": "string"}
+            },
+            "required": ["name", "role"]
+          }
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {"type": "string"},
+              "type": {"type": "string", "enum": ["person", "place", "org"]},
+              "span": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2}
+            },
+            "required": ["text", "type", "span"]
+          }
+        }
+      },
+      "required": ["pseudonymize", "third_parties"]
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "ban": {"type": "array", "items": {"type": "string"}},
+        "openers_key": {"type": ["string", "null"]},
+        "closers_key": {"type": ["string", "null"]},
+        "target": {"type": "string", "enum": ["archive", "audio"]},
+        "length": {"type": "string", "enum": ["short", "medium", "long"]}
+      },
+      "required": ["ban", "target", "length"]
+    },
+    "tensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "wish_or_claim": {"type": "string"},
+          "constraint_or_context": {"type": "string"}
+        },
+        "required": ["wish_or_claim", "constraint_or_context"]
+      }
+    },
+    "temporalized_phrases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {"type": "string"},
+          "replacement": {"type": "string"},
+          "span": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2}
+        },
+        "required": ["source", "replacement", "span"]
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "char_ratio": {"type": "number"},
+        "quotes": {
+          "type": "object",
+          "properties": {
+            "pt": {"type": "integer"},
+            "ther": {"type": "integer"}
+          },
+          "required": ["pt", "ther"]
+        }
+      },
+      "required": ["char_ratio", "quotes"]
+    },
+    "hash": {
+      "type": "object",
+      "properties": {
+        "transcript_sha256": {"type": "string"},
+        "bundle_sha256": {"type": "string"}
+      }
+    },
+    "transcript_len": {"type": "integer"}
+  },
+  "required": [
+    "meta",
+    "diff",
+    "speakers",
+    "facts",
+    "decisions",
+    "hypotheses",
+    "medications",
+    "quotes",
+    "critical",
+    "confidential",
+    "style",
+    "coverage",
+    "hash",
+    "transcript_len"
+  ]
+}

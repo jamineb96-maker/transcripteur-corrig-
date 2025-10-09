@@ -1,0 +1,364 @@
+:root {
+  --facturation-bg: var(--surface-raised, #ffffff);
+  --facturation-border: rgba(0, 0, 0, 0.08);
+  --facturation-muted: rgba(17, 17, 17, 0.6);
+  --facturation-accent: var(--accent-color, #2b6cb0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --facturation-bg: rgba(30, 30, 30, 0.95);
+    --facturation-border: rgba(255, 255, 255, 0.12);
+    --facturation-muted: rgba(240, 240, 240, 0.7);
+  }
+}
+
+.facturation {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  color: var(--text-color, #111);
+  background: transparent;
+}
+
+.facturation__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.facturation__title-group h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.facturation__patient-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.facturation__patient-select select {
+  min-width: 18rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--facturation-border);
+  background: var(--facturation-bg);
+  color: inherit;
+}
+
+.facturation__actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.facturation__filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--facturation-border);
+  background: var(--facturation-bg);
+}
+
+.facturation__filter-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.facturation__filter-group label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.facturation__filter-group input,
+.facturation__filter-group select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--facturation-border);
+  background: var(--facturation-bg);
+  color: inherit;
+  min-width: 10rem;
+}
+
+.facturation__filters-meta {
+  font-size: 0.9rem;
+  color: var(--facturation-muted);
+}
+
+.facturation__table-wrapper {
+  border-radius: 0.75rem;
+  border: 1px solid var(--facturation-border);
+  overflow: hidden;
+  background: var(--facturation-bg);
+}
+
+.facturation__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.facturation__table thead {
+  background: rgba(43, 108, 176, 0.08);
+  color: inherit;
+}
+
+.facturation__table th,
+.facturation__table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--facturation-border);
+}
+
+.facturation__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.facturation__empty {
+  text-align: center;
+  color: var(--facturation-muted);
+  font-style: italic;
+}
+
+.facturation__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  background: rgba(43, 108, 176, 0.12);
+  color: var(--facturation-accent);
+}
+
+.facturation__badge--positive {
+  background: rgba(46, 204, 113, 0.15);
+  color: #1f9958;
+}
+
+.facturation__badge--warning {
+  background: rgba(234, 179, 8, 0.18);
+  color: #9a6b04;
+}
+
+.facturation__row-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.facturation__row-actions button,
+.facturation__row-actions a {
+  font-size: 0.85rem;
+}
+
+.facturation__statuses {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.facturation__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.facturation__toggle input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--facturation-accent);
+}
+
+.facturation__drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(420px, 100%);
+  height: 100vh;
+  background: var(--facturation-bg);
+  box-shadow: -18px 0 32px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+}
+
+.facturation__drawer.is-open {
+  transform: translateX(0);
+}
+
+.facturation__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 19;
+}
+
+.facturation__drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--facturation-border);
+}
+
+.facturation__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1.5rem 2rem;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.facturation__form-section {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.facturation__form label,
+.facturation__form-textarea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.facturation__form input,
+.facturation__form select,
+.facturation__form textarea {
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--facturation-border);
+  background: var(--facturation-bg);
+  color: inherit;
+}
+
+.facturation__tabs {
+  display: inline-flex;
+  border-radius: 999px;
+  border: 1px solid var(--facturation-border);
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.facturation__tabs button {
+  padding: 0.4rem 0.9rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.facturation__tabs button.is-active {
+  background: var(--facturation-accent);
+  color: #fff;
+}
+
+.facturation__lines table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.5rem;
+}
+
+.facturation__lines th,
+.facturation__lines td {
+  border-bottom: 1px solid var(--facturation-border);
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.facturation__lines input {
+  width: 100%;
+  padding: 0.4rem;
+  border-radius: 0.35rem;
+  border: 1px solid var(--facturation-border);
+  background: var(--facturation-bg);
+  color: inherit;
+}
+
+.facturation__form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.facturation__form-alert {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(234, 179, 8, 0.18);
+  color: #9a6b04;
+}
+
+.facturation__form-alert.is-error {
+  background: rgba(239, 68, 68, 0.18);
+  color: #b91c1c;
+}
+
+.facturation__form-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.facturation__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid var(--facturation-border);
+  padding-top: 1rem;
+}
+
+.facturation__preview object {
+  width: 100%;
+  height: 260px;
+  border: 1px solid var(--facturation-border);
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.facturation__preview-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.facturation__backdrop.hidden,
+.facturation__drawer[aria-hidden="true"] {
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 960px) {
+  .facturation {
+    padding: 1rem;
+  }
+  .facturation__header {
+    align-items: stretch;
+  }
+  .facturation__actions {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}

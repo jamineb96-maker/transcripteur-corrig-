@@ -1,0 +1,70 @@
+{% extends 'documents_aide/base_doc.html.j2' %}
+{% block body %}
+<section class="doc-section">
+  <p>{{ T('Tu', 'Vous') }} peux utiliser cette fiche juste après une tâche, ou le lendemain matin, pour voir si {{ t('tu as', 'vous avez') }} récupéré{{ suff_e() }}.</p>
+  <p class="tag">Observation immédiate</p>
+</section>
+<section class="doc-section">
+  <h2>Évaluation immédiate</h2>
+  <p>Après l'activité « {{ inputs.activite or '...' }} » réalisée le {{ inputs.date or context.last_activity_date or '...' }}, note chaque repère de 0 (aucun) à 5 (très intense).</p>
+  <table class="scale-grid">
+    <thead>
+      <tr>
+        <th>Indicateur</th>
+        <th>0</th>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+        <th>5</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for field, label in [
+        ('imm_fatigue_phys', 'Fatigue physique'),
+        ('imm_fatigue_ment', 'Fatigue mentale'),
+        ('imm_pause', 'Besoin de pause / repli'),
+        ('imm_irrit', 'Irritabilité'),
+        ('imm_clarte', 'Clarté de pensée')
+      ] %}
+      <tr>
+        <td>{{ label }}</td>
+        {% for score in range(6) %}
+        <td>{% if inputs.get(field) == score %}✓{% endif %}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="doc-section">
+    <h3>Comment je me sens tout de suite&nbsp;?</h3>
+    <div class="notes-block">{{ inputs.get('imm_commentaire') or context.last_immediate_note or '' }}</div>
+  </div>
+</section>
+<section class="doc-section">
+  <p class="tag">Observation différée</p>
+  <h2>Évaluation différée (lendemain)</h2>
+  <p>Le lendemain, observe comment {{ t('tu te réveilles', 'vous vous réveillez') }} et comment ton corps et ton esprit réagissent.</p>
+  <div class="doc-section">
+    <h3>Réveil</h3>
+    <div class="notes-block">{{ inputs.get('lendemain_reveil') or context.next_morning.reveil or '' }}</div>
+  </div>
+  <div class="doc-section">
+    <h3>Tensions corporelles</h3>
+    <div class="notes-block">{{ inputs.get('lendemain_tensions') or context.next_morning.tensions or '' }}</div>
+  </div>
+  <div class="doc-section">
+    <h3>Clarté de pensée</h3>
+    <div class="notes-block">{{ inputs.get('lendemain_clarte') or context.next_morning.clarte or '' }}</div>
+  </div>
+  <div class="doc-section">
+    <h3>Notes libres</h3>
+    <div class="notes-block">{{ inputs.lendemain or '' }}</div>
+  </div>
+</section>
+<section class="doc-section">
+  <h2>Ce que je retiens</h2>
+  <p>Quels ajustements pourrais-tu planifier pour la prochaine fois&nbsp;? Fais ressortir un signal d'alerte et une stratégie de récupération prioritaire.</p>
+  <div class="notes-block">{{ inputs.get('lendemain_actions') or context.next_morning.suggestions or '' }}</div>
+</section>
+{% endblock %}

@@ -1,0 +1,65 @@
+[
+  {
+    "key": "cortex_prefrontal",
+    "label_fr": "Cortex préfrontal",
+    "definition": "Régions antérieures du cortex frontal impliquées dans la planification, la prise de décision et la régulation émotionnelle.",
+    "misunderstanding": "Il ne s'agit pas uniquement du siège de la raison : il interagit avec les systèmes émotionnels.",
+    "links": [{ "label": "Fiche fonctions exécutives", "href": "../docs/fonctions_executives.pdf" }]
+  },
+  {
+    "key": "noyaux_gris",
+    "label_fr": "Noyaux gris centraux",
+    "definition": "Ensemble de structures sous-corticales régulant la motricité, l'apprentissage procédural et la motivation.",
+    "misunderstanding": "Ils ne servent pas uniquement au mouvement : ils participent aussi aux processus cognitifs et émotionnels.",
+    "links": [{ "label": "Dossier ganglions de la base", "href": "../docs/ganglions_base.pdf" }]
+  },
+  {
+    "key": "systeme_limbique",
+    "label_fr": "Système limbique",
+    "definition": "Réseau de structures comprenant l'amygdale, l'hippocampe et le cortex cingulaire, impliqué dans les émotions et la mémoire.",
+    "misunderstanding": "Il ne s'agit pas d'un cerveau primitif isolé : ses interactions avec le cortex sont permanentes.",
+    "links": [{ "label": "Synthèse régulation émotionnelle", "href": "../docs/regulation_emotionnelle.pdf" }]
+  },
+  {
+    "key": "hypothalamus",
+    "label_fr": "Hypothalamus",
+    "definition": "Structure diencephalique régulant l'homéostasie et l'axe hormonal du stress.",
+    "misunderstanding": "Ce n'est pas seulement la 'glande du stress', mais un régulateur multisystème.",
+    "links": [{ "label": "Axe HPA", "href": "../docs/axe_hpa.pdf" }]
+  },
+  {
+    "key": "thalamus",
+    "label_fr": "Thalamus",
+    "definition": "Relais sensoriel majeur modulant la vigilance, le sommeil et la transmission des informations corticales.",
+    "misunderstanding": "Il n'est pas qu'une simple 'gare de triage' : il module finement les informations.",
+    "links": [{ "label": "Schéma des voies thalamiques", "href": "../docs/thalamus.pdf" }]
+  },
+  {
+    "key": "cortex_occipital",
+    "label_fr": "Cortex occipital",
+    "definition": "Zone principale du traitement visuel, avec une hiérarchie d'aires spécialisées.",
+    "misunderstanding": "Il ne traite pas que l'image brute : des fonctions de prédiction y sont aussi présentes.",
+    "links": [{ "label": "Voies visuelles", "href": "../docs/voies_visuelles.pdf" }]
+  },
+  {
+    "key": "cortex_parietal",
+    "label_fr": "Cortex pariétal",
+    "definition": "Interface multimodale qui intègre perception, attention et représentation du corps.",
+    "misunderstanding": "Ce n'est pas uniquement la 'somesthésie' : il participe à l'orientation attentionnelle.",
+    "links": [{ "label": "Notes attention", "href": "../docs/attention.pdf" }]
+  },
+  {
+    "key": "aire_broca",
+    "label_fr": "Aire de Broca",
+    "definition": "Région frontale impliquée dans la planification du langage oral et écrit.",
+    "misunderstanding": "Elle ne produit pas seule le langage : c'est un nœud d'un réseau distribué.",
+    "links": [{ "label": "Langage expressif", "href": "../docs/langage_expressif.pdf" }]
+  },
+  {
+    "key": "aire_wernicke",
+    "label_fr": "Aire de Wernicke",
+    "definition": "Zone temporale postérieure dédiée à la compréhension du langage.",
+    "misunderstanding": "Elle ne comprend pas seule le langage : elle coopère avec les régions frontales et pariétales.",
+    "links": [{ "label": "Langage réceptif", "href": "../docs/langage_receptif.pdf" }]
+  }
+]

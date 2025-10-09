@@ -1,0 +1,15 @@
+apa.org
+nature.com
+nejm.org
+who.int
+pubmed.ncbi.nlm.nih.gov
+cambridge.org
+jstor.org
+ncbi.nlm.nih.gov
+lancet.com
+psyarxiv.com
+frontiersin.org
+sciencedirect.com
+oecd.org
+ined.fr
+inserm.fr

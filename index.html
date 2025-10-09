@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Assistant clinique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-left">
+            <a href="#home" class="brand brand-home-link" data-nav-action="home" aria-label="Retour à l’accueil">
+                <img src="./assets/logo.png" alt="Logo" class="brand-logo">
+                <span class="brand-title">Assistant clinique</span>
+            </a>
+            <nav class="primary-nav tabs" aria-label="Sections applicatives" data-nav="primary">
+                <div class="nav-items" data-nav-list>
+                    <a href="#pre_session" data-tab="pre_session" data-nav-item="pre_session">Pré-séance</a>
+                    <a href="#post_session" data-tab="post_session" data-nav-item="post_session">Post-séance</a>
+                    <a href="#constellation" data-tab="constellation" data-nav-item="constellation">Constellation</a>
+                    <a href="#anatomie3d" data-tab="anatomie3d" data-nav-item="anatomie3d">Anatomie</a>
+                    <a href="#facturation" data-tab="facturation" data-nav-item="facturation">Facturation</a>
+                    <a href="#agenda" data-tab="agenda" data-nav-item="agenda">Agenda</a>
+                </div>
+            </nav>
+            <div class="nav-overflow" data-nav-overflow data-empty="true">
+                <button type="button" class="ghost" id="menu-more-trigger" data-nav-toggle="overflow" aria-haspopup="true" aria-expanded="false" aria-controls="menu-more" disabled>Plus…</button>
+                <div class="nav-overflow__menu" id="menu-more" role="menu" data-nav="overflow" data-nav-menu data-open="false" hidden></div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="patient-controls">
+                <label for="patient-select">Patiente :</label>
+                <select id="patient-select"></select>
+            </div>
+        </div>
+    </header>
+
+    <div id="banner" class="banner" role="status" aria-live="polite"></div>
+
+    <main class="content">
+        <section id="panel" class="panel" aria-live="polite"></section>
+    </main>
+
+    <script>
+        window.__API_BASE__ = '';
+    </script>
+    <script src="./app.js" type="module"></script>
+</body>
+</html>

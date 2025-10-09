@@ -1,0 +1,15 @@
+<header class="doc-header">
+  <div class="doc-header__identity">
+    <div class="doc-header__title">{{ title }}</div>
+    <div class="doc-header__meta">
+      <span>{{ patient.full_name or patient.id }}</span>
+      <span>•</span>
+      <span>{{ generated_at.strftime('%d/%m/%Y %H:%M') }}</span>
+    </div>
+  </div>
+  {% if patient.get('practitioner') %}
+  <div class="doc-header__practitioner">
+    {{ patient.practitioner }}
+  </div>
+  {% endif %}
+</header>

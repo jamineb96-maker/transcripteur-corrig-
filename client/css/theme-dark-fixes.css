@@ -1,0 +1,36 @@
+:root[data-theme="dark"] {
+  --bg: #0c111b;
+  --surface: #151b28;
+  --surface-2: #1b2435;
+  --text: #e5e7eb;
+  --muted: #a7b0c0;
+  --border: #24324a;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .panel,
+[data-theme="dark"] .section {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] ::placeholder { color: var(--muted); }
+
+/* Purge des overrides résiduels */
+[data-theme="dark"] .card,
+[data-theme="dark"] .panel,
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background-color: unset !important;
+  color: unset !important;
+}

@@ -1,0 +1,16 @@
+1) **Reformulation fidèle :**
+Chloé est une tatoueuse qui souhaite reprendre son activité après une pause de deux ans et demi, période durant laquelle son état s'est détérioré. Elle vit dans une maison appartenant à son père, mais se sent de plus en plus mal depuis l'arrêt de son activité professionnelle. Elle a été confrontée à des relations toxiques, notamment avec une ancienne propriétaire de boutique manipulatrice et un ex-partenaire abusif qu'elle croise fréquemment, ce qui réactive des traumatismes. À l'adolescence, elle a été hospitalisée pour automutilations, une expérience qu'elle a vécue négativement. Elle ressent un manque de soutien émotionnel de son entourage et souhaite un cadre thérapeutique où elle peut poser des questions et être aidée à s'exprimer. Elle prend de la Lamotrigine pour une suspicion de troubles borderline, mais ne se reconnaît pas dans ce diagnostic. Il y a des soupçons d'inceste dans sa famille, mais elle n'a pas de souvenirs clairs de l'événement. Chloé a un trouble dissociatif de l'identité avec plusieurs altères, dont deux principaux qui communiquent ensemble. Elle exprime le besoin de comprendre ses expériences passées et d'améliorer son bien-être général pour reprendre son activité professionnelle.
+
+2) **Pistes de lecture evidence-based et repères :**
+   - **Trouble dissociatif de l'identité (TDI) :** Consulter des ressources comme le "Diagnostic and Statistical Manual of Mental Disorders" (DSM-5) pour comprendre les critères diagnostiques et les approches thérapeutiques.
+   - **Traumatismes et réactivation traumatique :** Se référer aux travaux de Bessel van der Kolk sur le trauma et la mémoire corporelle.
+   - **Automutilation et stigmatisation :** Lire des études sur les approches non stigmatisantes et le soutien aux personnes ayant des comportements d'automutilation.
+   - **Critique des diagnostics genrés :** Explorer des articles sur la critique des biais de genre dans le diagnostic psychiatrique, notamment concernant les troubles de la personnalité.
+   - **Approches thérapeutiques centrées sur le trauma :** Considérer des thérapies comme l'EMDR (Eye Movement Desensitization and Reprocessing) avec des praticiens formés et certifiés.
+
+3) **Objectifs pour la suite, concrets et ajustables :**
+   - **Amélioration du bien-être général :** Mettre en place un suivi régulier pour évaluer l'évolution de son état émotionnel et physique.
+   - **Reprise de l'activité professionnelle :** Élaborer un plan progressif pour reprendre le tatouage, en tenant compte des blocages fonctionnels et artistiques.
+   - **Identification et expression des émotions :** Travailler sur des techniques de régulation émotionnelle et d'expression, comme le journal émotionnel ou la thérapie d'acceptation et d'engagement (ACT).
+   - **Compréhension des expériences passées :** Explorer les souvenirs et les événements passés dans un cadre sécurisé, potentiellement avec des techniques de thérapie narrative.
+   - **Soutien social :** Encourager la création d'un réseau de soutien, que ce soit par des groupes de parole ou des communautés en ligne sécurisées.

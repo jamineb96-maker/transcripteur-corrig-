@@ -1,0 +1,9 @@
+patterns:
+  - "(?:est[- ]ce que|est ce que).{0,80}\\?$"
+  - "je voudrais.{0,120}"
+  - "j'aimerais.{0,120}"
+  - "j'ai besoin de.{0,120}"
+  - "peux[- ]tu.{0,120}\\?$"
+  - "pourrais[- ]tu.{0,120}\\?$"
+  - "est[- ]ce possible.{0,120}\\?$"
+  - "comment (?:on|je) peux.{0,120}\\?$"

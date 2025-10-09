@@ -1,0 +1,27 @@
+# Bibliothèque clinique – artefacts générés
+library/raw_pdfs/
+library/extracted/
+library/index/vectors/
+library/logs/
+# Conserver le fichier d'index SQLite placeholder
+!library/index/fts.db
+
+# Environnements locaux
+.env.local
+instance/records/
+instance/post_session/transcripts/
+instance/post_session/dumps/
+*.pyc
+__pycache__/
+
+# Assets vendor générés
+static/vendor/three/**/*.wasm
+client/vendor/three/**/*.wasm
+static/models/neurology.glb
+# Secrets & configs locaux
+.env
+client_secret*.json
+server/tabs/post_session/storage/
+server/logs/
+# LFS/binaries ? ignorer
+static/models/neurology.glb

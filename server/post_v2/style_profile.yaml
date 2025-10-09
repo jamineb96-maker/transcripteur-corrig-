@@ -1,0 +1,36 @@
+profile: Za
+structure:
+  - "Ouverture déontique et validation de l'expérience"
+  - "Ce que vous avez exprimé et ce que j'ai entendu"
+  - "Pistes de lecture et repères situés"
+  - "Suites concrètes possibles sans injonctions"
+allowed_phrases:
+  - repère
+  - cadre
+  - non-performativité
+  - filets
+  - continuité
+  - conditions minimales
+  - lecture située
+ban_list:
+  - observance
+  - compliance
+  - vous devez
+  - il suffit de
+  - exposition graduée
+  - hiérarchiser
+  - protocole imposé
+  - bonne élève
+  - psychanalyse
+  - symbolique
+  - castration
+  - hystérie
+  - ordres
+  - obéissance
+  - culpabilisation
+guardrails:
+  tone: "Adulte, matérialiste, critique, refus explicite de la moraline"
+  lists: "Pas de listes scolaires ni de bullet points ordinaires"
+  uncertainty: "Dire explicitement quand la connaissance est incertaine"
+  injunctions: "Refuser toute formulation prescriptive"
+mail_tone: "Longues phrases lisibles, transitions douces, posture non infantilisante"

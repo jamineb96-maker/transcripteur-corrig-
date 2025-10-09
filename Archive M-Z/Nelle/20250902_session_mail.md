@@ -1,0 +1,13 @@
+1) **Reformulation fidèle :**
+Nell a exprimé des difficultés à se remettre d'une fête où elle a consommé du speed, ce qui a entraîné un gros "down" et un manque d'énergie. Elle ressent une dissonance entre les expériences intenses des fêtes et son quotidien, ce qui génère de la souffrance. Vous avez discuté de l'hypothèse selon laquelle le speed pourrait avoir activé une fatigue post-traumatique plutôt qu'un simple retour dépressif. Nell a besoin de stabilité et de régularité, et elle a du mal à comprendre pourquoi ce qui lui fait du bien peut aussi lui faire du mal. Il y a un potentiel conflit entre votre approche thérapeutique et celle de Pedro, qui semble chercher à activer des émotions sombres pour les comprendre. Nell souhaite développer sa curiosité et sa sensibilité, notamment à travers des créations sonores, mais elle a du mal à se construire une identité et un objectif de vie après des années de souffrance.
+
+2) **Pistes de lecture evidence-based et repères :**
+   - **Effets des amphétamines :** Les amphétamines, comme le speed, stimulent le système nerveux central, ce qui peut entraîner une hypervigilance et potentiellement réactiver des traumas sous-jacents. Voir les travaux sur les effets neurobiologiques des amphétamines et leur impact sur le stress post-traumatique.
+   - **Théorie de la cuillère :** Cette théorie peut aider à comprendre comment gérer l'énergie limitée, particulièrement dans le contexte de la santé mentale. Elle est souvent utilisée pour expliquer la gestion de l'énergie chez les personnes vivant avec des maladies chroniques ou des traumatismes.
+   - **Approches thérapeutiques :** Comparer les approches centrées sur la stabilisation émotionnelle avec celles qui explorent activement les traumas peut être utile. Voir les recherches sur la thérapie centrée sur le trauma versus la thérapie de stabilisation.
+
+3) **Objectifs pour la suite, concrets et ajustables :**
+   - **Renforcer le lien thérapeutique :** Continuer à établir un espace sécurisé où Nell peut explorer ses émotions sans jugement.
+   - **Explorer l'origine traumatique :** Identifier des événements ou des expériences passées qui pourraient être réactivés par des substances comme le speed.
+   - **Développer une stabilité émotionnelle :** Travailler sur des stratégies pour gérer les hauts et les bas émotionnels, peut-être en intégrant des pratiques de pleine conscience ou de régulation émotionnelle.
+   - **Comprendre l'interaction entre speed et trauma :** Rechercher des informations sur les effets des amphétamines sur les personnes ayant des antécédents de trauma pour mieux comprendre les expériences de Nell.

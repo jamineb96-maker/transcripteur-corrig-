@@ -1,0 +1,137 @@
+{
+  "methylphenidate": {
+    "class": "psychostimulant (NDRI)",
+    "mechanism": "blocage recapture dopamine/noradrénaline",
+    "half_life": "2–3 h (IR), 8–12 h (LP)",
+    "common": ["appétit ↓", "insomnie", "bouche sèche"],
+    "serious": ["tachycardie", "HTA", "anxiété marquée"],
+    "rdr": ["prise le matin", "limiter caféine", "surveiller sommeil/alimentation"],
+    "refs": ["Vidal", "ANSM"]
+  },
+  "quetiapine": {
+    "class": "antipsychotique atypique (sédatif)",
+    "mechanism": "antagonisme 5-HT2A/D2, H1 élevé",
+    "half_life": "7 h",
+    "common": ["somnolence", "prise de poids"],
+    "serious": ["hypotension orthostatique", "QTc ↑ (rare)"],
+    "rdr": ["lever progressif", "mise en garde conduite", "sevrage graduel"],
+    "refs": ["BNF", "Vidal"]
+  },
+  "sertraline": {
+    "class": "ISRS",
+    "mechanism": "inhibition sélective recapture sérotonine",
+    "half_life": "26 h",
+    "common": ["nausées", "troubles digestifs", "anxiété transitoire"],
+    "serious": ["risque syndrome sérotoninergique", "hyponatrémie"],
+    "rdr": ["prise le matin", "surveillance hyponatrémie", "éviter arrêt brutal"],
+    "refs": ["HAS", "Vidal"]
+  },
+  "paroxetine": {
+    "class": "ISRS",
+    "mechanism": "blocage recapture sérotonine",
+    "half_life": "21 h",
+    "common": ["prise de poids", "somnolence", "dysfonction sexuelle"],
+    "serious": ["sevrage marqué", "syndrome sérotoninergique"],
+    "rdr": ["diminution progressive", "éviter alcool", "informer sur sevrage"] ,
+    "refs": ["HAS", "ANSM"]
+  },
+  "fluoxetine": {
+    "class": "ISRS",
+    "mechanism": "inhibition recapture sérotonine",
+    "half_life": "2-3 jours (norfluoxétine 7-15 j)",
+    "common": ["agitation", "troubles gastro-intestinaux"],
+    "serious": ["allongement QTc (rare)", "syndrome sérotoninergique"],
+    "rdr": ["prise le matin", "attention interactions IMAO", "surveiller poids"],
+    "refs": ["BNF", "Vidal"]
+  },
+  "escitalopram": {
+    "class": "ISRS",
+    "mechanism": "inhibition sélective recapture sérotonine",
+    "half_life": "27-32 h",
+    "common": ["nausées", "céphalées", "troubles du sommeil"],
+    "serious": ["allongement QT", "hyponatrémie"],
+    "rdr": ["prise quotidienne fixe", "ECG si facteurs QT", "sevrage progressif"],
+    "refs": ["ANSM", "HAS"]
+  },
+  "venlafaxine": {
+    "class": "IRSNa",
+    "mechanism": "inhibition recapture sérotonine/noradrénaline",
+    "half_life": "5 h (IR), 11 h (LP)",
+    "common": ["nausées", "sudation", "anxiété"],
+    "serious": ["HTA", "sevrage sévère"],
+    "rdr": ["prise avec nourriture", "surveiller tension", "diminution progressive"],
+    "refs": ["HAS", "Vidal"]
+  },
+  "bupropion": {
+    "class": "antidépresseur NDRI",
+    "mechanism": "inhibition recapture noradrénaline/dopamine",
+    "half_life": "21 h",
+    "common": ["insomnie", "bouche sèche", "tremblements"],
+    "serious": ["convulsions", "HTA"],
+    "rdr": ["éviter prise tardive", "pas d'alcool excessif", "prudence troubles convulsifs"],
+    "refs": ["FDA", "Vidal"]
+  },
+  "lamotrigine": {
+    "class": "antiépileptique thymorégulateur",
+    "mechanism": "stabilisation membranes sodiques",
+    "half_life": "25-33 h",
+    "common": ["céphalées", "nausées", "somnolence"],
+    "serious": ["rash sévère (Stevens-Johnson)", "hypersensibilité"],
+    "rdr": ["titration lente", "arrêt immédiat si rash", "surveillance interactions"],
+    "refs": ["HAS", "ANSM"]
+  },
+  "lithium": {
+    "class": "thymorégulateur",
+    "mechanism": "modulation second messager GSK-3/inositol",
+    "half_life": "18-36 h",
+    "common": ["tremblements fins", "polyurie", "prise de poids"],
+    "serious": ["toxicité rénale", "troubles thyroïdiens", "intoxication aiguë"],
+    "rdr": ["surveillance lithémie", "hydratation suffisante", "contrôle fonction rénale"],
+    "refs": ["HAS", "CMM"]
+  },
+  "diazepam": {
+    "class": "benzodiazépine anxiolytique",
+    "mechanism": "agoniste GABA-A allostérique",
+    "half_life": "20-50 h (métabolites actifs)",
+    "common": ["somnolence", "troubles mémoire"],
+    "serious": ["dépression respiratoire", "chute sujet âgé"],
+    "rdr": ["prise courte durée", "éviter alcool", "sevrage progressif"],
+    "refs": ["ANSM", "Vidal"]
+  },
+  "alprazolam": {
+    "class": "benzodiazépine anxiolytique",
+    "mechanism": "modulation GABA-A",
+    "half_life": "12-15 h",
+    "common": ["sédation", "troubles psychomoteurs"],
+    "serious": ["sevrage sévère", "amnésie"],
+    "rdr": ["cures brèves", "diminution progressive", "prudence conduite"],
+    "refs": ["HAS", "Vidal"]
+  },
+  "pregabalin": {
+    "class": "antiépileptique anxiolytique",
+    "mechanism": "liaison sous-unité α2δ canaux calciques",
+    "half_life": "6 h",
+    "common": ["somnolence", "prise de poids", "œdèmes"],
+    "serious": ["dépression respiratoire (associations)", "idées suicidaires"],
+    "rdr": ["titration progressive", "surveiller poids", "sevrage graduel"],
+    "refs": ["EMA", "Vidal"]
+  },
+  "gabapentin": {
+    "class": "antiépileptique",
+    "mechanism": "liaison sous-unité α2δ canaux calciques",
+    "half_life": "5-7 h",
+    "common": ["somnolence", "vertiges"],
+    "serious": ["dépression respiratoire", "idées suicidaires"],
+    "rdr": ["prise fractionnée", "ajuster insuffisance rénale", "sevrage progressif"],
+    "refs": ["EMA", "Vidal"]
+  },
+  "melatonin": {
+    "class": "chronobiotique",
+    "mechanism": "agoniste récepteurs MT1/MT2",
+    "half_life": "30-50 min",
+    "common": ["somnolence matinale", "céphalées"],
+    "serious": ["interaction anticoagulants (rare)"],
+    "rdr": ["prise au coucher", "limiter exposition lumière", "évaluer efficacité"],
+    "refs": ["INSERM", "Vidal"]
+  }
+}

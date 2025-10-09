@@ -1,0 +1,149 @@
+<section class="facturation" data-role="facturation-root">
+  <header class="facturation__header">
+    <div class="facturation__title-group">
+      <h1>Facturation</h1>
+      <label class="facturation__patient-select">
+        <span>Patient·e</span>
+        <select data-role="patient-select"></select>
+      </label>
+    </div>
+    <div class="facturation__actions">
+      <button type="button" class="primary" data-action="new-invoice">Nouvelle facture</button>
+      <button type="button" data-action="refresh">Rafraîchir</button>
+      <button type="button" data-action="export-csv">Exporter CSV</button>
+    </div>
+  </header>
+
+  <section class="facturation__filters" data-role="filters">
+    <div class="facturation__filter-group">
+      <label>
+        <span>Recherche</span>
+        <input type="search" name="q" placeholder="Nom, numéro…" />
+      </label>
+      <label>
+        <span>Année</span>
+        <select name="year" data-role="year-filter">
+          <option value="">Toutes</option>
+        </select>
+      </label>
+      <label>
+        <span>Statut</span>
+        <select name="status">
+          <option value="all">Tous</option>
+          <option value="sent">Envoyée</option>
+          <option value="not-sent">Non envoyée</option>
+          <option value="paid">Payée</option>
+          <option value="not-paid">Non payée</option>
+        </select>
+      </label>
+    </div>
+    <div class="facturation__filters-meta" data-role="filters-meta"></div>
+  </section>
+
+  <section class="facturation__table-wrapper">
+    <table class="facturation__table" data-role="invoices-table" aria-label="Liste des factures">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">N°</th>
+          <th scope="col">Patient</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Statut</th>
+          <th scope="col">Fichiers</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody data-role="invoices-body">
+        <tr>
+          <td colspan="7" class="facturation__empty">Chargement…</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <aside class="facturation__drawer" data-role="drawer" aria-hidden="true">
+    <form data-role="invoice-form" class="facturation__form">
+      <header class="facturation__drawer-header">
+        <h2>Nouvelle facture</h2>
+        <button type="button" class="ghost" data-action="close-drawer" aria-label="Fermer">×</button>
+      </header>
+      <input type="hidden" name="patient_id" data-role="patient-id" />
+      <div class="facturation__form-section">
+        <label>
+          <span>Patient·e</span>
+          <input type="text" name="patient_name" required />
+        </label>
+        <label>
+          <span>Date</span>
+          <input type="date" name="date" required />
+        </label>
+        <label>
+          <span>N° (laisser vide pour auto)</span>
+          <input type="text" name="number" pattern="[0-9]{4}-[0-9]{3}" placeholder="2025-001" />
+        </label>
+        <label>
+          <span>Mode de règlement</span>
+          <select name="paid_via">
+            <option value="">—</option>
+            <option value="virement">Virement</option>
+            <option value="cb">CB</option>
+            <option value="espèces">Espèces</option>
+            <option value="chèque">Chèque</option>
+            <option value="autre">Autre</option>
+          </select>
+        </label>
+      </div>
+      <label class="facturation__form-textarea">
+        <span>Adresse destinataire</span>
+        <textarea name="address" rows="4" placeholder="Adresse complète"></textarea>
+      </label>
+
+      <div class="facturation__tabs" data-role="amount-tabs">
+        <button type="button" class="is-active" data-mode="amount">Montant simple</button>
+        <button type="button" data-mode="lines">Lignes détaillées</button>
+      </div>
+
+      <div class="facturation__simple-amount" data-role="simple-amount">
+        <label>
+          <span>Montant TTC (€)</span>
+          <input type="number" name="amount" min="0" step="0.01" value="60" />
+        </label>
+      </div>
+
+      <div class="facturation__lines" data-role="lines" hidden>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Durée</th>
+              <th>PU (€)</th>
+              <th>Qté</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody data-role="lines-body"></tbody>
+        </table>
+        <button type="button" data-action="add-line" class="ghost">Ajouter une ligne</button>
+      </div>
+
+      <div class="facturation__form-actions">
+        <div class="facturation__form-alert" data-role="form-alert" hidden></div>
+        <div class="facturation__form-buttons">
+          <button type="button" data-action="preview">Aperçu SVG</button>
+          <button type="submit" class="primary" data-action="generate">Générer PDF</button>
+        </div>
+      </div>
+
+      <section class="facturation__preview" data-role="preview" hidden>
+        <div class="facturation__preview-actions" data-role="preview-actions" hidden>
+          <a href="#" data-role="download-pdf" class="primary" target="_blank" rel="noreferrer">Télécharger PDF</a>
+          <a href="#" data-role="download-svg" target="_blank" rel="noreferrer">Télécharger SVG</a>
+        </div>
+        <object data="" type="image/svg+xml" data-role="preview-object"></object>
+      </section>
+    </form>
+  </aside>
+  <div class="facturation__backdrop hidden" data-role="backdrop"></div>
+</section>

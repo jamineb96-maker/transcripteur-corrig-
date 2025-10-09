@@ -1,0 +1,13 @@
+{
+  "patients": [
+    {"displayName": "Joris"},
+    {"displayName": "Joyce"},
+    {"display_name": "Judith"},
+    {"displayName": "Lola"},
+    {"name": "Lorelei"},
+    {"displayName": "Lucile"},
+    {"displayName": "Milo"},
+    {"displayName": "Mélanie C"},
+    {"displayName": "Mélanie M"}
+  ]
+}

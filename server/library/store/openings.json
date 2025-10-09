@@ -1,0 +1,18 @@
+{
+  "sobre": [
+    "Bonjour {date},\nJ'espère que vous vous portez bien. Nous faisons le point sur notre dernière séance.",
+    "Compte rendu de séance daté du {date}. Nous reprenons les éléments clés abordés."
+  ],
+  "calme": [
+    "À la date du {date}, nous entamons ce retour en toute sérénité.",
+    "Ce document, rédigé le {date}, vous est destiné pour un suivi posé."
+  ],
+  "combatif": [
+    "Nous voici au {date}, prêt·e·s à mettre en lumière les avancées et les résistances.",
+    "Le {date} marque un tournant dont ce compte rendu se fait l'écho."
+  ],
+  "sobre_audio": [
+    "Message audio du {date} pour résumer notre séance.",
+    "Synthèse orale en date du {date}."
+  ]
+}

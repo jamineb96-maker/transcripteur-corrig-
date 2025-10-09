@@ -1,0 +1,79 @@
+[
+  {
+    "id": "externalisation_cartographie_presence",
+    "title": "Cartographier la présence du Problème",
+    "family": "externalisation",
+    "tags": ["validisme", "trauma_complexe", "contextes_sociaux"],
+    "reading_level": "intermediaire",
+    "budget_profile": "moyen",
+    "contraindications": ["crise_aigue_suicidaire"],
+    "domains": ["politique", "relationnel", "cognitif"],
+    "md_file": "externalisation_cartographie_presence.md"
+  },
+  {
+    "id": "resultats_uniques_traces",
+    "title": "Pister les traces où le Problème perd pied",
+    "family": "resultats_uniques",
+    "tags": ["re_authoring", "valeurs", "anticulpabilite"],
+    "reading_level": "intermediaire",
+    "budget_profile": "moyen",
+    "contraindications": [],
+    "domains": ["valeurs", "relationnel"],
+    "md_file": "resultats_uniques_traces.md"
+  },
+  {
+    "id": "remembering_alliances",
+    "title": "Re-tisser les alliances qui soutiennent la résistance",
+    "family": "re_membering",
+    "tags": ["alliances", "temoins", "antipatriarcat"],
+    "reading_level": "intermediaire",
+    "budget_profile": "moyen",
+    "contraindications": [],
+    "domains": ["relationnel", "valeurs"],
+    "md_file": "remembering_alliances.md"
+  },
+  {
+    "id": "dialogues_internes_mediation",
+    "title": "Orchestrer les voix internes situées",
+    "family": "dialogues_internes",
+    "tags": ["polyphonie", "neurodiversite", "soin_de_soi"],
+    "reading_level": "intermediaire",
+    "budget_profile": "faible",
+    "contraindications": ["crise_aigue_suicidaire"],
+    "domains": ["cognitif", "valeurs"],
+    "md_file": "dialogues_internes_mediation.md"
+  },
+  {
+    "id": "cartographies_somato_signaux",
+    "title": "Noter les signaux somato-cognitifs situés",
+    "family": "cartographies",
+    "tags": ["validisme", "somatique", "neurodiversite"],
+    "reading_level": "base",
+    "budget_profile": "faible",
+    "contraindications": [],
+    "domains": ["somatique", "cognitif"],
+    "md_file": "cartographies_somato_signaux.md"
+  },
+  {
+    "id": "relationnel_justice",
+    "title": "Écrire les accords de justice relationnelle",
+    "family": "relationnel",
+    "tags": ["consentement", "justice", "patriarcat"],
+    "reading_level": "intermediaire",
+    "budget_profile": "moyen",
+    "contraindications": [],
+    "domains": ["relationnel", "politique"],
+    "md_file": "relationnel_justice.md"
+  },
+  {
+    "id": "documents_lettre_probleme",
+    "title": "Lettre critique adressée au Problème",
+    "family": "documents",
+    "tags": ["documentation", "anti_stigmate", "lettre"],
+    "reading_level": "avance",
+    "budget_profile": "eleve",
+    "contraindications": [],
+    "domains": ["valeurs", "politique"],
+    "md_file": "documents_lettre_probleme.md"
+  }
+]

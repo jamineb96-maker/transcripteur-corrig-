@@ -1,0 +1,109 @@
+{
+  "stock": {
+    "day": {
+      "low": 8,
+      "mid": 12,
+      "high": 16
+    },
+    "week": {
+      "low": 56,
+      "mid": 84,
+      "high": 112
+    },
+    "minimum_daily": 4,
+    "global_modulators": {
+      "max_negative": 4,
+      "max_positive": 4,
+      "defaults": {
+        "douleur_chronique": -2,
+        "mauvais_sommeil": -2,
+        "stress_social": -1,
+        "convalescence": -3,
+        "support_solide": 1
+      }
+    }
+  },
+  "modulators": {
+    "aggravants": {
+      "default": 0.15,
+      "douleur": 0.25,
+      "chaleur": 0.2,
+      "sur_bruit": 0.18,
+      "imprevu": 0.22,
+      "dette": 0.3
+    },
+    "attenuants": {
+      "default": 0.12,
+      "allie": 0.15,
+      "time_out": 0.18,
+      "casque": 0.2,
+      "anticipation": 0.14
+    }
+  },
+  "activities": {
+    "personal_care": {
+      "label": "Soins personnels",
+      "activities": [
+        {"id": "shower", "label": "Douche ou toilette", "base_low": 1.0, "base_high": 2.5},
+        {"id": "dressing", "label": "Habillage et choix des vêtements", "base_low": 0.8, "base_high": 2.2},
+        {"id": "meal_simple", "label": "Préparer un repas simple", "base_low": 0.8, "base_high": 1.5},
+        {"id": "meal_complex", "label": "Cuisiner un repas élaboré", "base_low": 1.5, "base_high": 3.0}
+      ]
+    },
+    "transport": {
+      "label": "Déplacements",
+      "activities": [
+        {"id": "short_walk", "label": "Marche courte", "base_low": 0.6, "base_high": 1.8},
+        {"id": "public_transport", "label": "Transports en commun", "base_low": 1.5, "base_high": 3.5},
+        {"id": "car_commute", "label": "Trajet en voiture", "base_low": 1.0, "base_high": 2.5}
+      ]
+    },
+    "social": {
+      "label": "Interactions sociales",
+      "activities": [
+        {"id": "family_time", "label": "Temps en famille", "base_low": 1.0, "base_high": 2.5},
+        {"id": "professional_meeting", "label": "Interaction professionnelle longue", "base_low": 2.0, "base_high": 4.0},
+        {"id": "administrative", "label": "Démarches administratives", "base_low": 2.0, "base_high": 4.0}
+      ]
+    },
+    "executive": {
+      "label": "Exécutif & attention",
+      "activities": [
+        {"id": "task_start", "label": "Démarrage d'une tâche", "base_low": 1.0, "base_high": 2.5},
+        {"id": "task_switch", "label": "Alternance entre plusieurs tâches", "base_low": 1.0, "base_high": 2.8},
+        {"id": "unexpected", "label": "Gestion d'imprévus", "base_low": 1.2, "base_high": 3.0}
+      ]
+    },
+    "sensory": {
+      "label": "Ambiances sensorielles",
+      "activities": [
+        {"id": "crowded_space", "label": "Foule ou open-space", "base_low": 1.0, "base_high": 3.0},
+        {"id": "strong_light", "label": "Lumière forte / néon", "base_low": 0.8, "base_high": 2.2},
+        {"id": "noise_peak", "label": "Pics sonores", "base_low": 1.2, "base_high": 3.2}
+      ]
+    },
+    "recovery": {
+      "label": "Ressources & récupération",
+      "activities": [
+        {"id": "micro_break", "label": "Micro-pause somatique", "base_low": 0.2, "base_high": 0.5},
+        {"id": "short_nap", "label": "Sieste courte", "base_low": 1.0, "base_high": 1.5},
+        {"id": "resource_relation", "label": "Relation ressourçante", "base_low": 0.5, "base_high": 1.5},
+        {"id": "sensory_isolation", "label": "Isolement sensoriel", "base_low": 0.8, "base_high": 1.2},
+        {"id": "nature_time", "label": "Contact avec la nature", "base_low": 0.8, "base_high": 1.2},
+        {"id": "calm_play", "label": "Jeu calme / activité créative", "base_low": 0.4, "base_high": 1.0}
+      ]
+    }
+  },
+  "debt": {
+    "alpha": 0.6,
+    "projection_days": 7
+  },
+  "calibration": {
+    "max_bias": 0.2,
+    "learning_rate": 0.5
+  },
+  "alerts": {
+    "productivisme_threshold": 8,
+    "incoherence_recovery_ratio": 1.1
+  }
+}

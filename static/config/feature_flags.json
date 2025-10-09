@@ -1,0 +1,9 @@
+{
+  "anatomy3d_enabled": true,
+  "anatomy3d_allow_link_to_patient": false,
+  "anatomy3d_low_power_mode": false,
+  "anatomy3d_enable_pdf_export": true,
+  "anatomy3d_link_to_notes": false,
+  "anatomy3d_allow_advanced_mode": true,
+  "anatomy3d_enable_telemetry": true
+}

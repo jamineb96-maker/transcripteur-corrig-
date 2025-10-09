@@ -1,0 +1,46 @@
+whitelist:
+  - domain: has-sante.fr
+    type: guideline
+    jurisdiction: FR
+    evidence_level: guideline
+  - domain: inserm.fr
+    type: research
+    jurisdiction: FR
+    evidence_level: review
+  - domain: ansm.sante.fr
+    type: drug_safety
+    jurisdiction: FR
+    evidence_level: safety_notice
+  - domain: cochranelibrary.com
+    type: meta_analysis
+    jurisdiction: EU
+    evidence_level: meta
+  - domain: nice.org.uk
+    type: guideline
+    jurisdiction: EU
+    evidence_level: guideline
+  - domain: ncbi.nlm.nih.gov
+    type: research
+    jurisdiction: INT
+    evidence_level: review
+  - domain: nhs.uk
+    type: guideline
+    jurisdiction: EU
+    evidence_level: guideline
+  - domain: vidal.fr
+    type: drug_ref
+    jurisdiction: FR
+    evidence_level: drug_ref
+greylist:
+  - domain: revues.org
+    type: academic
+    jurisdiction: FR
+    evidence_level: narrative
+  - domain: cairn.info
+    type: social_science
+    jurisdiction: FR
+    evidence_level: narrative
+blocked:
+  - domain: medium.com
+  - domain: quora.com
+  - domain: "pinterest.*"

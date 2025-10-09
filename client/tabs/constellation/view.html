@@ -1,0 +1,169 @@
+<section class="constellation-shell" data-module="constellation">
+  <div id="constToolbar" class="const-toolbar" role="toolbar" aria-label="Outils Constellation">
+    <div class="toolbar-group" data-group="primary">
+      <label class="toggle" data-role="toggle-3d">
+        <input type="checkbox" data-action="toggle-3d" />
+        <span>3D</span>
+      </label>
+      <button type="button" class="toolbar-button" data-menu="display" aria-haspopup="true" aria-expanded="false">
+        Affichage
+      </button>
+      <button type="button" class="toolbar-button" data-menu="history" aria-haspopup="true" aria-expanded="false">
+        Historique
+      </button>
+      <button type="button" class="toolbar-button" data-menu="data" aria-haspopup="true" aria-expanded="false">
+        Données
+      </button>
+    </div>
+    <div class="toolbar-group" data-group="panels">
+      <button type="button" class="toolbar-button" data-action="toggle-panel" data-panel="node">
+        Infos nœud
+      </button>
+      <button type="button" class="toolbar-button" data-action="toggle-panel" data-panel="styles">
+        Styles
+      </button>
+      <button type="button" class="toolbar-button" data-action="toggle-panel" data-panel="journal">
+        Journal
+      </button>
+    </div>
+    <div class="toolbar-group" data-group="status">
+      <span class="status-indicator" data-role="status">Système en cours de chargement…</span>
+    </div>
+  </div>
+
+  <div class="const-body">
+    <div class="const-main">
+      <div id="constSystemTabs" class="const-tabs" role="tablist" aria-label="Systèmes DID">
+        <button type="button" role="tab" data-system="Mélanie" aria-selected="false" aria-controls="const2d">
+          Mélanie
+        </button>
+        <button type="button" role="tab" data-system="Chloé" aria-selected="false" aria-controls="const2d">
+          Chloé
+        </button>
+        <button type="button" class="const-tab-add" aria-hidden="true" tabindex="-1">+</button>
+      </div>
+      <div class="const-viewports">
+        <div id="const2d" class="const-viewport" role="region" aria-live="polite" aria-label="Constellation 2D"></div>
+        <div id="const3d" class="const-viewport const-viewport--3d" role="region" aria-label="Constellation 3D" aria-hidden="true"></div>
+      </div>
+    </div>
+    <aside id="constSide" class="const-side" aria-live="polite">
+      <section class="const-panel" data-panel="node" aria-label="Informations sur le nœud">
+        <header class="const-panel__header">
+          <h3>Infos nœud</h3>
+          <button type="button" class="const-panel__close" data-action="close-panel" aria-label="Fermer">×</button>
+        </header>
+        <div class="const-panel__body" data-role="node-info">
+          <p data-role="node-empty">Aucun nœud sélectionné.</p>
+          <form data-role="node-form" class="hidden" autocomplete="off">
+            <label>
+              Identifiant
+              <input name="id" type="text" readonly />
+            </label>
+            <label>
+              Libellé
+              <input name="label" type="text" />
+            </label>
+            <label>
+              Groupe
+              <input name="group" type="text" />
+            </label>
+            <label>
+              Couleur
+              <input name="color" type="color" />
+            </label>
+            <label class="checkbox">
+              <input name="pinned" type="checkbox" />
+              <span>Épingler</span>
+            </label>
+            <label>
+              Notes
+              <textarea name="notes" rows="4"></textarea>
+            </label>
+            <div class="panel-actions">
+              <button type="submit" class="primary">Enregistrer</button>
+              <button type="button" class="ghost" data-action="delete-node">Supprimer</button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="const-panel" data-panel="styles" aria-label="Styles de rendu">
+        <header class="const-panel__header">
+          <h3>Styles</h3>
+          <button type="button" class="const-panel__close" data-action="close-panel" aria-label="Fermer">×</button>
+        </header>
+        <div class="const-panel__body" data-role="styles-panel">
+          <form autocomplete="off">
+            <label>
+              Palette
+              <select name="palette">
+                <option value="auto">Auto</option>
+                <option value="deutan">Deutan</option>
+                <option value="protan">Protan</option>
+                <option value="tritan">Tritan</option>
+                <option value="high-contrast">Contraste élevé</option>
+              </select>
+            </label>
+            <label>
+              Taille des labels
+              <input name="labelSize" type="range" min="10" max="24" step="1" />
+            </label>
+            <label>
+              Opacité des liens
+              <input name="linkOpacity" type="range" min="0" max="1" step="0.05" />
+            </label>
+            <label class="checkbox">
+              <input name="grid" type="checkbox" />
+              <span>Afficher la grille</span>
+            </label>
+          </form>
+        </div>
+      </section>
+      <section class="const-panel" data-panel="journal" aria-label="Journal système">
+        <header class="const-panel__header">
+          <h3>Journal</h3>
+          <button type="button" class="const-panel__close" data-action="close-panel" aria-label="Fermer">×</button>
+        </header>
+        <div class="const-panel__body">
+          <ol class="const-journal" data-role="journal"></ol>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <div class="const-dropdowns" aria-hidden="true">
+    <div class="const-menu" data-menu="display">
+      <button type="button" data-action="toggle-grid">Grille</button>
+      <label>
+        Opacité liens
+        <input type="range" data-action="set-link-opacity" min="0" max="1" step="0.05" />
+      </label>
+      <label>
+        Taille labels
+        <input type="range" data-action="set-label-size" min="10" max="24" step="1" />
+      </label>
+      <label>
+        Palette
+        <select data-action="set-palette">
+          <option value="auto">Auto</option>
+          <option value="deutan">Deutan</option>
+          <option value="protan">Protan</option>
+          <option value="tritan">Tritan</option>
+          <option value="high-contrast">Contraste élevé</option>
+        </select>
+      </label>
+    </div>
+    <div class="const-menu" data-menu="history">
+      <button type="button" data-action="undo" aria-keyshortcuts="Ctrl+Z">Annuler</button>
+      <button type="button" data-action="redo" aria-keyshortcuts="Ctrl+Y">Rétablir</button>
+      <button type="button" data-action="snapshot" aria-keyshortcuts="S">Snapshot</button>
+      <ul class="const-snapshots" data-role="snapshots"></ul>
+    </div>
+    <div class="const-menu" data-menu="data">
+      <button type="button" data-action="import-json" aria-keyshortcuts="I">Importer JSON</button>
+      <button type="button" data-action="export-json" aria-keyshortcuts="E">Exporter JSON</button>
+      <button type="button" data-action="export-png">Export PNG</button>
+      <button type="button" data-action="export-svg">Export SVG</button>
+    </div>
+  </div>
+  <div class="const-toast" aria-live="polite" data-role="toast"></div>
+</section>

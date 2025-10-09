@@ -1,0 +1,100 @@
+<div class="agenda panel" data-state="loading">
+  <header class="agenda__header">
+    <div>
+      <h2>Agenda</h2>
+      <p>Synchronisez votre agenda Google pour visualiser rapidement vos prochains rendez-vous.</p>
+    </div>
+    <div class="agenda__header-actions">
+      <button type="button" class="ghost" data-action="connect">Connecter Google</button>
+      <button type="button" class="ghost hidden" data-action="disconnect">Déconnecter</button>
+    </div>
+  </header>
+
+  <div class="agenda__diagnostic hidden" data-field="diagnostic" role="status" aria-live="polite"></div>
+
+  <div class="agenda__toast hidden" role="status" aria-live="polite" data-field="toast" data-tone="info">
+    <span data-field="toast-message"></span>
+  </div>
+
+  <section class="agenda__view" data-view="loading">
+    <div class="agenda__loading">
+      <span class="spinner" aria-hidden="true"></span>
+      <p>Chargement de l'agenda…</p>
+    </div>
+  </section>
+
+  <section class="agenda__view hidden" data-view="not-configured">
+    <div class="card agenda__card">
+      <h3>Configuration requise</h3>
+      <p>Ce module nécessite une configuration OAuth Google Calendar.</p>
+      <p class="agenda__hint" data-field="status-mode">Aucune configuration détectée.</p>
+      <ol class="agenda__checklist">
+        <li>
+          Déposez le secret OAuth dans <code data-field="secret-path">instance/gcal_client_secret.json</code>
+        </li>
+        <li>
+          ou renseignez les variables d'environnement :
+          <span class="agenda__env" data-field="env-variables"></span>
+        </li>
+      </ol>
+      <p class="agenda__doc">
+        Consultez la
+        <a href="#" target="_blank" rel="noopener" data-field="doc-link">documentation Agenda Google</a>
+        pour les étapes détaillées.
+      </p>
+      <p class="agenda__redirect">
+        URI de redirection attendue : <code data-field="redirect-uri">—</code>
+      </p>
+      <div class="agenda__actions">
+        <button type="button" class="primary" data-action="refresh">Vérifier à nouveau</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="agenda__view hidden" data-view="needs-auth">
+    <div class="card agenda__card">
+      <h3>Connecter Google Calendar</h3>
+      <p>La configuration est détectée mais aucune autorisation active n'a été trouvée.</p>
+      <p class="agenda__meta">
+        Redirection OAuth : <code data-field="redirect-uri">—</code>
+      </p>
+      <p class="agenda__meta">
+        Scopes demandés : <span data-field="scopes">https://www.googleapis.com/auth/calendar.readonly</span>
+      </p>
+      <div class="agenda__actions">
+        <button type="button" class="primary" data-action="connect">Connecter Google</button>
+        <button type="button" class="ghost" data-action="refresh">Actualiser l'état</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="agenda__view hidden" data-view="ready">
+    <div class="card agenda__card">
+      <header class="agenda__controls">
+        <label class="field agenda__control-field">
+          <span class="field__label">Calendrier</span>
+          <select data-field="calendar-select"></select>
+        </label>
+        <div class="agenda__control-actions">
+          <button type="button" class="ghost" data-action="refresh">Actualiser</button>
+          <button type="button" class="ghost" data-action="disconnect">Déconnecter</button>
+        </div>
+      </header>
+      <p class="agenda__meta">Scopes : <span data-field="scopes">https://www.googleapis.com/auth/calendar.readonly</span></p>
+      <p class="agenda__meta">URI de redirection : <code data-field="ready-redirect">—</code></p>
+      <div class="agenda__period-bar">
+        <button type="button" class="ghost" data-action="prev-week" aria-label="Semaine précédente">◀</button>
+        <span class="agenda__period-label" data-field="period-label">—</span>
+        <button type="button" class="ghost" data-action="next-week" aria-label="Semaine suivante">▶</button>
+      </div>
+      <div class="agenda__events" data-field="events-container">
+        <div class="agenda__events-loading hidden" data-field="events-loading">
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Chargement des événements…</p>
+        </div>
+        <ul class="agenda__event-list" data-field="events-list"></ul>
+        <p class="agenda__events-empty hidden" data-field="events-empty">Aucun événement pour la période sélectionnée.</p>
+      </div>
+    </div>
+  </section>
+</div>

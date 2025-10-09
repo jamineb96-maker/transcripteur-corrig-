@@ -1,0 +1,34 @@
+{% extends 'documents_aide/base_doc.html.j2' %}
+{% block body %}
+<section class="doc-section">
+  <p>Chaque journée, note les situations marquantes pour repérer les liens entre contexte, ressenti, réaction et besoins.</p>
+</section>
+<section class="doc-section">
+  <table class="planning">
+    <thead>
+      <tr>
+        <th>Moment / situation</th>
+        <th>Ressenti</th>
+        <th>Réaction</th>
+        <th>Conséquence</th>
+        <th>Besoin / ajustement</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for idx in range(1,6) %}
+      <tr>
+        <td>{{ inputs.get('situation_' ~ idx) or context.grille.lignes[idx-1].situation if context.grille.lignes|length >= idx else '' }}</td>
+        <td>{{ inputs.get('ressenti_' ~ idx) or context.grille.lignes[idx-1].ressenti if context.grille.lignes|length >= idx else '' }}</td>
+        <td>{{ inputs.get('reaction_' ~ idx) or context.grille.lignes[idx-1].reaction if context.grille.lignes|length >= idx else '' }}</td>
+        <td>{{ inputs.get('consequence_' ~ idx) or context.grille.lignes[idx-1].consequence if context.grille.lignes|length >= idx else '' }}</td>
+        <td>{{ inputs.get('besoin_' ~ idx) or context.grille.lignes[idx-1].besoin if context.grille.lignes|length >= idx else '' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+<section class="doc-section">
+  <h2>Observations générales</h2>
+  <div class="notes-block">{{ inputs.get('observations') or context.grille.observations or '' }}</div>
+</section>
+{% endblock %}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --doc-bg: #fefefe;
+        --doc-text: #1d1d1f;
+        --doc-muted: #5f626a;
+        --doc-accent: #4c6ef5;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --doc-bg: #121212;
+          --doc-text: #f5f6f8;
+          --doc-muted: #b0b4c0;
+          --doc-accent: #8ca0ff;
+        }
+      }
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+      body {
+        font-family: "Inter", "Segoe UI", "SF Pro Text", system-ui, -apple-system, sans-serif;
+        background: var(--doc-bg);
+        color: var(--doc-text);
+        margin: 0;
+        padding: 0;
+        font-size: 12.5px;
+        line-height: 1.5;
+      }
+      .doc-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 8mm;
+        box-sizing: border-box;
+      }
+      .doc-header,
+      .doc-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: var(--doc-muted);
+      }
+      .doc-header {
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        padding-bottom: 6px;
+        margin-bottom: 12px;
+      }
+      .doc-header__title {
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--doc-text);
+      }
+      .doc-section {
+        margin-bottom: 16px;
+      }
+      .doc-section h2 {
+        font-size: 14px;
+        margin: 0 0 6px;
+        color: var(--doc-accent);
+      }
+      .scale-grid {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .scale-grid th,
+      .scale-grid td {
+        border: 1px solid rgba(0,0,0,0.12);
+        padding: 6px;
+        text-align: center;
+      }
+      .scale-grid th {
+        background: rgba(76, 110, 245, 0.08);
+      }
+      .notes-block {
+        min-height: 60px;
+        border: 1px solid rgba(0,0,0,0.14);
+        padding: 8px;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.6);
+      }
+      ul.checklist {
+        list-style: none;
+        padding: 0;
+      }
+      ul.checklist li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      ul.checklist svg {
+        width: 14px;
+        height: 14px;
+      }
+      table.planning {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+      }
+      table.planning th,
+      table.planning td {
+        border: 1px solid rgba(0,0,0,0.12);
+        padding: 6px;
+        text-align: left;
+      }
+      table.planning th {
+        background: rgba(76, 110, 245, 0.08);
+      }
+      .tag {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: rgba(76, 110, 245, 0.12);
+        font-size: 11px;
+        color: var(--doc-accent);
+      }
+      .doc-footer {
+        border-top: 1px solid rgba(0,0,0,0.08);
+        padding-top: 6px;
+        margin-top: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="doc-wrapper">
+      {% include 'documents_aide/partials/header.html.j2' %}
+      <main class="doc-content">
+        {% block body %}{% endblock %}
+      </main>
+      {% include 'documents_aide/partials/footer.html.j2' %}
+    </div>
+  </body>
+</html>

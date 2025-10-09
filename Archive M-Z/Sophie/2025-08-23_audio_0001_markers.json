@@ -1,0 +1,86 @@
+[
+  {
+    "t": 111.786,
+    "type": "affect",
+    "label": "dissociation",
+    "intensity": 3
+  },
+  {
+    "t": 111.951,
+    "type": "affect",
+    "label": "dissociation",
+    "intensity": 3
+  },
+  {
+    "t": 112.116,
+    "type": "risk",
+    "label": "violence en cours",
+    "intensity": 5
+  },
+  {
+    "t": 113.556,
+    "type": "affect",
+    "label": "dissociation",
+    "intensity": 3
+  },
+  {
+    "t": 115.416,
+    "type": "affect",
+    "label": "dissociation",
+    "intensity": 3
+  },
+  {
+    "t": 115.566,
+    "type": "affect",
+    "label": "dissociation",
+    "intensity": 3
+  },
+  {
+    "t": 115.761,
+    "type": "risk",
+    "label": "violence en cours",
+    "intensity": 5
+  },
+  {
+    "t": 120.141,
+    "type": "affect",
+    "label": "dissociation",
+    "intensity": 3
+  },
+  {
+    "t": 120.299,
+    "type": "affect",
+    "label": "dissociation",
+    "intensity": 3
+  },
+  {
+    "t": 120.54,
+    "type": "risk",
+    "label": "violence en cours",
+    "intensity": 5
+  },
+  {
+    "t": 132.389,
+    "type": "risk",
+    "label": "idées suicidaires",
+    "intensity": 5
+  },
+  {
+    "t": 132.531,
+    "type": "risk",
+    "label": "idées suicidaires",
+    "intensity": 5
+  },
+  {
+    "t": 132.69,
+    "type": "risk",
+    "label": "idées suicidaires",
+    "intensity": 5
+  },
+  {
+    "t": 132.839,
+    "type": "risk",
+    "label": "idées suicidaires",
+    "intensity": 5
+  }
+]

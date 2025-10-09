@@ -1,0 +1,12 @@
+{
+  "id": "parcours_douleur",
+  "title": "Parcours Douleur",
+  "objectives": [
+    "Comprendre la modulation de la douleur",
+    "Identifier les leviers éducatifs"
+  ],
+  "steps": [
+    { "snapshot_id": "douleur-intro", "narration": "Mettre en évidence les régions frontales et les noyaux gris.", "pause_ms": 4000 },
+    { "snapshot_id": "douleur-apprentissage", "narration": "Aborder la sensibilisation centrale et les attentes.", "pause_ms": 6000 }
+  ]
+}

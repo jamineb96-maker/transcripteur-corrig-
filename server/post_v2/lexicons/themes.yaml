@@ -1,0 +1,73 @@
+sommeil:
+  - sommeil
+  - insomnie
+  - réveil
+  - cauchemar
+  - rythme
+  - endormissement
+  - nuit
+travail:
+  - travail
+  - job
+  - boulot
+  - université
+  - école
+  - études
+  - prof
+  - stage
+  - contrat
+logement:
+  - logement
+  - loyer
+  - appartement
+  - chambre
+  - hébergement
+  - coloc
+  - bail
+argent:
+  - argent
+  - finances
+  - payer
+  - facture
+  - coût
+  - budget
+  - précarité
+anxiete:
+  - anxiété
+  - angoisse
+  - panique
+  - stress
+  - hypervigilance
+relation:
+  - relation
+  - couple
+  - ami
+  - famille
+  - conflit
+  - isolement
+  - solitude
+rdr:
+  - consommation
+  - alcool
+  - cannabis
+  - coke
+  - mdma
+  - amphétamine
+  - tabac
+  - sevrage
+  - réduction des risques
+autisme:
+  - autisme
+  - tsa
+  - meltdown
+  - shutdown
+  - surcharge
+  - stimulation
+  - sensoriel
+  - sensorielle
+tdah:
+  - tdah
+  - attention
+  - impulsivité
+  - ritaline
+  - methylphenidate

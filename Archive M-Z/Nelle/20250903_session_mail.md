@@ -1,0 +1,15 @@
+1) **Reformulation fidèle :**
+Nell a partagé ses difficultés à retrouver de l'énergie après une fête où elle a consommé du speed. Elle associe ces événements à des enjeux relationnels et à une reconstruction identitaire temporaire, mais constate une dissonance avec son quotidien. Elle se questionne sur l'impact des amphétamines, envisageant une activation de la fatigue post-traumatique plutôt qu'un simple retour dépressif. Nell exprime un besoin de stabilité et de régularité, tout en ayant du mal à se projeter dans un avenir positif ou à définir ses objectifs de vie. Elle est préoccupée par les approches thérapeutiques divergentes entre vous et Pedro, son autre thérapeute, et ressent le besoin de consolidation émotionnelle. Elle s'interroge également sur l'impact potentiel des hormones sur son état émotionnel, bien que cette hypothèse semble exagérée. Enfin, elle souhaite explorer l'automédication, notamment par le micro-dosage de speed, pour gérer ses émotions.
+
+2) **Pistes de lecture evidence-based et repères :**
+   - **Impact des amphétamines :** Les amphétamines peuvent effectivement activer le système nerveux central, ce qui peut exacerber des symptômes de stress post-traumatique. Pour approfondir, consulter des études sur les effets neurobiologiques des amphétamines et leur lien avec le PTSD.
+   - **Fatigue post-traumatique :** La littérature sur le PTSD peut offrir des perspectives sur la fatigue post-traumatique, notamment comment le stress chronique peut épuiser les ressources émotionnelles et physiques.
+   - **Approches thérapeutiques divergentes :** Il peut être utile de se référer à des travaux sur la coordination inter-thérapeutique et l'importance d'une approche cohérente pour le bien-être du patient.
+   - **Automédication et réduction des risques :** Des ressources sur la réduction des risques liés à la consommation de substances peuvent être pertinentes, notamment en ce qui concerne l'automédication et les micro-dosages.
+
+3) **Objectifs pour la suite, concrets et ajustables :**
+   - **Renforcer le lien thérapeutique :** Continuer à établir une relation de confiance avec Nell, en validant ses expériences et en explorant ensemble des stratégies pour gérer ses émotions.
+   - **Explorer l'origine traumatique :** Identifier et travailler sur les expériences passées qui pourraient contribuer à ses difficultés actuelles, en utilisant des techniques adaptées comme la thérapie cognitivo-comportementale.
+   - **Développer une stabilité émotionnelle :** Aider Nell à établir des routines et des stratégies de gestion du stress qui favorisent une stabilité émotionnelle.
+   - **Comprendre l'impact des amphétamines :** Discuter des effets des amphétamines sur son bien-être et envisager des alternatives plus sûres pour gérer ses émotions.
+   - **Clarifier les objectifs identitaires :** Travailler avec Nell pour définir des objectifs personnels et professionnels qui lui donnent un sens et une direction dans sa vie.

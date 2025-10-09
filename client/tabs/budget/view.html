@@ -1,0 +1,141 @@
+<section class="budget-root" aria-label="Budget cognitif et somatique">
+  <header class="budget-header">
+    <h2>Budget cognitif et somatique</h2>
+    <p>
+      Estimer le stock de cuillères disponible, cartographier les coûts des activités
+      et installer des récupérations situées. Les calculs restent auditables et peuvent
+      être ajustés pour chaque patient.
+    </p>
+  </header>
+  <div class="budget-panels">
+    <section class="budget-panel" data-panel="context">
+      <h3>Patient &amp; paramètres</h3>
+      <div class="field-group">
+        <span class="field-label">Patient sélectionné</span>
+        <span data-field="patient-name" class="field-value">Aucun patient</span>
+      </div>
+      <div class="field-group toggle-group" role="radiogroup" aria-label="Registre de langue">
+        <span class="field-label">Langage</span>
+        <label><input type="radio" name="budget-language" value="tu" checked />Tutoiement</label>
+        <label><input type="radio" name="budget-language" value="vous" />Vouvoiement</label>
+      </div>
+      <div class="field-group toggle-group" role="radiogroup" aria-label="Genre grammatical">
+        <span class="field-label">Genre</span>
+        <label><input type="radio" name="budget-gender" value="neutral" checked />Neutre</label>
+        <label><input type="radio" name="budget-gender" value="feminine" />Féminin</label>
+        <label><input type="radio" name="budget-gender" value="masculine" />Masculin</label>
+      </div>
+      <div class="field-group toggle-group" role="radiogroup" aria-label="Période analysée">
+        <span class="field-label">Période</span>
+        <label><input type="radio" name="budget-period" value="day" checked />Journée</label>
+        <label><input type="radio" name="budget-period" value="week" />Semaine</label>
+      </div>
+      <div class="field-group">
+        <label for="budget-profile-select">Profil d'énergie pressenti</label>
+        <select id="budget-profile-select" data-field="budget-profile">
+          <option value="low">Faible</option>
+          <option value="mid" selected>Moyen</option>
+          <option value="high">Élevé</option>
+        </select>
+      </div>
+      <fieldset class="field-group modulators" aria-describedby="budget-modulators-help">
+        <legend>Modulateurs globaux</legend>
+        <p id="budget-modulators-help" class="field-help">
+          Ajuster le stock initial selon les facteurs contextuels (–4 à +4 par facteur).
+        </p>
+        <div data-field="modulator-list" class="modulator-list"></div>
+      </fieldset>
+      <div class="field-group checkbox">
+        <label>
+          <input type="checkbox" data-field="fatigue-extreme" />
+          Fatigue extrême signalée en ce moment
+        </label>
+      </div>
+      <div class="field-group checkbox">
+        <label>
+          <input type="checkbox" data-field="import-postsession" />
+          Importer les indices de la dernière post-séance
+        </label>
+      </div>
+      <div class="field-group postsession" data-block="postsession" hidden>
+        <h4>Hypothèses issues de la post-séance</h4>
+        <ul data-field="postsession-notes"></ul>
+      </div>
+      <div class="field-group">
+        <button type="button" class="primary" data-action="analyze">Analyser</button>
+        <button type="button" data-action="analyze-persist">Analyser &amp; archiver</button>
+      </div>
+    </section>
+
+    <section class="budget-panel" data-panel="assessment">
+      <h3>Interrogatoire &amp; estimation</h3>
+      <p class="panel-intro">
+        Chaque volet est formulé en prose adulte. Ajuster l'intensité (0-10) et noter les facteurs
+        aggravants ou protecteurs.
+      </p>
+      <div class="category-grid" data-field="categories"></div>
+      <aside class="hypotheses" data-field="hypotheses">
+        <h4>Hypothèses en cours</h4>
+        <dl>
+          <div><dt>Stock estimé</dt><dd data-field="hypothesis-stock">–</dd></div>
+          <div><dt>Coût total</dt><dd data-field="hypothesis-cost">–</dd></div>
+          <div><dt>Récupération</dt><dd data-field="hypothesis-recovery">–</dd></div>
+          <div><dt>Solde net</dt><dd data-field="hypothesis-net">–</dd></div>
+          <div><dt>Activités coûteuses</dt><dd data-field="hypothesis-hotspots">–</dd></div>
+          <div><dt>Récupérations clés</dt><dd data-field="hypothesis-recoveries">–</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="budget-panel" data-panel="summary">
+      <h3>Aperçu &amp; export</h3>
+      <div class="summary-counters">
+        <div>
+          <span class="label">Stock</span>
+          <span class="value" data-field="summary-stock">–</span>
+        </div>
+        <div>
+          <span class="label">Coût</span>
+          <span class="value" data-field="summary-cost">–</span>
+        </div>
+        <div>
+          <span class="label">Récupération</span>
+          <span class="value" data-field="summary-recovery">–</span>
+        </div>
+        <div>
+          <span class="label">Solde</span>
+          <span class="value" data-field="summary-net">–</span>
+        </div>
+      </div>
+      <div class="chart" data-field="chart"></div>
+      <div class="timeline" data-field="timeline"></div>
+      <article class="narrative" data-field="narrative"></article>
+      <div class="alerts" data-field="alerts"></div>
+      <div class="history" data-field="history">
+        <h4>Historique</h4>
+        <ul data-field="history-list"></ul>
+      </div>
+      <div class="export-actions">
+        <button type="button" data-action="export-pdf">Exporter PDF</button>
+        <button type="button" data-action="export-docx">Exporter DOCX</button>
+      </div>
+      <div class="calibration">
+        <h4>Calibration patient</h4>
+        <label for="budget-calibration-category">Catégorie</label>
+        <select id="budget-calibration-category" data-field="calibration-category"></select>
+        <label for="budget-calibration-delta">Ajustement (-0,2 à +0,2)</label>
+        <input
+          id="budget-calibration-delta"
+          type="range"
+          min="-0.2"
+          max="0.2"
+          step="0.05"
+          value="0"
+          data-field="calibration-delta"
+        />
+        <span class="delta-value" data-field="calibration-display">0</span>
+        <button type="button" data-action="save-calibration">Enregistrer profil</button>
+      </div>
+    </section>
+  </div>
+</section>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Selftest Anatomie 3D</title>
+  <link rel="stylesheet" href="/static/tabs/anatomy3d/style.css">
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+    main {
+      width: 100%;
+      max-width: 760px;
+      background: #18233a;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.5);
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 1.75rem;
+    }
+    p.lead {
+      margin: 0 0 1.75rem;
+      color: #cbd5f5;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 0.75rem 0.5rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      vertical-align: top;
+    }
+    th {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      color: #9db4d9;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      background: rgba(148, 163, 184, 0.16);
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      color: #bfdbfe;
+    }
+    .status {
+      font-weight: 600;
+    }
+    .notes {
+      font-size: 0.9rem;
+      color: #cbd5f5;
+    }
+    .is-ok .status { color: #4ade80; }
+    .is-warn .status { color: #facc15; }
+    .is-fail .status { color: #f87171; }
+    .is-pending .status { color: #94a3b8; }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/static/vendor/three/build/three.module.js",
+      "three/examples/jsm/": "/static/vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+  <script>
+  (function () {
+    const testUrl = "/static/vendor/three/build/three.module.js";
+    window.__THREE_IMPORT_MAP_CDN__ = false;
+    fetch(testUrl, { method: "HEAD" }).then(response => {
+      if (!response || !response.ok) {
+        const map = document.createElement("script");
+        map.type = "importmap";
+        window.__THREE_IMPORT_MAP_CDN__ = true;
+        map.textContent = JSON.stringify({
+          imports: {
+            three: "https://unpkg.com/three@0.159.0/build/three.module.js",
+            "three/examples/jsm/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+          }
+        });
+        document.currentScript.after(map);
+        console.warn("Import-map CDN de secours activé pour Three.js");
+      }
+    }).catch(() => {
+      const map = document.createElement("script");
+      map.type = "importmap";
+      window.__THREE_IMPORT_MAP_CDN__ = true;
+      map.textContent = JSON.stringify({
+        imports: {
+          three: "https://unpkg.com/three@0.159.0/build/three.module.js",
+          "three/examples/jsm/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+        }
+      });
+      document.currentScript.after(map);
+      console.warn("Import-map CDN de secours activé pour Three.js (fetch HEAD a échoué)");
+    });
+  })();
+  </script>
+</head>
+<body>
+  <main>
+    <h1>Selftest Anatomie 3D</h1>
+    <p class="lead">Ce script confirme le chargement ESM, la présence des assets critiques et l’absence d’erreurs console.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Résultat attendu</th>
+          <th>Statut</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-test="module" class="is-pending">
+          <td>Import du module ESM</td>
+          <td>Le module <code>index.js</code> s'importe sans initialiser l'onglet.</td>
+          <td class="status" data-status>En cours…</td>
+          <td class="notes" data-detail></td>
+        </tr>
+        <tr data-test="glb" class="is-pending">
+          <td>Asset <code>neurology.glb</code></td>
+          <td>La requête <code>HEAD</code> retourne <code>200</code>.</td>
+          <td class="status" data-status>En cours…</td>
+          <td class="notes" data-detail></td>
+        </tr>
+        <tr data-test="draco" class="is-pending">
+          <td>Décodeur Draco (optionnel)</td>
+          <td>Le fichier <code>draco_decoder.wasm</code> est disponible ou signalé comme absent sans blocage.</td>
+          <td class="status" data-status>En cours…</td>
+          <td class="notes" data-detail></td>
+        </tr>
+        <tr data-test="console" class="is-pending">
+          <td>Erreurs console</td>
+          <td>Aucune erreur n'est émise pendant le selftest.</td>
+          <td class="status" data-status>En cours…</td>
+          <td class="notes" data-detail></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+  <script type="module">
+    const TESTS = [
+      {
+        id: "module",
+        run: async () => {
+          await import("/static/tabs/anatomy3d/index.js");
+          return { status: "ok", detail: "Import ESM réussi." };
+        },
+      },
+      {
+        id: "glb",
+        run: async () => {
+          const response = await fetch("/static/models/neurology.glb", { method: "HEAD" });
+          if (!response.ok) {
+            throw new Error(`Statut ${response.status} ${response.statusText || ""}`.trim());
+          }
+          return { status: "ok", detail: "GLB accessible (HEAD 200)." };
+        },
+      },
+      {
+        id: "draco",
+        run: async () => {
+          try {
+            const useCdn = window.__THREE_IMPORT_MAP_CDN__ === true;
+            const base = useCdn
+              ? "https://unpkg.com/three@0.159.0/examples/jsm/libs/draco/"
+              : "/static/vendor/three/examples/jsm/libs/draco/";
+            const response = await fetch(`${base}draco_decoder.wasm`, { method: "HEAD" });
+            if (response.ok) {
+              return { status: "ok", detail: "Décodeur Draco disponible." };
+            }
+            return {
+              status: "warn",
+              detail: `Décodeur optionnel non détecté (statut ${response.status}).`,
+            };
+          } catch (error) {
+            return {
+              status: "warn",
+              detail: "Impossible de vérifier le décodeur Draco (optionnel).",
+            };
+          }
+        },
+      },
+    ];
+
+    const consoleErrors = [];
+    const originalConsoleError = console.error.bind(console);
+    console.error = (...args) => {
+      consoleErrors.push(
+        args
+          .map(value => (value instanceof Error ? value.message : String(value)))
+          .join(" ")
+      );
+      originalConsoleError(...args);
+    };
+
+    function setStatus(id, status, detail) {
+      const row = document.querySelector(`[data-test="${id}"]`);
+      if (!row) {
+        return;
+      }
+      row.classList.remove("is-ok", "is-warn", "is-fail", "is-pending");
+      const statusCell = row.querySelector("[data-status]");
+      const detailCell = row.querySelector("[data-detail]");
+      if (statusCell) {
+        if (status === "ok") {
+          row.classList.add("is-ok");
+          statusCell.textContent = "OK";
+        } else if (status === "warn") {
+          row.classList.add("is-warn");
+          statusCell.textContent = "Optionnel";
+        } else if (status === "fail") {
+          row.classList.add("is-fail");
+          statusCell.textContent = "Erreur";
+        } else {
+          row.classList.add("is-pending");
+          statusCell.textContent = "En cours…";
+        }
+      }
+      if (detailCell) {
+        detailCell.textContent = detail || "";
+      }
+    }
+
+    async function runSelftest() {
+      try {
+        for (const test of TESTS) {
+          setStatus(test.id, "pending");
+          try {
+            const result = await test.run();
+            setStatus(test.id, result.status || "ok", result.detail || "");
+          } catch (error) {
+            setStatus(
+              test.id,
+              "fail",
+              error instanceof Error ? error.message : String(error)
+            );
+          }
+        }
+      } finally {
+        console.error = originalConsoleError;
+      }
+
+      const consoleStatus = consoleErrors.length === 0 ? "ok" : "fail";
+      const consoleDetail =
+        consoleErrors.length === 0
+          ? "Aucune erreur détectée."
+          : `${consoleErrors.length} erreur(s) console capturée(s).`;
+      setStatus("console", consoleStatus, consoleDetail);
+    }
+
+    runSelftest().catch(error => {
+      setStatus("module", "fail", error instanceof Error ? error.message : String(error));
+      setStatus("glb", "fail", "Le selftest a été interrompu.");
+      setStatus("draco", "warn", "Test non exécuté.");
+      setStatus("console", "fail", "Erreur lors de l'exécution du selftest.");
+      console.error(error);
+    });
+  </script>
+</body>
+</html>

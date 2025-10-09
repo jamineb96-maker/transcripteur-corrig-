@@ -1,0 +1,46 @@
+{% extends 'documents_aide/base_doc.html.j2' %}
+{% block body %}
+<section class="doc-section">
+  <p>Une deadline souple te permet de découper les engagements pour éviter la montée de stress de dernière minute.</p>
+</section>
+<section class="doc-section">
+  <h2>Principes</h2>
+  <ul>
+    <li>{{ T('Tu peux', 'Vous pouvez') }} définir un jalon "première version" pour tester la charge réelle.</li>
+    <li>Prévoir une fenêtre de rendu qui respecte {{ ton('ton rythme circadien', 'votre rythme circadien') }}.</li>
+    <li>Préparer un plan B (communication, renégociation, soutien).</li>
+  </ul>
+</section>
+<section class="doc-section">
+  <h2>Tableau des jalons</h2>
+  <table class="planning">
+    <thead>
+      <tr>
+        <th>Jalon</th>
+        <th>Deadline initiale</th>
+        <th>Fenêtre souple</th>
+        <th>Plan B</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for idx in range(1,5) %}
+      <tr>
+        <td>{{ inputs.get('jalon_' ~ idx) or context.deadlines.jalons[idx-1].titre if context.deadlines.jalons|length >= idx else '' }}</td>
+        <td>{{ inputs.get('deadline_' ~ idx) or context.deadlines.jalons[idx-1].deadline if context.deadlines.jalons|length >= idx else '' }}</td>
+        <td>{{ inputs.get('fenetre_' ~ idx) or context.deadlines.jalons[idx-1].fenetre if context.deadlines.jalons|length >= idx else '' }}</td>
+        <td>{{ inputs.get('planb_' ~ idx) or context.deadlines.jalons[idx-1].planB if context.deadlines.jalons|length >= idx else '' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+<section class="doc-section">
+  <h2>Communication à prévoir</h2>
+  <div class="notes-block">{{ inputs.get('communication') or context.deadlines.communication or '' }}</div>
+</section>
+<section class="doc-section">
+  <h2>Auto-observation</h2>
+  <p>Quels signaux indiquent que la deadline devient trop serrée&nbsp;?</p>
+  <div class="notes-block">{{ inputs.get('signaux') or context.deadlines.signaux or '' }}</div>
+</section>
+{% endblock %}

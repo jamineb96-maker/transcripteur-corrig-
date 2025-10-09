@@ -1,0 +1,261 @@
+:root {
+    color-scheme: light;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f6f6f8;
+    color: #222;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: #27374d;
+    color: #fff;
+    gap: 1rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: none;
+}
+
+.brand-logo {
+    width: 32px;
+    height: 32px;
+}
+
+.brand-title {
+    display: inline-flex;
+    align-items: center;
+}
+
+.primary-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tabs [data-nav-list] {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.nav-overflow {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.nav-overflow[data-empty='true'] #menu-more-trigger {
+    display: none;
+}
+
+.nav-overflow__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 200px;
+    background: #1b2533;
+    color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    padding: 0.5rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.nav-overflow__menu[data-open='true'] {
+    display: flex;
+}
+
+.nav-overflow__menu a {
+    color: inherit;
+    text-decoration: none;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.4rem;
+}
+
+.nav-overflow__menu a:hover,
+.nav-overflow__menu a:focus-visible {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.tabs a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.85);
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.tabs a:hover,
+.tabs a:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    outline: none;
+}
+
+.tabs a.active {
+    background: #fff;
+    color: #27374d;
+    font-weight: 600;
+}
+
+.patient-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #fff;
+}
+
+.patient-controls label {
+    font-size: 0.9rem;
+}
+
+.patient-controls select {
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.4rem;
+    border: none;
+    min-width: 10rem;
+}
+
+.patient-controls__cta {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 22rem;
+    line-height: 1.35;
+}
+
+.banner {
+    display: none;
+    padding: 0.75rem 1rem;
+    background: #f0c674;
+    color: #473300;
+    text-align: center;
+}
+
+.banner.visible {
+    display: block;
+}
+
+.banner.info {
+    background: #cfe3ff;
+    color: #153d6f;
+}
+
+.banner.warning {
+    background: #ffe8c2;
+    color: #6a3b00;
+}
+
+.content {
+    flex: 1;
+    max-width: 960px;
+    margin: 1.5rem auto;
+    width: 100%;
+    padding: 0 1rem 2rem;
+}
+
+.panel {
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    padding: 1.5rem;
+    min-height: 300px;
+}
+
+.loading {
+    margin: 0;
+    font-style: italic;
+    color: #666;
+}
+
+.placeholder {
+    margin: 0;
+    color: #555;
+    font-size: 1.05rem;
+}
+
+.notes h2 {
+    margin-top: 0;
+}
+
+.notes pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: "Fira Code", "Courier New", monospace;
+    background: #f2f4f8;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0 0;
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+@media (max-width: 720px) {
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .patient-controls {
+        align-self: stretch;
+    }
+
+    .tabs [data-nav-list] {
+        width: 100%;
+    }
+
+    .tabs [data-nav-list] a {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+}

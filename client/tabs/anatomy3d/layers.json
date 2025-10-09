@@ -1,0 +1,62 @@
+[
+  {
+    "id": "cortex_frontal",
+    "label": "Cortex frontal",
+    "nodes": ["Cortex_Frontal_L", "Cortex_Frontal_R"],
+    "defaultVisible": true
+  },
+  {
+    "id": "cortex_temporal",
+    "label": "Cortex temporal",
+    "nodes": ["Cortex_Temporal_L", "Cortex_Temporal_R"],
+    "defaultVisible": true
+  },
+  {
+    "id": "cortex_parietal",
+    "label": "Cortex pariétal",
+    "nodes": ["Cortex_Parietal_L", "Cortex_Parietal_R"],
+    "defaultVisible": true
+  },
+  {
+    "id": "cortex_occipital",
+    "label": "Cortex occipital",
+    "nodes": ["Cortex_Occipital_L", "Cortex_Occipital_R"],
+    "defaultVisible": true
+  },
+  {
+    "id": "tronc_cerebral",
+    "label": "Tronc cérébral",
+    "nodes": ["Brainstem"],
+    "defaultVisible": true
+  },
+  {
+    "id": "cervelet",
+    "label": "Cervelet",
+    "nodes": ["Cerebellum"],
+    "defaultVisible": true
+  },
+  {
+    "id": "noyaux_gris",
+    "label": "Noyaux gris centraux",
+    "nodes": ["Basal_Ganglia"],
+    "defaultVisible": true
+  },
+  {
+    "id": "thalamus",
+    "label": "Thalamus",
+    "nodes": ["Thalamus_L", "Thalamus_R"],
+    "defaultVisible": true
+  },
+  {
+    "id": "hypothalamus",
+    "label": "Hypothalamus",
+    "nodes": ["Hypothalamus"],
+    "defaultVisible": false
+  },
+  {
+    "id": "nerfs_craniens",
+    "label": "Nerfs crâniens",
+    "nodes": ["Cranial_Nerves"],
+    "defaultVisible": false
+  }
+]

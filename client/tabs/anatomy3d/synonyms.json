@@ -1,0 +1,11 @@
+[
+  { "key": "cortex_prefrontal", "synonyms": ["préfrontal", "prefrontal", "executif", "fonctions exécutives"] },
+  { "key": "noyaux_gris", "synonyms": ["ganglions de la base", "basal ganglia", "noyau gris"] },
+  { "key": "systeme_limbique", "synonyms": ["limbique", "systeme limbique", "système limbique"] },
+  { "key": "hypothalamus", "synonyms": ["hypothalamique", "axe hpa"] },
+  { "key": "thalamus", "synonyms": ["relais sensoriel", "thalamique"] },
+  { "key": "cortex_occipital", "synonyms": ["occipital", "vision"] },
+  { "key": "cortex_parietal", "synonyms": ["pariétal", "attention"] },
+  { "key": "aire_broca", "synonyms": ["broca", "aire de broca"] },
+  { "key": "aire_wernicke", "synonyms": ["wernicke", "compréhension"] }
+]

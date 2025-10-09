@@ -1,0 +1,48 @@
+{% extends 'documents_aide/base_doc.html.j2' %}
+{% block body %}
+<section class="doc-section">
+  <p>Ce support t'accompagne pour identifier ce qui nourrit ou entame ton budget d'énergie quotidien.</p>
+  <div class="doc-section">
+    <h2>Pourquoi c'est important&nbsp;?</h2>
+    <p>Lorsque {{ t('tu anticipes', 'vous anticipez') }} les contextes qui pompent {{ ton('ton', 'votre') }} énergie, il devient plus simple de décider où placer {{ ton('ton', 'votre') }} attention, quelles pauses ritualiser et quelles limites poser.</p>
+  </div>
+</section>
+<section class="doc-section">
+  <h2>Étapes clés</h2>
+  <ol>
+    <li>Identifier les contextes qui te rechargent (+2), qui sont neutres (0) et qui coûtent (-2).</li>
+    <li>Reconnaître les signaux corporels précoces.</li>
+    <li>Nommer les signaux émotionnels qui annoncent une surcharge.</li>
+    <li>Repérer les situations à risque (masquage, imprévus, bruit, transitions).</li>
+    <li>Lister tes signaux d'arrêt incontournables.</li>
+    <li>Préparer un plan d'ajustement (pauses, rituels sensoriels, soutien).</li>
+    <li>Revoir ce tableau chaque semaine pour ajuster ton plan.</li>
+  </ol>
+</section>
+<section class="doc-section">
+  <h2>Contextes +2</h2>
+  <p>Ce qui te recharge réellement (activités, lieux, personnes, routines).</p>
+  <div class="notes-block">{{ inputs.get('contextes_plus2') or context.energy.plus2 or '' }}</div>
+</section>
+<section class="doc-section">
+  <h2>Contextes −2</h2>
+  <p>Situations qui pèsent sur {{ ton('ton', 'votre') }} énergie ou la font chuter.</p>
+  <div class="notes-block">{{ inputs.get('contextes_moins2') or context.energy.moins2 or '' }}</div>
+</section>
+<section class="doc-section">
+  <h2>Signaux corporels repérés</h2>
+  <div class="notes-block">{{ inputs.get('signaux_corp') or context.energy.signaux_corp or '' }}</div>
+</section>
+<section class="doc-section">
+  <h2>Signaux émotionnels repérés</h2>
+  <div class="notes-block">{{ inputs.get('signaux_emo') or context.energy.signaux_emo or '' }}</div>
+</section>
+<section class="doc-section">
+  <h2>Mes signaux d'arrêt</h2>
+  <div class="notes-block">{{ inputs.get('signaux_arret') or context.energy.signaux_arret or '' }}</div>
+</section>
+<section class="doc-section">
+  <h2>Rappel essentiel</h2>
+  <p>{{ T('Tu peux', 'Vous pouvez') }} demander du soutien ou prendre un temps de pause dès que les signaux -2 apparaissent. {{ T('Tu n’as', 'Vous n’avez') }} pas à attendre l'effondrement pour {{ t('t’autoriser', 'vous autoriser') }} un ajustement.</p>
+</section>
+{% endblock %}

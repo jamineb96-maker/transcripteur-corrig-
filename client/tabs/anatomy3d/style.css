@@ -1,0 +1,367 @@
+/* Styles du module Anatomie 3D */
+.anatomy3d {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: #131a2a;
+}
+
+.anatomy3d__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.anatomy3d__header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.anatomy3d__disclaimer {
+  margin: 0.2rem 0 0;
+  color: #5d6785;
+  font-size: 0.85rem;
+}
+
+.anatomy3d__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: #e6f2ff;
+  color: #0a63c9;
+  font-size: 0.75rem;
+}
+
+.anatomy3d__layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.anatomy3d__sidebar {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.panel {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.panel__header,
+.panel__footer {
+  padding: 0.75rem 1rem;
+  background: #f4f7fb;
+}
+
+.panel__content {
+  padding: 0.75rem 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.scene-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.scene-list button {
+  width: 100%;
+  text-align: left;
+}
+
+.layer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.25rem;
+  border-bottom: 1px solid #e1e7f0;
+}
+
+.layer-item:last-child {
+  border-bottom: none;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle input {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.anatomy3d__main {
+  display: grid;
+  grid-template-columns: minmax(0, 60%) minmax(0, 40%);
+  gap: 1rem;
+}
+
+.anatomy3d__canvas {
+  position: relative;
+  background: radial-gradient(circle at 30% 30%, rgba(58, 95, 160, 0.4), #0b1324);
+  border-radius: 0.75rem;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+.anatomy3d__canvas canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+}
+
+.anatomy3d__loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  background: rgba(6, 11, 22, 0.82);
+  color: #fff;
+  z-index: 3;
+}
+
+.loader-bar {
+  width: 40%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34a0ff, #8dd5ff);
+  transition: transform 0.3s ease;
+  transform-origin: left;
+}
+
+.anatomy3d__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 1rem;
+  background: #04070f;
+  color: #fff;
+  text-align: center;
+}
+
+.anatomy3d__fallback-inline {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.anatomy3d__laser {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ff5757;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  box-shadow: 0 0 12px rgba(255, 120, 120, 0.5);
+}
+
+.anatomy3d__actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.action-group {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
+}
+
+.action-group h3 {
+  margin: 0 0 0.5rem;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box input[type="search"] {
+  width: 100%;
+}
+
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 18px 30px rgba(15, 23, 42, 0.15);
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0;
+  z-index: 5;
+}
+
+.search-suggestions li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.search-suggestions li:hover,
+.search-suggestions li:focus {
+  background: #eef6ff;
+}
+
+.glossary-entry {
+  border-bottom: 1px solid #e1e7f0;
+  padding: 0.75rem 0;
+}
+
+.glossary-entry:last-child {
+  border-bottom: none;
+}
+
+.glossary-entry h4 {
+  margin: 0 0 0.35rem;
+}
+
+.annotations ul,
+.snapshots ul,
+.sequences ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.annotation-item,
+.snapshot-item,
+.sequence-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #f7f9fc;
+  border-radius: 0.5rem;
+}
+
+.sequence-steps {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.sequence-step {
+  display: grid;
+  gap: 0.5rem;
+  background: #f4f7fb;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.sequence-step label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.anatomy3d__notes {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.notes-panel,
+.questions-panel,
+.myths-panel {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.04);
+}
+
+.notes-panel h4,
+.questions-panel h4,
+.myths-panel h4 {
+  margin: 0 0 0.5rem;
+}
+
+.anatomy3d__dialog {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0;
+  width: min(720px, 92vw);
+}
+
+.anatomy3d__dialog article {
+  display: flex;
+  flex-direction: column;
+}
+
+.anatomy3d__dialog header,
+.anatomy3d__dialog footer {
+  background: #f4f7fb;
+  padding: 1rem;
+}
+
+.anatomy3d__dialog .dialog-content {
+  padding: 1rem;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.anatomy3d__dialog iframe {
+  border: none;
+  width: 100%;
+  min-height: 280px;
+}
+
+.high-contrast .anatomy3d__canvas {
+  background: #050709;
+}
+
+.high-contrast .anatomy3d__mode {
+  background: #232323;
+  color: #ffffff;
+}
+
+.high-contrast .action-group,
+.high-contrast .panel,
+.high-contrast .notes-panel,
+.high-contrast .questions-panel,
+.high-contrast .myths-panel {
+  box-shadow: none;
+  border: 2px solid #1f2937;
+}
+
+.button[data-action="link-to-notes"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.anatomy3d__canvas:focus-within {
+  outline: 3px solid #287cff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 1280px) {
+  .anatomy3d__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .anatomy3d__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

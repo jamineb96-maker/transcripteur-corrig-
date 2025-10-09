@@ -1,0 +1,20 @@
+{
+  "ritaline": "methylphenidate",
+  "ritalin": "methylphenidate",
+  "methylphenidate": "methylphenidate",
+  "quetiapine": "quetiapine",
+  "seroquel": "quetiapine",
+  "sertraline": "sertraline",
+  "paroxetine": "paroxetine",
+  "fluoxetine": "fluoxetine",
+  "escitalopram": "escitalopram",
+  "venlafaxine": "venlafaxine",
+  "bupropion": "bupropion",
+  "lamotrigine": "lamotrigine",
+  "lithium": "lithium",
+  "diazepam": "diazepam",
+  "alprazolam": "alprazolam",
+  "pregabalin": "pregabalin",
+  "gabapentin": "gabapentin",
+  "melatonine": "melatonin"
+}

@@ -1,0 +1,4 @@
+But : à partir des mots-clés et du contexte, produire des CARTES synthétiques utiles cliniquement, priorisant revues systématiques, guides publics, études qualitatives robustes, organisations publiques (Cochrane, HAS, NICE, OMS, PubMed, PsyArXiv, HAL).
+Exclure explicitement les sources psychanalytiques et blogs non sourcés.
+Chaque CARTE : thèse en une ligne, deux implications pratiques situées, une limite, citation ≤ 10 mots, source complète.
+Sortie : JSON (clé "cards") de cartes triées par utilité clinique, texte normalisé selon les règles françaises internes.

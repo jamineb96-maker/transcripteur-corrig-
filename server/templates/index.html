@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="app-version" data-app-version="{{ asset_version }}" content="{{ asset_version }}" />
+    <meta name="asset-version" content="{{ asset_version }}" />
+    <title>Assistant clinique</title>
+    <!-- Favicon et logo -->
+    <script>
+      (function () {
+        const raw = '{{ asset_version or "" }}';
+        const resolved = raw ? `postv2-${raw}` : `postv2-${Date.now()}`;
+        window.__ASSET_VERSION__ = resolved;
+      })();
+    </script>
+    <link rel="icon" type="image/png" href="/assets/logo.png?v=postv2-{{ asset_version or '001' }}" />
+    <!-- Feuilles de style -->
+    <link rel="stylesheet" href="/static/styles/theme.css?v=postv2-{{ asset_version or '001' }}" />
+    <link rel="stylesheet" href="/static/styles/base.css?v=postv2-{{ asset_version or '001' }}" />
+    <link rel="stylesheet" href="/static/styles/diagnostics.css?v=postv2-{{ asset_version or '001' }}" />
+    <link rel="stylesheet" href="/static/css/theme-dark-fixes.css?v=postv2-{{ asset_version or '001' }}" />
+    <script>
+      // Injecte la version des assets dans l'espace global pour que les modules
+      // puissent charger leurs vues et styles avec un paramètre de version.
+      (function () {
+        var meta = document.querySelector('meta[name="asset-version"]');
+        var raw = (meta && meta.getAttribute('content')) || '{{ asset_version or "" }}';
+        var prefixedRaw = raw ? 'postv2-' + raw : '';
+        var version = window.__ASSET_VERSION__ || prefixedRaw || 'postv2-' + Date.now();
+        window.__ASSET_VERSION__ = version;
+        window.ASSET_VERSION = window.__ASSET_VERSION__;
+        window.__API_BASE__ = "{{ api_base_url }}";
+        window.APP_FEATURES = {{ (config.get('APP_FEATURES') or {}) | tojson }};
+        window.__TAB_DUPLICATES__ = {{ (tab_duplicates or []) | tojson }};
+        window.APP_DEBUG = {{ 'true' if debug_mode else 'false' }};
+      })();
+    </script>
+  </head>
+  <body
+    data-active-tab=""
+    data-openai-configured="{{ 'true' if openai_configured else 'false' }}"
+    data-debug="{{ 'true' if debug_mode else 'false' }}"
+  >
+    <script type="module">
+      import '/static/unregister-sw.js?v=postv2-{{ asset_version or '001' }}';
+    </script>
+    <div class="app-shell">
+      <header class="app-header" role="banner">
+        <div class="header-left">
+          <a
+            class="brand"
+            href="#"
+            data-nav="home"
+            aria-label="Accueil – Assistant clinique"
+            data-nav-action="home"
+          >
+            <img class="brand-mark" src="/assets/logo.png?v={{ asset_version }}" alt="" />
+            <span class="brand-title">Assistant clinique</span>
+          </a>
+          <nav class="primary-nav tabs" aria-label="Sections" data-nav="primary">
+            <!-- Les boutons d’onglet sont injectés côté JS comme avant -->
+          </nav>
+        </div>
+        <div class="header-right">
+          <button
+            id="btnDiagnostics"
+            class="ghost"
+            type="button"
+            data-action="toggle-diagnostics"
+            aria-pressed="false"
+          >
+            Diagnostics
+          </button>
+          <button
+            id="btnTheme"
+            class="ghost"
+            type="button"
+            aria-pressed="false"
+            aria-label="Basculer le thème"
+            title="Basculer le thème"
+          >
+            🌗
+          </button>
+          <div class="patient-controls" role="group" aria-label="Patients">
+            <span id="patientsCount" class="muted" data-patient-count>Patients (0)</span>
+            <select id="patientSelect" class="patient-select" aria-label="Sélectionner un patient"></select>
+            <button
+              id="btnPatientsRefresh"
+              class="ghost"
+              type="button"
+              data-action="refresh-patients"
+            >
+              Actualiser
+            </button>
+            <button id="btnNewPatient" class="primary" type="button" data-action="new-patient">
+              Nouveau patient
+            </button>
+          </div>
+        </div>
+      </header>
+      <div class="app-banner" aria-live="polite"></div>
+      <main class="app-main">
+        <section class="module-intro">
+          <h1>Tableau de bord clinique</h1>
+          <p class="module-intro__lead">
+            Choisissez un module pour accompagner la prise en charge du patient.
+            Les raccourcis ci-dessous s'adaptent automatiquement au patient sélectionné.
+          </p>
+          <p class="module-intro__metrics">
+            <span data-intro-selected>Patient actuel : en cours de chargement…</span>
+            <span aria-hidden="true">•</span>
+            <span data-intro-count>Patients chargés : 0</span>
+          </p>
+        </section>
+
+        <div class="module-cards">
+          <a href="#pre_session" data-tab-link="pre_session" data-card-tab="pre_session" class="module-card">
+            <div class="module-card__header">
+              <h2>Pré‑séance</h2>
+              <span class="module-card__badge" data-card-badge="pre_session">Briefing</span>
+            </div>
+            <p class="module-card__description">
+              Préparez l'entretien, centralisez les notes clés et les objectifs de la séance.
+            </p>
+            <p class="module-card__metric" data-card-metric="pre_session">Chargement des données…</p>
+          </a>
+
+          <a href="#post_session" data-tab-link="post_session" data-card-tab="post_session" class="module-card">
+            <div class="module-card__header">
+              <h2>Post‑séance</h2>
+              <span class="module-card__badge" data-card-badge="post_session">Suivi</span>
+            </div>
+            <p class="module-card__description">
+              Rédigez le compte rendu, notez les actions et planifiez les prochaines étapes.
+            </p>
+            <p class="module-card__metric" data-card-metric="post_session">Chargement des données…</p>
+          </a>
+
+          <a href="#journal_critique" data-tab-link="journal_critique" data-card-tab="journal_critique" class="module-card">
+            <div class="module-card__header">
+              <h2>Journal critique</h2>
+              <span class="module-card__badge" data-card-badge="journal_critique">Narrations</span>
+            </div>
+            <p class="module-card__description">
+              Composez des invitations narratives situées et exportez un journal critique.
+            </p>
+            <p class="module-card__metric" data-card-metric="journal_critique">Chargement des données…</p>
+          </a>
+
+          <a href="#documents_aide" data-tab-link="documents_aide" data-card-tab="documents_aide" class="module-card">
+            <div class="module-card__header">
+              <h2>Documents d’aide</h2>
+              <span class="module-card__badge" data-card-badge="documents_aide">Supports</span>
+            </div>
+            <p class="module-card__description">
+              Composer des PDF personnalisés situés et adaptables aux besoins détectés post-séance.
+            </p>
+            <p class="module-card__metric" data-card-metric="documents_aide">Chargement des données…</p>
+          </a>
+
+          <a href="#library" data-tab-link="library" data-card-tab="library" class="module-card">
+            <div class="module-card__header">
+              <h2>Bibliothèque</h2>
+              <span class="module-card__badge" data-card-badge="library">Ressources</span>
+            </div>
+            <p class="module-card__description">
+              Ingestion, curation et indexation de ressources cliniques pour alimenter les suggestions.
+            </p>
+            <p class="module-card__metric" data-card-metric="library">Chargement des données…</p>
+          </a>
+
+          <a href="#constellation" data-tab-link="constellation" data-card-tab="constellation" class="module-card">
+            <div class="module-card__header">
+              <h2>Constellation</h2>
+              <span class="module-card__badge" data-card-badge="constellation">Vue globale</span>
+            </div>
+            <p class="module-card__description">
+              Visualisez les liens et ressources autour du patient pour affiner le suivi.
+            </p>
+            <p class="module-card__metric" data-card-metric="constellation">Chargement des données…</p>
+          </a>
+
+          <a href="#anatomie3d" data-tab-link="anatomie3d" data-card-tab="anatomie3d" class="module-card">
+            <div class="module-card__header">
+              <h2>Anatomie 3D</h2>
+              <span class="module-card__badge" data-card-badge="anatomie3d">Exploration</span>
+            </div>
+            <p class="module-card__description">
+              Parcourez la modélisation anatomique pour contextualiser les gestes thérapeutiques.
+            </p>
+            <p class="module-card__metric" data-card-metric="anatomie3d">Chargement des données…</p>
+          </a>
+
+          <a href="#facturation" data-tab-link="facturation" data-card-tab="facturation" class="module-card">
+            <div class="module-card__header">
+              <h2>Facturation</h2>
+              <span class="module-card__badge" data-card-badge="facturation">Gestion</span>
+            </div>
+            <p class="module-card__description">
+              Suivez les actes, vérifiez les remboursements et gardez une vision financière claire.
+            </p>
+            <p class="module-card__metric" data-card-metric="facturation">Chargement des données…</p>
+          </a>
+
+          <a href="#agenda" data-tab-link="agenda" data-card-tab="agenda" class="module-card">
+            <div class="module-card__header">
+              <h2>Agenda</h2>
+              <span class="module-card__badge" data-card-badge="agenda">Planification</span>
+            </div>
+            <p class="module-card__description">
+              Visualisez et ajustez les rendez-vous pour conserver un planning équilibré.
+            </p>
+            <p class="module-card__metric" data-card-metric="agenda">Chargement des données…</p>
+          </a>
+
+          <a href="#budget" data-tab-link="budget" data-card-tab="budget" class="module-card">
+            <div class="module-card__header">
+              <h2>Budget cognitif</h2>
+              <span class="module-card__badge" data-card-badge="budget">Cuillères</span>
+            </div>
+            <p class="module-card__description">
+              Évaluer le stock de cuillères, les coûts d'activités et les récupérations somatiques.
+            </p>
+            <p class="module-card__metric" data-card-metric="budget">Chargement des données…</p>
+          </a>
+        </div>
+        <div id="app-router-root" class="tab-root" data-tab-root aria-live="polite"></div>
+      </main>
+      <footer class="app-footer">
+        Base modulaire — <span data-app-version-label>{{ asset_version }}</span>
+      </footer>
+    </div>
+    <div id="modal-root" data-modal-root></div>
+    <div class="diag-panel" data-component="diagnostics" id="diagnostics-panel" aria-hidden="true"></div>
+    <!-- Scripts de diagnostic et application -->
+    <script type="module" src="/static/js/debug.js?v=postv2-{{ asset_version or '001' }}"></script>
+    <script type="module" src="/static/app.js?v=postv2-{{ asset_version or '001' }}"></script>
+  </body>
+</html>

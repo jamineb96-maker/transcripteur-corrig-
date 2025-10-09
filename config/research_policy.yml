@@ -1,0 +1,16 @@
+freshness_windows:
+  clinical_general_years: 3
+  drug_and_guideline_years: 1
+  rights_and_services_months: 6
+thresholds:
+  min_candidates_per_facet: 10
+  min_whitelist_per_facet: 2
+  require_fr_or_eu: true
+  min_scores:
+    coverage: 0.6
+    freshness: 0.7
+    diversity: 0.6
+weights:
+  coverage: 0.4
+  freshness: 0.35
+  diversity: 0.25

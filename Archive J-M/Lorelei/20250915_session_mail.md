@@ -1,0 +1,9 @@
+1) Loreley a récemment aidé sa mère à déménager, ce qui a été une source de fatigue supplémentaire pour elle. Elle a cependant su reconnaître cette fatigue et s'est autorisée à prendre des vacances, ce qui est un signe positif de progrès dans la gestion de son bien-être. Elle a également participé à une manifestation avec Extinction Rebellion (XR), où elle a utilisé des écouteurs anti-bruit pour gérer son stress. Elle a exprimé son autisme au sein du groupe XR, ce qui était un objectif important pour elle, et a pris un rôle actif en rédigeant l'ordre du jour de la prochaine réunion. Loreley travaille aussi sur l'acceptation de ses intérêts spécifiques, comme le jeu Rimworld, malgré des idées préconçues négatives à ce sujet.
+
+2) Pour approfondir la compréhension des enjeux liés à l'autisme et à la gestion du stress, Loreley pourrait se tourner vers des lectures sur les stratégies de coping pour les personnes autistes, telles que "The Complete Guide to Asperger's Syndrome" de Tony Attwood. Concernant la participation à des manifestations, des ressources sur la sécurité et la gestion du stress en milieu militant pourraient être utiles, comme "Beautiful Trouble: A Toolbox for Revolution" de Andrew Boyd. Enfin, pour travailler sur l'acceptation de ses intérêts spécifiques, des ouvrages sur la neurodiversité, tels que "NeuroTribes" de Steve Silberman, pourraient offrir des perspectives enrichissantes.
+
+3) Les objectifs concrets pour Loreley incluent :
+   - Continuer à prendre des vacances et des pauses régulières pour gérer sa fatigue.
+   - Exprimer ses besoins et difficultés de manière ouverte et directe dans le groupe XR.
+   - Demander un soutien spécifique lors des manifestations, par exemple en ayant un "Buddy" pour l'accompagner.
+   - Poursuivre le travail sur l'acceptation de ses intérêts spécifiques, en se détachant des idées préconçues négatives et en valorisant ce qui lui apporte du bien-être.
