@@ -1,454 +1,442 @@
-"""Fabrique Flask et configuration de l'application."""
+"""
+Main Flask application for the post‑session transcription and summarisation service.
+
+This module exposes a minimal API that is agnostic to the front‑end.  It focuses
+on reliability, idempotence and clear contracts between the research and final
+prompt stages.  The design draws from the specification provided by the
+psychopraticien user: chunks are processed deterministically, transcripts are
+deduplicated, and artefacts are persisted in a predictable directory tree.
+
+The Flask application is defined in :func:`create_app` to ease testing.  When
+executed as a script (``python -m server``) it will run a development server.
+"""
 
 from __future__ import annotations
 
 import hashlib
 import json
-import logging
-import mimetypes
 import os
-import platform
-import time
+import uuid
+from datetime import datetime
+from functools import wraps
 from pathlib import Path
-from typing import Dict, Iterable, List
+from typing import Any, Dict, List, Optional, Tuple
 
-import flask
-from flask import (
-    Flask,
-    Response,
-    jsonify,
-    render_template,
-    request,
-    send_from_directory,
-)
-from flask_cors import CORS
-from werkzeug.exceptions import RequestEntityTooLarge
+from flask import Flask, jsonify, request, send_file
 
-try:  # pragma: no cover - dépendances optionnelles
-    from dotenv import load_dotenv
-except ModuleNotFoundError:  # pragma: no cover
-    def load_dotenv(*_args, **_kwargs):  # type: ignore
-        return False
+from .transcriber import Transcriber, Segment
+from .pipeline import ResearchPipeline, FinalPipeline
 
-from config import settings
+# ----------------------------------------------------------------------------
+# Configuration
+# ----------------------------------------------------------------------------
 
-from .assets_bootstrap import ensure_assets
-from .blueprints import get_blueprints
-from .bootstrap import ensure_instance_bootstrap
-from .services.assets import detect_tab_duplicates, get_asset_version
-from .services.journal_service import JournalService
-from .services.openai_client import get_openai_client, is_openai_configured
-from .services.patients import (
-    get_diagnostics,
-    get_patients_source,
-    list_patients,
-    reload_patients,
-)
-from .utils.three_vendor import ensure_draco_decoder
+DEFAULT_UPLOAD_DIR = os.environ.get("UPLOAD_DIR") or "instance/uploads"
+DEFAULT_ARCHIVE_DIR = os.environ.get("ARCHIVE_DIR") or "instance/archives"
 
 
-LOGGER = logging.getLogger("assist.server")
+def ensure_dir(path: Path) -> None:
+    """Ensure that ``path`` exists and is a directory.
 
-mimetypes.add_type('application/wasm', '.wasm')
-
-
-def _detect_static_assets(static_dir: Path) -> Dict[str, Dict[str, str]]:
-    assets = {
-        "app.js": (static_dir / "app.js", "/static/app.js"),
-        "styles/base.css": (static_dir / "styles" / "base.css", "/static/styles/base.css"),
-        "styles/diagnostics.css": (static_dir / "styles" / "diagnostics.css", "/static/styles/diagnostics.css"),
-        "js/debug.js": (static_dir / "js" / "debug.js", "/static/js/debug.js"),
-        "unregister-sw.js": (static_dir / "unregister-sw.js", "/static/unregister-sw.js"),
-    }
-    manifest: Dict[str, Dict[str, str]] = {}
-    for key, (path, url) in assets.items():
-        content_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
-        info = {
-            "path": str(path),
-            "url": url,
-            "size": 0,
-            "hash": None,
-            "contentType": content_type,
-        }
-        if path.exists():
-            data = path.read_bytes()
-            info["size"] = len(data)
-            info["hash"] = hashlib.sha256(data).hexdigest()
-        manifest[key] = info
-    return manifest
+    Parameters
+    ----------
+    path : Path
+        The directory to create if missing.
+    """
+    path.mkdir(parents=True, exist_ok=True)
 
 
-def create_app() -> Flask:
-    base_dir = Path(__file__).resolve().parent.parent
-    env_candidates: Iterable[Path] = (
-        base_dir / ".env",
-        base_dir / ".env.dev",
-    )
-    loaded_env_files: List[str] = []
-    for candidate in env_candidates:
-        try:
-            if load_dotenv(dotenv_path=candidate, override=False):
-                loaded_env_files.append(str(candidate))
-        except TypeError:  # pragma: no cover - compatibilité fallback
-            if load_dotenv():  # type: ignore[func-returns-value]
-                loaded_env_files.append(str(candidate))
+def idempotency_key_for_audio(file_path: Path, params: Dict[str, Any]) -> str:
+    """Compute a deterministic idempotency key based on audio bytes and parameters.
 
-    def _mask_env_value(key: str, value: str | None) -> str | None:
-        if value is None:
-            return None
-        sensitive_markers = ("KEY", "SECRET", "TOKEN", "PASSWORD")
-        if any(marker in key.upper() for marker in sensitive_markers):
-            return "***"
-        return value
+    The key is a SHA256 hash of the concatenation of the file contents and the
+    JSON serialisation of the parameters.  Only stable keys (strings, numbers,
+    booleans) are considered when computing the hash.
 
-    def _snapshot_env(keys: Iterable[str]) -> Dict[str, str | None]:
-        return {key: _mask_env_value(key, os.getenv(key)) for key in keys}
+    Parameters
+    ----------
+    file_path : Path
+        The path to the uploaded audio file.
+    params : Dict[str, Any]
+        The parameters used for transcription (e.g. chunk length, overlap).
 
-    env_snapshot = _snapshot_env(
-        (
-            "PORT",
-            "API_BASE_URL",
-            "API_BASE_RELATIVE",
-            "HOST",
-            "CORS_EXTRA_ORIGINS",
-            "PATIENTS_DIR",
-            "PATIENTS_ARCHIVES_DIRS",
-            "FLASK_ENV",
-            "FLASK_DEBUG",
-        )
-    )
-    LOGGER.info(
-        "Configuration .env chargée depuis %s : %s",
-        ", ".join(loaded_env_files) if loaded_env_files else "<aucun>",
-        env_snapshot,
-        extra={
-            "loaded_env_files": loaded_env_files or ["<none>"],
-            "env_snapshot": env_snapshot,
-        },
-    )
+    Returns
+    -------
+    str
+        The hexadecimal SHA256 digest.
+    """
+    h = hashlib.sha256()
+    with file_path.open("rb") as f:
+        while True:
+            chunk = f.read(8192)
+            if not chunk:
+                break
+            h.update(chunk)
+    # normalise params by sorting keys and converting values to JSON
+    filtered = {k: v for k, v in params.items() if isinstance(v, (str, int, float, bool))}
+    encoded = json.dumps(filtered, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    h.update(encoded)
+    return h.hexdigest()
 
-    bootstrap_info = ensure_instance_bootstrap(base_dir)
-    patients_snapshot = reload_patients()
-    initial_patients = patients_snapshot.get("patients", []) if isinstance(patients_snapshot, dict) else []
-    patients_count = len(initial_patients)
-    patients_source = patients_snapshot.get("source") if isinstance(patients_snapshot, dict) else get_patients_source()
 
-    static_dir = base_dir / "client"
-    templates_dir = Path(__file__).resolve().parent / "templates"
+def create_app(upload_dir: Optional[str] = None, archive_dir: Optional[str] = None) -> Flask:
+    """Factory to create a configured Flask application.
 
-    app = Flask(
-        __name__,
-        static_folder=str(static_dir),
-        static_url_path="/static",
-        template_folder=str(templates_dir),
-    )
+    The application provides the following endpoints:
 
-    ensure_assets()
-    ensure_draco_decoder(Path(app.static_folder))
+    - ``POST /transcribe``: accepts either an uploaded audio file or a raw
+      transcript.  If an audio file is provided it is chunked and transcribed
+      deterministically.  The response contains the full transcript and the
+      individual segments with their timecodes.
+    - ``POST /prepare_prompt?stage=research``: constructs an evidence sheet,
+      critical commentary, repère suggestions and a simple chaptering of the
+      transcript.
+    - ``POST /prepare_prompt?stage=final``: consumes the research payload and
+      produces a plan, an analysis and a formatted mail.
+    - ``POST /post_session``: a convenience endpoint that orchestrates
+      transcription → research → final in one call and persists all artefacts.
+    - ``GET /artifacts/<path:rel_path>``: serves persisted artefacts from the
+      archive directory.
 
-    app.extensions["journal_service"] = JournalService(Path(app.instance_path))
+    Parameters
+    ----------
+    upload_dir : Optional[str]
+        Base directory where uploaded audio files are stored.  If ``None`` the
+        value of ``UPLOAD_DIR`` from the environment or ``instance/uploads``
+        is used.
+    archive_dir : Optional[str]
+        Base directory where session artefacts are persisted.  If ``None`` the
+        value of ``ARCHIVE_DIR`` from the environment or ``instance/archives``
+        is used.
 
-    api_base_url = os.getenv("API_BASE_URL", settings.API_BASE_RELATIVE)
-    allowed_origins = list(dict.fromkeys(settings.ALLOWED_ORIGINS))
-    resolved_port = int(os.getenv("PORT", settings.PORT))
-    openai_configured = is_openai_configured()
-    # Limite globale pour les uploads audio/POST.  On privilégie AUDIO_MAX_MB
-    # pour l'audio mais conservons POST_MAX_SIZE_MB comme valeur de secours.
-    post_max_size_mb = int(os.getenv("AUDIO_MAX_MB", os.getenv("POST_MAX_SIZE_MB", "300")))
+    Returns
+    -------
+    Flask
+        A configured Flask application instance.
+    """
+    # Configure Flask to serve static files from the accompanying client directory
+    client_dir = Path(__file__).resolve().parents[1] / "client"
+    app = Flask(__name__, static_folder=str(client_dir), static_url_path="/static")
+    app.json_sort_keys = False
 
-    config_path = base_dir / "config" / "app_config.json"
-    features = {}
-    if config_path.exists():
-        try:
-            payload = json.loads(config_path.read_text(encoding="utf-8"))
-            if isinstance(payload, dict):
-                features = payload.get("features", {}) or {}
-        except json.JSONDecodeError:
-            LOGGER.warning("Fichier app_config.json invalide", exc_info=True)
+    # compute directories
+    upload_base = Path(upload_dir or DEFAULT_UPLOAD_DIR)
+    archive_base = Path(archive_dir or DEFAULT_ARCHIVE_DIR)
+    ensure_dir(upload_base)
+    ensure_dir(archive_base)
 
-    if not os.getenv("ASSET_VERSION"):
-        generated_version = f"postv2-{int(time.time())}"
-        os.environ["ASSET_VERSION"] = generated_version
-    asset_version = get_asset_version(static_dir)
-    tab_duplicates = detect_tab_duplicates(static_dir)
+    # create service instances
+    transcriber = Transcriber()
+    research_pipeline = ResearchPipeline()
+    final_pipeline = FinalPipeline()
 
-    def _resolve_bool(name: str, *, feature_key: str, default: bool) -> bool:
-        value = os.getenv(name)
-        if value is None:
-            value = features.get(feature_key, default)
-        if isinstance(value, str):
-            value = value.strip().lower() not in {"0", "false", "no", "off"}
-        return bool(value)
+    def json_response(data: Any, status: int = 200):
+        if not isinstance(data, (dict, list)):
+            data = {"message": data}
+        resp = jsonify(data)
+        resp.status_code = status
+        return resp
 
-    library_root_env = os.getenv("LIBRARY_ROOT")
-    if library_root_env:
-        library_root = Path(library_root_env).expanduser().resolve()
-    else:
-        library_root = Path(app.instance_path) / "library"
-    try:
-        library_root.mkdir(parents=True, exist_ok=True)
-    except OSError as exc:
-        LOGGER.error("Impossible de créer le répertoire de bibliothèque %s", library_root, exc_info=True)
-        raise
+    def handle_error(msg: str, code: int = 400):
+        return json_response({"ok": False, "message": msg}, status=code)
 
-    extracted_root = library_root / "extracted"
-    logs_root = library_root / "logs"
-    raw_root = library_root / "raw_pdfs"
-    lock_root = logs_root / "locks"
-    try:
-        extracted_root.mkdir(parents=True, exist_ok=True)
-        logs_root.mkdir(parents=True, exist_ok=True)
-        raw_root.mkdir(parents=True, exist_ok=True)
-        lock_root.mkdir(parents=True, exist_ok=True)
-    except OSError as exc:
-        LOGGER.error("Impossible de créer le répertoire d'extraction %s", extracted_root, exc_info=True)
-        raise
-
-    feature_library_fs_v2 = _resolve_bool("FEATURE_LIBRARY_FS_V2", feature_key="library_fs_v2", default=True)
-    feature_library_autofill = _resolve_bool(
-        "FEATURE_LIBRARY_AUTOFILL", feature_key="library_autofill", default=True
-    )
-    feature_library_file_locks = _resolve_bool(
-        "FEATURE_LIBRARY_FILE_LOCKS", feature_key="library_file_locks", default=False
-    )
-
-    sharding_flag = os.getenv("LIBRARY_FS_SHARDING")
-    if sharding_flag is None:
-        sharding_flag = features.get("library_fs_sharding", True)
-    if isinstance(sharding_flag, str):
-        library_fs_sharding = sharding_flag.strip().lower() not in {"0", "false", "no", "off", "flat"}
-    else:
-        library_fs_sharding = bool(sharding_flag)
-
-    # Configurer la taille maximale du contenu et le timeout des requêtes
-    request_timeout = int(os.getenv("REQUEST_TIMEOUT_SECONDS", "120"))
-    app.config.update(
-        ASSET_VERSION=asset_version,
-        SECRET_KEY=os.getenv("SECRET_KEY", "dev-secret"),
-        API_BASE_URL=api_base_url,
-        TEMPLATES_AUTO_RELOAD=True,
-        JSON_AS_ASCII=False,
-        SERVER_PORT=resolved_port,
-        SERVER_HOST=settings.HOST,
-        DEMO_MODE=bool(bootstrap_info.get("demo_mode")) if isinstance(bootstrap_info, dict) else False,
-        PATIENTS_SOURCE=patients_source,
-        PATIENTS_COUNT=patients_count,
-        OPENAI_CONFIGURED=openai_configured,
-        TAB_DUPLICATES=tab_duplicates,
-        MAX_CONTENT_LENGTH=post_max_size_mb * 1024 * 1024,
-        REQUEST_TIMEOUT_SECONDS=request_timeout,
-        LIBRARY_ROOT=str(library_root),
-        LIBRARY_EXTRACTED_ROOT=str(extracted_root),
-        LIBRARY_LOG_ROOT=str(logs_root),
-        LIBRARY_RAW_ROOT=str(raw_root),
-        LIBRARY_LOCK_ROOT=str(lock_root),
-        LIBRARY_FS_SHARDING=library_fs_sharding,
-        FEATURE_LIBRARY_FS_V2=feature_library_fs_v2,
-        FEATURE_LIBRARY_AUTOFILL=feature_library_autofill,
-        FEATURE_LIBRARY_FILE_LOCKS=feature_library_file_locks,
-    )
-
-    LOGGER.info(
-        "Bibliothèque initialisée",
-        extra={
-            "library_root": str(library_root),
-            "library_extracted_root": str(extracted_root),
-            "library_log_root": str(logs_root),
-            "library_raw_root": str(raw_root),
-            "library_lock_root": str(lock_root),
-            "feature_library_fs_v2": feature_library_fs_v2,
-            "feature_library_autofill": feature_library_autofill,
-            "feature_library_file_locks": feature_library_file_locks,
-            "library_fs_sharding": library_fs_sharding,
-        },
-    )
-
-    CORS(
-        app,
-        resources={r"/api/*": {"origins": allowed_origins}},
-    )
-
-    assets_manifest = _detect_static_assets(static_dir)
-
-    @app.after_request
-    def _cache_headers(response: Response) -> Response:
-        path = request.path or ""
-        is_static = path.startswith("/static/") or path.startswith("/assets/")
-        if is_static and not app.debug:
-            if response.mimetype in {"application/javascript", "text/javascript", "text/css"}:
-                response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
-                response.set_etag(app.config["ASSET_VERSION"])
-            return response
-
-        response.headers.pop("ETag", None)
-        if app.debug:
-            response.headers["Cache-Control"] = "no-store"
+    def persist_artifact(session_dir: Path, filename: str, content: bytes | str) -> str:
+        session_dir.mkdir(parents=True, exist_ok=True)
+        file_path = session_dir / filename
+        if isinstance(content, str):
+            file_path.write_text(content, encoding="utf-8")
         else:
-            response.headers.setdefault("Cache-Control", "no-store")
-        return response
+            file_path.write_bytes(content)
+        rel = file_path.relative_to(archive_base).as_posix()
+        return rel
 
-    for blueprint in get_blueprints():
-        app.register_blueprint(blueprint)
+    def get_session_dir(meta: Dict[str, Any]) -> Path:
+        """Compute the directory where artefacts for this session should live.
 
-    @app.errorhandler(RequestEntityTooLarge)
-    def handle_413(_error: RequestEntityTooLarge):
-        max_mb = int(os.getenv("POST_MAX_SIZE_MB", "300"))
-        return (
-            jsonify(
-                {
-                    "ok": False,
-                    "error": {
-                        "type": "request_entity_too_large",
-                        "message": f"Fichier audio trop volumineux (limite {max_mb} MB).",
-                        "max_mb": max_mb,
-                    },
-                }
-            ),
-            413,
-        )
+        The path is ``archive_base/<patient>/<session_id>`` where ``session_id``
+        is the idempotency key if available, otherwise a timestamped UUID.
+        """
+        patient = (meta.get("patient") or meta.get("prenom") or "_global").strip() or "_global"
+        patient = patient.replace("/", "_")
+        session_id = meta.get("session_id") or uuid.uuid4().hex
+        return archive_base / patient / session_id
 
-    def _probe_openai_health() -> Dict[str, object]:
-        ok_env = is_openai_configured()
-        ok_llm = False
-        detail: str | None = None
-        if ok_env:
-            client = get_openai_client()
-            if client is None:
-                detail = "Client OpenAI non initialisé"
-            else:
-                try:  # pragma: no cover - réseau
-                    client.models.list()
-                    ok_llm = True
-                except Exception as exc:  # pragma: no cover - réseau
-                    detail = f"{type(exc).__name__}: {exc}"
-                    print("[health] OpenAI check failed ->", detail)
-                    LOGGER.warning("OpenAI health check failed", exc_info=True)
-        return {"env": ok_env, "llm": ok_llm, "detail": detail}
+    @app.post("/transcribe")
+    def transcribe_route():
+        """Handle transcription requests.
 
-    def _build_health_payload(llm_status: Dict[str, object] | None = None) -> Dict[str, object]:
-        if llm_status is None:
-            status = _probe_openai_health()
-        else:
-            env_ok = bool(llm_status.get("env"))
-            llm_ok = bool(llm_status.get("llm")) if env_ok else False
-            detail = llm_status.get("detail") if isinstance(llm_status, dict) else None
-            status = {"env": env_ok, "llm": llm_ok, "detail": detail}
-        app.config["OPENAI_CONFIGURED"] = bool(status["env"])
-        diagnostics = get_diagnostics()
-        patients_count = int(diagnostics.get("count") or len(list_patients()) or 0)
-        patients_source = diagnostics.get("source") or get_patients_source()
-        raw_roots = diagnostics.get("roots") or []
-        patients_roots = [str(root) for root in raw_roots if str(root)]
+        The request must be JSON containing either a ``transcript`` field or an
+        ``audio`` field encoded as a data URL (e.g. ``data:audio/mpeg;base64,...``).
+        Alternatively, a multipart/form‑data request may include an ``audio`` file.
 
-        def _resolve_patients_dir() -> str:
-            candidates = list(patients_roots)
-            if not candidates and patients_source:
-                candidates.extend(
-                    [segment for segment in str(patients_source).split(os.pathsep) if segment]
-                )
-            for candidate in candidates:
-                try:
-                    path = Path(candidate)
-                    if not path.is_absolute():
-                        path = (base_dir / candidate).resolve()
-                    else:
-                        path = path.resolve()
-                except (OSError, RuntimeError):
-                    continue
-                return str(path)
-            return ""
+        An idempotency key can be supplied in ``options.idempotency_key`` to
+        guarantee identical outputs for the same input.  When not provided and
+        an audio file is sent, a key is computed automatically.
 
-        patients_dir_abs = _resolve_patients_dir()
-        static_ok = all(Path(info["path"]).exists() for info in assets_manifest.values())
-        from server.blueprints import library as library_bp  # type: ignore  # noqa: E402
-
-        plan_counters = getattr(library_bp, "LLM_PLAN_COUNTERS", None)
-        if isinstance(plan_counters, dict):
-            plan_metrics = dict(plan_counters)
+        Returns
+        -------
+        json
+            A JSON object containing ``ok``, the full ``transcript``, a list
+            of ``segments`` (each with ``t`` and ``text``), the ``duration``
+            in seconds, the ``text_sha256`` and ``text_len``.
+        """
+        if request.content_type and request.content_type.startswith("multipart/form-data"):
+            audio_file = request.files.get("audio")
+            if not audio_file:
+                return handle_error("Fichier audio requis.")
+            filename = audio_file.filename or "audio"
+            temp_path = upload_base / f"{uuid.uuid4().hex}_{filename}"
+            audio_file.save(temp_path)
+            params = {
+                "chunk_seconds": int(request.form.get("chunk_seconds") or 120),
+                "overlap_seconds": int(request.form.get("overlap_seconds") or 4),
+            }
+            idem_key = request.form.get("idempotency_key")
+            key = idem_key or idempotency_key_for_audio(temp_path, params)
+            transcript_data = transcriber.transcribe_audio(temp_path, **params)
+            # remove temporary file
+            try:
+                temp_path.unlink()
+            except Exception:
+                pass
         else:
             try:
-                plan_metrics = dict(plan_counters or {})
-            except TypeError:  # pragma: no cover - defensive
-                plan_metrics = {}
-        return {
-            "ts": int(time.time()),
-            "python": platform.python_version(),
-            "flask": flask.__version__,
-            "patients_count": patients_count,
-            "patients_source": patients_source,
-            "patients_dir_abs": patients_dir_abs,
-            "patients_roots": patients_roots,
-            "static_ok": bool(static_ok),
-            "demo_mode": bool(app.config.get("DEMO_MODE", False)),
-            "api_base": app.config.get("API_BASE_URL", ""),
-            "port_effective": app.config.get("SERVER_PORT", settings.PORT),
-            "blueprints": sorted(app.blueprints.keys()),
-            "openai_configured": bool(app.config.get("OPENAI_CONFIGURED", False)),
-            "openai_health": status,
-            "env": status["env"],
-            "llm": status["llm"],
-            "detail": status.get("detail"),
-            "llm_plan_counters": plan_metrics,
+                payload = request.get_json(force=True) or {}
+            except Exception:
+                return handle_error("Requête JSON invalide.")
+            if "transcript" in payload:
+                text = str(payload.get("transcript") or "").replace("\r\n", "\n")
+                segments = []  # type: List[Dict[str, Any]]
+                duration = None
+                key = hashlib.sha256(text.encode("utf-8")).hexdigest()
+                transcript_data = {
+                    "text": text,
+                    "segments": segments,
+                    "duration": duration,
+                }
+            elif "audio" in payload:
+                # Expect a data URL, e.g. data:audio/mpeg;base64,AAA...
+                import base64
+                data_url = str(payload.get("audio") or "")
+                if not data_url.startswith("data:"):
+                    return handle_error("Données audio invalides. Attendu un data URL.")
+                try:
+                    header, b64data = data_url.split(",", 1)
+                except ValueError:
+                    return handle_error("Données audio invalides.")
+                binary = base64.b64decode(b64data, validate=True)
+                suffix = header.split("/")[1].split(";")[0]
+                temp_path = upload_base / f"{uuid.uuid4().hex}.{suffix}"
+                temp_path.write_bytes(binary)
+                params = payload.get("options") or {}
+                chunk_sec = int(params.get("chunk_seconds") or 120)
+                overlap_sec = int(params.get("overlap_seconds") or 4)
+                key = params.get("idempotency_key") or idempotency_key_for_audio(temp_path, {"chunk_seconds": chunk_sec, "overlap_seconds": overlap_sec})
+                transcript_data = transcriber.transcribe_audio(temp_path, chunk_seconds=chunk_sec, overlap_seconds=overlap_sec)
+                try:
+                    temp_path.unlink()
+                except Exception:
+                    pass
+            else:
+                return handle_error("Aucun champ 'transcript' ou 'audio' fourni.")
+        full_text = transcript_data.get("text", "")
+        segments = [
+            {"t": [seg.start, seg.end], "text": seg.text}
+            for seg in transcript_data.get("segments", [])
+        ]
+        duration = transcript_data.get("duration")
+        sha256 = hashlib.sha256(full_text.encode("utf-8")).hexdigest()
+        meta = {"ok": True, "transcript": full_text, "segments": segments, "duration": duration, "text_sha256": sha256, "text_len": len(full_text), "session_id": key}
+        return json_response(meta)
+
+    @app.post("/prepare_prompt")
+    def prepare_prompt_route():
+        """Prepare a prompt either for the research or final stage.
+
+        The query parameter ``stage`` must be ``research`` or ``final``.
+
+        For the research stage, the request body must contain at least ``transcript``.
+        Optional fields: ``prenom``, ``base_name``, ``date``, ``register``.
+
+        For the final stage, the request body must be the JSON object returned by
+        the research stage augmented with any additional constraints (e.g.
+        maximum length).
+        """
+        stage = (request.args.get("stage") or "").strip().lower()
+        try:
+            payload = request.get_json(force=True) or {}
+        except Exception:
+            return handle_error("Requête JSON invalide.")
+        if stage == "research":
+            transcript = str(payload.get("transcript") or "")
+            if not transcript:
+                return handle_error("Champ 'transcript' requis pour la phase de research.")
+            prenom = payload.get("prenom") or payload.get("patient")
+            base_name = payload.get("base_name") or payload.get("label")
+            date_label = payload.get("date") or datetime.utcnow().strftime("%Y-%m-%d")
+            register = payload.get("register") or "vous"
+            result = research_pipeline.run(
+                transcript, prenom=prenom, base_name=base_name, date=date_label, register=register
+            )
+            return json_response(result)
+        elif stage == "final":
+            if not isinstance(payload, dict):
+                return handle_error("Corps JSON invalide pour la phase finale.")
+            result = final_pipeline.run(payload)
+            return json_response(result)
+        else:
+            return handle_error("Paramètre 'stage' inconnu ou manquant.", code=400)
+
+    @app.post("/post_session")
+    def post_session_route():
+        """High‑level endpoint orchestrating the entire post‑session pipeline.
+
+        Accepts either an ``audio`` file (multipart or data URL) or an existing
+        ``transcript``.  Additional metadata (``prenom``, ``base_name``, ``date``,
+        ``register``) are propagated to the research and final stages.  The
+        returned JSON object contains the plan, analysis, mail and a map of
+        persisted artefact paths relative to ``ARCHIVE_DIR``.
+        """
+        # Accept both multipart and JSON
+        transcript = None
+        meta: Dict[str, Any] = {}
+        if request.content_type and request.content_type.startswith("multipart/form-data"):
+            form = request.form.to_dict(flat=True)
+            for key in ("prenom", "base_name", "date", "register", "patient"):
+                if key in form and form[key]:
+                    meta[key] = form[key]
+            if "audio" in request.files:
+                audio_file = request.files["audio"]
+                filename = audio_file.filename or "audio"
+                temp_path = upload_base / f"{uuid.uuid4().hex}_{filename}"
+                audio_file.save(temp_path)
+                params = {
+                    "chunk_seconds": int(form.get("chunk_seconds") or 120),
+                    "overlap_seconds": int(form.get("overlap_seconds") or 4),
+                }
+                idem_key = form.get("idempotency_key") or idempotency_key_for_audio(temp_path, params)
+                meta["session_id"] = idem_key
+                trans_data = transcriber.transcribe_audio(temp_path, **params)
+                transcript = trans_data["text"]
+                segments = trans_data["segments"]
+                duration = trans_data["duration"]
+                try:
+                    temp_path.unlink()
+                except Exception:
+                    pass
+            elif form.get("transcript"):
+                transcript = str(form.get("transcript")).replace("\r\n", "\n")
+                segments = []
+                duration = None
+                meta["session_id"] = hashlib.sha256(transcript.encode("utf-8")).hexdigest()
+            else:
+                return handle_error("Champ 'audio' ou 'transcript' requis.")
+        else:
+            try:
+                payload = request.get_json(force=True) or {}
+            except Exception:
+                return handle_error("Requête JSON invalide.")
+            for key in ("prenom", "base_name", "date", "register", "patient"):
+                if key in payload and payload[key]:
+                    meta[key] = payload[key]
+            if "transcript" in payload:
+                transcript = str(payload.get("transcript") or "").replace("\r\n", "\n")
+                segments = []
+                duration = None
+                meta["session_id"] = hashlib.sha256(transcript.encode("utf-8")).hexdigest()
+            elif "audio" in payload:
+                import base64
+                data_url = str(payload.get("audio") or "")
+                header, b64data = data_url.split(",", 1)
+                binary = base64.b64decode(b64data, validate=True)
+                suffix = header.split("/")[1].split(";")[0]
+                temp_path = upload_base / f"{uuid.uuid4().hex}.{suffix}"
+                temp_path.write_bytes(binary)
+                params = payload.get("options") or {}
+                chunk_sec = int(params.get("chunk_seconds") or 120)
+                overlap_sec = int(params.get("overlap_seconds") or 4)
+                idem_key = params.get("idempotency_key") or idempotency_key_for_audio(temp_path, {"chunk_seconds": chunk_sec, "overlap_seconds": overlap_sec})
+                meta["session_id"] = idem_key
+                trans_data = transcriber.transcribe_audio(temp_path, chunk_seconds=chunk_sec, overlap_seconds=overlap_sec)
+                transcript = trans_data["text"]
+                segments = trans_data["segments"]
+                duration = trans_data["duration"]
+                try:
+                    temp_path.unlink()
+                except Exception:
+                    pass
+            else:
+                return handle_error("Champ 'audio' ou 'transcript' requis.")
+        # Stage 1: research
+        research_payload = research_pipeline.run(
+            transcript,
+            prenom=meta.get("prenom"),
+            base_name=meta.get("base_name"),
+            date=meta.get("date"),
+            register=meta.get("register") or "vous",
+        )
+        # Stage 2: final
+        final_payload = final_pipeline.run(research_payload)
+        # Persist artefacts
+        session_dir = get_session_dir({"patient": meta.get("prenom"), "session_id": meta.get("session_id")})
+        artifacts: Dict[str, str] = {}
+        artifacts["transcript_txt"] = persist_artifact(session_dir, "transcript.txt", transcript)
+        artifacts["segments_json"] = persist_artifact(session_dir, "segments.json", json.dumps([{"t": [seg.start, seg.end], "text": seg.text} for seg in segments], ensure_ascii=False, indent=2))
+        artifacts["research_json"] = persist_artifact(session_dir, "research.json", json.dumps(research_payload, ensure_ascii=False, indent=2))
+        artifacts["analysis_json"] = persist_artifact(session_dir, "analysis.json", json.dumps(final_payload.get("analysis"), ensure_ascii=False, indent=2))
+        artifacts["plan_txt"] = persist_artifact(session_dir, "plan.txt", final_payload.get("plan_markdown") or "")
+        artifacts["mail_md"] = persist_artifact(session_dir, "mail.md", final_payload.get("mail_markdown") or "")
+        result = {
+            "meta": {
+                "session_id": meta.get("session_id"),
+                "patient": meta.get("prenom") or meta.get("patient"),
+                "date": meta.get("date") or datetime.utcnow().strftime("%Y-%m-%d"),
+                "base_name": meta.get("base_name"),
+                "register": meta.get("register") or "vous",
+            },
+            "plan": final_payload.get("plan_markdown"),
+            "analysis": final_payload.get("analysis"),
+            "mail": final_payload.get("mail_markdown"),
+            "artifacts": artifacts,
         }
+        return json_response(result)
 
-    @app.get("/api/health")
-    def api_health():
-        payload = _build_health_payload()
-        return jsonify({"ok": True, **payload})
+    @app.get("/artifacts/<path:rel_path>")
+    def get_artifact(rel_path: str):
+        """Serve an artefact previously persisted in the archive directory.
 
-    @app.get("/health")
-    def health():  # pragma: no cover - simple proxy
-        payload = _build_health_payload()
-        return jsonify({"ok": True, **payload})
+        Files are served in a read‑only manner.  Directory traversal outside the
+        archive root is prevented by verifying the absolute path.
+        """
+        target = (archive_base / rel_path).resolve()
+        if not str(target).startswith(str(archive_base.resolve())):
+            return handle_error("Accès interdit.", 403)
+        if not target.exists() or not target.is_file():
+            return handle_error("Fichier introuvable.", 404)
+        return send_file(str(target), as_attachment=True)
 
-    @app.get("/api/assets-manifest")
-    def api_assets_manifest():
-        return jsonify({"ok": True, "assets": assets_manifest})
-
-    @app.get("/api/version")
-    def api_version():
-        return jsonify(
-            {
-                "ok": True,
-                "assetVersion": app.config["ASSET_VERSION"],
-                "port": app.config.get("SERVER_PORT", settings.PORT),
-            }
-        )
-
+    # ----------------------------------------------------------------------
+    # Front‑end routes
+    # ----------------------------------------------------------------------
     @app.get("/")
-    def index():
-        return render_template(
-            "index.html",
-            asset_version=app.config["ASSET_VERSION"],
-            api_base_url=app.config["API_BASE_URL"],
-            openai_configured=app.config.get("OPENAI_CONFIGURED", False),
-            tab_duplicates=tab_duplicates,
-            debug_mode=app.debug,
-        )
+    def index_page():
+        """Serve the main HTML page for the post‑session assistant."""
+        return send_file(client_dir / "index.html")
 
-    @app.route("/assets/<path:filename>")
-    def serve_assets(filename: str):
-        return send_from_directory(base_dir / "assets", filename)
-
-    LOGGER.info("Flask %s — Python %s", flask.__version__, platform.python_version())
-    LOGGER.info("Base dir: %s", base_dir)
-    LOGGER.info("Static dir: %s", static_dir)
-    LOGGER.info("Templates dir: %s", templates_dir)
-    LOGGER.info("Instance dir: %s", app.instance_path)
-    LOGGER.info("Port effectif: %s", resolved_port)
-    LOGGER.info("API base URL: %s", app.config["API_BASE_URL"] or "relative")
-    LOGGER.info("Patients source : %s", patients_source or "inconnue")
-    LOGGER.info("Patients détectés : %d", patients_count)
-    LOGGER.info("CORS origins: %s", ", ".join(allowed_origins))
-    LOGGER.info(
-        "Blueprints actifs: %s",
-        ", ".join(sorted(app.blueprints.keys())),
-    )
-    for key, info in assets_manifest.items():
-        LOGGER.info("Asset %s — %s octets — présent=%s", key, info["size"], Path(info["path"]).exists())
 
     return app
 
 
-__all__ = ["create_app"]
+if __name__ == "__main__":
+    # Launch a development server when executed directly.  Use environment
+    # variables to override the host/port or directories.
+    from argparse import ArgumentParser
 
+    parser = ArgumentParser(description="Post‑session transcription service")
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=5000)
+    parser.add_argument("--upload-dir", default=DEFAULT_UPLOAD_DIR)
+    parser.add_argument("--archive-dir", default=DEFAULT_ARCHIVE_DIR)
+    args = parser.parse_args()
+    flask_app = create_app(upload_dir=args.upload_dir, archive_dir=args.archive_dir)
+    flask_app.run(host=args.host, port=args.port, debug=True)

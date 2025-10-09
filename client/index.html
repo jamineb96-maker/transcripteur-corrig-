@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Post‑séance – Transcripteur critique</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app">
+    <h1>Assistant post‑séance</h1>
+    <div id="wizard">
+      <!-- Step 1: upload or paste transcript -->
+      <section class="step" id="step1">
+        <h2>1. Importer l'audio ou coller le texte</h2>
+        <div class="field">
+          <label for="audioInput">Fichier audio :</label>
+          <input type="file" id="audioInput" accept="audio/*" />
+        </div>
+        <p>ou</p>
+        <div class="field">
+          <label for="transcriptInput">Transcription brute :</label>
+          <textarea id="transcriptInput" rows="6" placeholder="Collez ici votre texte si vous ne fournissez pas d'audio"></textarea>
+        </div>
+        <div class="field">
+          <label for="prenomInput">Prénom patient·e :</label>
+          <input type="text" id="prenomInput" />
+        </div>
+        <div class="field">
+          <label for="registerInput">Registre :</label>
+          <select id="registerInput">
+            <option value="vous">Vous</option>
+            <option value="tu">Tu</option>
+          </select>
+        </div>
+        <button id="startBtn">Transcrire</button>
+      </section>
+      <!-- Step 2: show transcript -->
+      <section class="step" id="step2" hidden>
+        <h2>2. Transcription</h2>
+        <div id="progress" class="progress">En cours…</div>
+        <textarea id="transcriptOutput" rows="10" readonly></textarea>
+        <button id="toResearchBtn">Analyser</button>
+      </section>
+      <!-- Step 3: research results -->
+      <section class="step" id="step3" hidden>
+        <h2>3. Recherche critique</h2>
+        <pre id="researchOutput" class="monospace"></pre>
+        <button id="toFinalBtn">Synthétiser</button>
+      </section>
+      <!-- Step 4: final mail -->
+      <section class="step" id="step4" hidden>
+        <h2>4. Mail final</h2>
+        <pre id="finalPlan" class="monospace"></pre>
+        <pre id="finalMail" class="monospace"></pre>
+        <button id="saveSessionBtn">Enregistrer la session</button>
+      </section>
+      <!-- Step 5: artefacts -->
+      <section class="step" id="step5" hidden>
+        <h2>5. Artefacts</h2>
+        <p>La session est enregistrée.  Vous pouvez télécharger les fichiers générés :</p>
+        <ul id="artifactsList"></ul>
+        <button id="restartBtn">Nouvelle session</button>
+      </section>
+    </div>
+    <div id="toast" class="toast" hidden></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
