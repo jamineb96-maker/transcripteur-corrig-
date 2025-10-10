@@ -1,26 +1,28 @@
-// --- FIX: robust SPA router (idempotent) ---
+
+
+
+// --- SPA router (robust, idempotent) ---
 (function () {
   if (window.__APP_OK) return;
   function $all(sel){ try{ return document.querySelectorAll(sel) || []; }catch(e){ return []; } }
   function showTab(name) {
     name = (name||'home').toLowerCase();
-    var panels = [].slice.call($all('[data-tab], .tab-panel, [id^="tab-"]'));
+    var panels = Array.prototype.slice.call($all('[data-tab], .tab-panel, [id^="tab-"]'));
     if (!panels.length) return;
     panels.forEach(function(el){
       var key =
         (el.getAttribute('data-tab')||'').toLowerCase() ||
         (el.classList.contains('tab-panel') && (el.getAttribute('data-name')||'').toLowerCase()) ||
         (el.id && el.id.toLowerCase().indexOf('tab-')===0 ? el.id.slice(4).toLowerCase() : '');
-      el.style.display = (key === name) ? 'block' : 'none';
-      el.toggleAttribute && el.toggleAttribute('hidden', key !== name);
+      var active = (key === name);
+      el.style.display = active ? 'block' : 'none';
+      if (el.toggleAttribute) el.toggleAttribute('hidden', !active);
     });
-    // Hide any full-screen home splash if a non-home tab is selected
     if (name !== 'home') {
       var home = document.getElementById('tab-home') || document.querySelector('[data-tab="home"]') || document.querySelector('.home, .home-root');
       if (home) { home.style.display = 'none'; home.setAttribute('hidden',''); }
     }
-    // nav active state
-    [].slice.call($all('a[data-nav], nav a, .sidebar a')).forEach(function(a){
+    Array.prototype.slice.call($all('a[data-nav], nav a, .sidebar a')).forEach(function(a){
       try {
         var url = new URL(a.href, location.origin);
         var want = (url.searchParams.get('tab') || '').toLowerCase();
@@ -40,8 +42,9 @@
         return url.pathname.split('/').pop().toLowerCase();
       }
     } catch (e) {}
-    if (location.hash && location.hash.indexOf('#tab=') === 0) {
-      return location.hash.slice(5).toLowerCase();
+    if (location.hash && location.hash.indexOf('#')===0) {
+      var h = location.hash.replace(/^#/, '');
+      if (h) return h.toLowerCase();
     }
     return 'home';
   }
@@ -52,7 +55,7 @@
       if (!a) return;
       var href = a.getAttribute('href') || '';
       if (!href || /^https?:/i.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-      if (href.indexOf('?tab=')>=0 || href.indexOf('#tab=')===0 || href.indexOf('/tab/')===0) {
+      if (href.indexOf('?tab=')>=0 || href.indexOf('#')===0 || href.indexOf('/tab/')===0) {
         e.preventDefault();
         history.pushState({}, '', href);
         route();
