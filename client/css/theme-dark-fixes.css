@@ -1,4 +1,11 @@
-:root[data-theme="dark"] {
+/* Ajustements pour assurer la lisibilité en mode sombre.
+   Ce fichier est copié depuis l'ancien emplacement dans server/static et
+   appliqué via l'attribut data-theme="dark" ou la classe "dark".
+   Il n'apporte aucune dépendance externe et peut être chargé en
+   complément de la feuille de thème principale. */
+
+:root[data-theme="dark"],
+.dark {
   --bg: #0c111b;
   --surface: #151b28;
   --surface-2: #1b2435;
@@ -12,7 +19,13 @@
 [data-theme="dark"] .section,
 [data-theme="dark"] .modal,
 [data-theme="dark"] .dropdown,
-[data-theme="dark"] .popover {
+[data-theme="dark"] .popover,
+.dark .card,
+.dark .panel,
+.dark .section,
+.dark .modal,
+.dark .dropdown,
+.dark .popover {
   background: var(--surface) !important;
   color: var(--text) !important;
   border-color: var(--border) !important;
@@ -20,33 +33,44 @@
 
 [data-theme="dark"] input,
 [data-theme="dark"] textarea,
-[data-theme="dark"] select {
+[data-theme="dark"] select,
+.dark input,
+.dark textarea,
+.dark select {
   background: var(--surface-2) !important;
   color: var(--text) !important;
   border: 1px solid var(--border) !important;
 }
 
-[data-theme="dark"] ::placeholder {
+[data-theme="dark"] ::placeholder,
+.dark ::placeholder {
   color: var(--muted) !important;
 }
 
 [data-theme="dark"] .bg-white,
 [data-theme="dark"] .card.bg-white,
-[data-theme="dark"] .panel.bg-white {
+[data-theme="dark"] .panel.bg-white,
+.dark .bg-white,
+.dark .card.bg-white,
+.dark .panel.bg-white {
   background-color: var(--surface) !important;
 }
 
-[data-theme="dark"] .text-white {
+[data-theme="dark"] .text-white,
+.dark .text-white {
   color: var(--text) !important;
 }
 
-/* Post-séance v2 : lisibilité dark */
-:root[data-theme="dark"] {
+/* Post-séance v2 : lisibilité dark */
+
+:root[data-theme="dark"],
+.dark {
   --surface-base: var(--surface-2);
   --surface-elevated: var(--surface);
 }
 
-[data-theme="dark"] .post-session-v2 .ps-card {
+[data-theme="dark"] .post-session-v2 .ps-card,
+.dark .post-session-v2 .ps-card {
   background: var(--surface-elevated) !important;
   color: var(--text) !important;
   border-color: var(--border) !important;
@@ -54,25 +78,26 @@
 
 [data-theme="dark"] .post-session-v2 textarea.mono,
 [data-theme="dark"] .post-session-v2 input,
-[data-theme="dark"] .post-session-v2 select {
+[data-theme="dark"] .post-session-v2 select,
+.dark .post-session-v2 textarea.mono,
+.dark .post-session-v2 input,
+.dark .post-session-v2 select {
   background: var(--surface-base) !important;
   color: var(--text) !important;
   border: 1px solid var(--border) !important;
 }
 
-[data-theme="dark"] .post-session-v2 ::placeholder {
+[data-theme="dark"] .post-session-v2 ::placeholder,
+.dark .post-session-v2 ::placeholder {
   color: var(--muted) !important;
 }
-:root[data-theme="dark"] {
-  --surface-base: #1b2435;
-  --surface-elevated: #151b28;
-  --text: #e5e7eb;
-  --border: #24324a;
-  --muted: #a7b0c0;
-}
+
+/* Variante post-session v1 */
 
 [data-theme="dark"] .post-session .ps-card,
-[data-theme="dark"] .post-session-v2 .ps-card {
+[data-theme="dark"] .post-session-v2 .ps-card,
+.dark .post-session .ps-card,
+.dark .post-session-v2 .ps-card {
   background: var(--surface-elevated) !important;
   color: var(--text) !important;
   border-color: var(--border) !important;
@@ -83,35 +108,19 @@
 [data-theme="dark"] .post-session select,
 [data-theme="dark"] .post-session-v2 textarea,
 [data-theme="dark"] .post-session-v2 input,
-[data-theme="dark"] .post-session-v2 select {
+[data-theme="dark"] .post-session-v2 select,
+.dark .post-session textarea,
+.dark .post-session input,
+.dark .post-session select,
+.dark .post-session-v2 textarea,
+.dark .post-session-v2 input,
+.dark .post-session-v2 select {
   background: var(--surface-base) !important;
   color: var(--text) !important;
   border: 1px solid var(--border) !important;
 }
 
-[data-theme="dark"] ::placeholder { color: var(--muted) !important; }
-
-[data-theme="dark"] .bg-white { background-color: var(--surface-elevated) !important; }
-
-:root[data-theme="dark"] {
-  --surface-base:#1b2435; --surface-elevated:#151b28;
-  --text:#e5e7eb; --border:#24324a; --muted:#a7b0c0;
+[data-theme="dark"] .bg-white,
+.dark .bg-white {
+  background-color: var(--surface-elevated) !important;
 }
-[data-theme="dark"] .post-session .ps-card,
-[data-theme="dark"] .post-session-v2 .ps-card{
-  background:var(--surface-elevated)!important;
-  color:var(--text)!important;
-  border-color:var(--border)!important;
-}
-[data-theme="dark"] .post-session textarea,
-[data-theme="dark"] .post-session input,
-[data-theme="dark"] .post-session select,
-[data-theme="dark"] .post-session-v2 textarea,
-[data-theme="dark"] .post-session-v2 input,
-[data-theme="dark"] .post-session-v2 select{
-  background:var(--surface-base)!important;
-  color:var(--text)!important;
-  border:1px solid var(--border)!important;
-}
-[data-theme="dark"] ::placeholder{ color:var(--muted)!important; }
-[data-theme="dark"] .bg-white{ background-color:var(--surface-elevated)!important; }

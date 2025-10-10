@@ -21,3 +21,9 @@ Toutes les modifications majeures apportées au transcripteur post‑séance son
 
 * Résolution d’un bug entraînant la suppression prématurée des fichiers audio temporaires avant la fin du traitement.  Les fichiers sont maintenant supprimés après la persistance éventuelle.
 * Meilleure gestion des exceptions lors du chargement des artefacts : en cas de corruption, le serveur repasse en recalcul complet.
+
+### Correctifs UI (navigation et mode nuit)
+
+* **Routeur SPA tolérant** : l’interface web s’appuie désormais sur un routeur en JavaScript qui interprète les ancres (`#tab`), les paramètres `?tab=` et les chemins `/tab/…`.  Le routeur met à jour l’attribut `data-active-tab` sur `<body>`, applique la classe `active` sur les liens et masque automatiquement la section d’accueil identifiée par `tab-home`.  La compatibilité est maintenue avec les anciens panneaux via les sélecteurs `data-tab`, `.tab-panel` et `id^="tab-"`.
+* **Mode sombre rétabli** : un module `theme.js` applique simultanément l’attribut `data-theme="dark"` et la classe `dark` en fonction des préférences utilisateur ou du système, persistées dans `localStorage`.  Il expose une API globale `setTheme()` et réagit aux changements de `prefers-color-scheme`.
+* **Feuilles d’ajustement** : ajout de `router-fix.css` pour forcer `display:none` sur les éléments masqués via l’attribut `hidden`.  La feuille `theme-dark-fixes.css` a été déplacée dans `client/css/` et enrichie pour prendre en charge `.dark`.

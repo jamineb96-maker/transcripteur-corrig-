@@ -41,7 +41,12 @@ Les scripts `dev.sh`, `dev.ps1`, `run.sh` et `run.ps1` continuent de fonctionner
 
 ## Interface utilisateur
 
-L’interface web n’a pas été profondément modifiée dans cette version de maintenance.  Les étapes restent similaires, mais la progression lors de la transcription affiche désormais le nombre de segments traités.
+La version actuelle introduit un routeur SPA robuste et un gestionnaire de thème unifié :
+
+* **Navigation par onglets** : les ancres (`#pre_session`), les paramètres `?tab=` et les chemins `/tab/…` sont désormais interprétés pour afficher le module adéquat.  La page d’accueil comporte l’identifiant `tab-home` et est masquée lorsque l’on navigue vers un autre module.
+* **Thème clair/sombre** : l’application applique automatiquement le thème sombre en fonction de vos préférences système ou de votre choix explicite.  Utilisez `window.setTheme('light'|'dark'|'system')` dans la console pour tester.
+
+La progression lors de la transcription affiche toujours le nombre de segments traités.
 
 ## Migration des données
 

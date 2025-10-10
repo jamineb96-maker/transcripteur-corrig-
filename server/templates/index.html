@@ -102,7 +102,15 @@
       </header>
       <div class="app-banner" aria-live="polite"></div>
       <main class="app-main">
-        <section class="module-intro">
+        <!--
+          Ajout d'un identifiant stable pour la page d'accueil afin que le
+          routeur SPA puisse masquer ou réafficher correctement cette section.
+          L'identifiant "tab-home" n'était pas présent à l'origine; il est
+          ajouté sans modifier l'apparence ni la sémantique pour permettre
+          au routeur de détecter un panneau "home".  Ceci est idempotent
+          car l'attribut sera ignoré si déjà présent.
+        -->
+        <section class="module-intro" id="tab-home">
           <h1>Tableau de bord clinique</h1>
           <p class="module-intro__lead">
             Choisissez un module pour accompagner la prise en charge du patient.
@@ -235,6 +243,15 @@
     <div id="modal-root" data-modal-root></div>
     <div class="diag-panel" data-component="diagnostics" id="diagnostics-panel" aria-hidden="true"></div>
     <!-- Scripts de diagnostic et application -->
+    <!--
+      Injection du routeur SPA et du gestionnaire de thème avant l'application
+      principale.  Ces modules sont chargés en tant que modules ES afin de
+      garantir que le routeur soit initialisé avant les modules dépendants.
+      Le paramètre de version est aligné sur "postv2" pour éviter la mise en
+      cache agressive des navigateurs.
+    -->
+    <script type="module" src="/static/js/theme.js?v=postv2-{{ asset_version or '001' }}"></script>
+    <script type="module" src="/static/js/router.js?v=postv2-{{ asset_version or '001' }}"></script>
     <script type="module" src="/static/js/debug.js?v=postv2-{{ asset_version or '001' }}"></script>
     <script type="module" src="/static/app.js?v=postv2-{{ asset_version or '001' }}"></script>
   </body>
