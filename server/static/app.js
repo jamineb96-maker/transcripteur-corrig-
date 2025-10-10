@@ -1,3 +1,5 @@
+/* ensure tabs bootstrap present */
+try{import("/static/js/tabs_bootstrap.js").catch(function(){var s=document.createElement("script");s.src="/static/js/tabs_bootstrap.js?v="+Date.now();document.head.appendChild(s);});}catch(_){var s=document.createElement("script");s.src="/static/js/tabs_bootstrap.js?v="+Date.now();document.head.appendChild(s);}
 
 
 

@@ -37,6 +37,8 @@
       })();
     </script>
     <link rel="stylesheet" href="/static/css/router-fix.css">
+  <link rel="stylesheet" href="/static/css/theme-base.css">
+  <script src="/static/js/theme.js" defer></script>
 </head>
   <body
     data-active-tab=""
@@ -254,5 +256,6 @@
     <script type="module" src="/static/js/router.js?v=postv2-{{ asset_version or '001' }}"></script>
     <script type="module" src="/static/js/debug.js?v=postv2-{{ asset_version or '001' }}"></script>
     <script type="module" src="/static/app.js?v=postv2-{{ asset_version or '001' }}"></script>
-  </body>
+    <script src="/static/js/tabs_bootstrap.js?v={ asset_version or '001' }}"></script>
+</body>
 </html>
