@@ -1,3 +1,5 @@
+import { normalizePatients } from "./client/services/patients.js";
+
 const TABS = ["pre", "post", "constellation", "anatomie", "facturation", "agenda"];
 const STORAGE_KEY = "ui:patient";
 const FEATURE_FLAGS_URL = "./static/config/feature_flags.json";
@@ -33,6 +35,10 @@ const overflowMenu = document.querySelector('[data-nav-menu]');
 const overflowState = {
     expanded: false,
 };
+
+const API_BASE = typeof window !== "undefined" && typeof window.__API_BASE__ === "string"
+    ? window.__API_BASE__
+    : "";
 
 function setOverflowExpanded(expanded) {
     overflowState.expanded = Boolean(expanded);
@@ -172,6 +178,28 @@ function renderPatientsCta() {
     cta.textContent = message;
 }
 
+function renderPatientOptions(patients) {
+    if (!patientSelect) {
+        return;
+    }
+    patientSelect.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+    patients.forEach(patient => {
+        if (!patient || typeof patient !== "object") {
+            return;
+        }
+        const option = document.createElement("option");
+        option.value = patient.id;
+        option.textContent = patient.displayName || capitalizeName(patient.id);
+        if (patient.email) {
+            option.dataset.email = patient.email;
+        }
+        fragment.appendChild(option);
+    });
+    patientSelect.appendChild(fragment);
+    patientSelect.disabled = patients.length === 0;
+}
+
 function setActiveTab(tabId) {
     if (!tabsContainer) {
         return;
@@ -202,6 +230,143 @@ async function fetchJSON(url) {
     return response.json();
 }
 
+async function fetchText(url) {
+    const response = await fetch(url, {
+        headers: { "Accept": "text/plain, text/markdown;q=0.9, */*;q=0.1" },
+    });
+    if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+    }
+    return response.text();
+}
+
+function isLikelyArtifactPath(value) {
+    if (typeof value !== "string") {
+        return false;
+    }
+    const trimmed = value.trim();
+    if (!trimmed || /\s/.test(trimmed)) {
+        return false;
+    }
+    if (/^https?:/i.test(trimmed)) {
+        return true;
+    }
+    return /[./]/.test(trimmed);
+}
+
+async function resolveSessionTextCandidate(candidate) {
+    if (typeof candidate !== "string") {
+        return null;
+    }
+    const trimmed = candidate.trim();
+    if (!trimmed) {
+        return null;
+    }
+    if (/^https?:/i.test(trimmed)) {
+        return fetchText(trimmed);
+    }
+    if (isLikelyArtifactPath(trimmed) && !trimmed.includes("\n")) {
+        const normalized = trimmed.replace(/^\/+/, "");
+        try {
+            return await fetchText(`${API_BASE}/artifacts/${normalized}`);
+        } catch (error) {
+            console.debug("[assist-cli] artifact fetch failed", normalized, error);
+            return null;
+        }
+    }
+    return trimmed;
+}
+
+async function resolveSessionContentFromCandidates(candidates) {
+    for (const candidate of candidates) {
+        try {
+            const resolved = await resolveSessionTextCandidate(candidate);
+            if (typeof resolved === "string" && resolved.trim()) {
+                return resolved;
+            }
+        } catch (error) {
+            console.debug("[assist-cli] candidate resolution failed", error);
+        }
+    }
+    return null;
+}
+
+async function loadSession(kind) {
+    const normalizedKind = kind === "post" ? "post" : "pre";
+    const patientId = state.currentPatientId;
+    if (!patientId) {
+        return "Sélectionnez un patient pour afficher les notes.";
+    }
+    const patient = state.patients.find(item => item.id === patientId) || null;
+    const slug = (patient && (patient.slug || patient.id)) || patientId;
+    if (!slug) {
+        return "Patient sélectionné introuvable.";
+    }
+
+    const attempts = [];
+
+    attempts.push(async () => {
+        const url = `${API_BASE}/api/clinical/patient/${encodeURIComponent(slug)}/session/${encodeURIComponent(normalizedKind)}/materials`;
+        const payload = await fetchJSON(url);
+        const candidates = [
+            payload?.mail_md,
+            payload?.mail_markdown,
+            payload?.mail,
+            payload?.transcript,
+            payload?.content,
+            payload?.notes,
+        ];
+        return resolveSessionContentFromCandidates(candidates);
+    });
+
+    if (normalizedKind === "post") {
+        attempts.push(async () => {
+            const payload = await fetchJSON(`${API_BASE}/api/post/assets?patient=${encodeURIComponent(slug)}`);
+            if (payload?.ok === false) {
+                throw new Error(payload?.message || payload?.error || "post_assets_error");
+            }
+            const candidates = [
+                payload?.mail_md,
+                payload?.mail_markdown,
+                payload?.mail,
+                payload?.transcript,
+                payload?.plan_text,
+            ];
+            return resolveSessionContentFromCandidates(candidates);
+        });
+
+        attempts.push(async () => {
+            const transcript = await fetchText(
+                `${API_BASE}/api/post/assets?patient=${encodeURIComponent(slug)}&kind=transcript`
+            );
+            return transcript && transcript.trim() ? transcript : null;
+        });
+    }
+
+    attempts.push(async () => {
+        const context = await fetchJSON(`${API_BASE}/api/post-session/context?patient=${encodeURIComponent(slug)}`);
+        const candidates = [context?.last_notes, context?.notes, context?.summary];
+        return resolveSessionContentFromCandidates(candidates);
+    });
+
+    let lastError = null;
+    for (const attempt of attempts) {
+        try {
+            const result = await attempt();
+            if (typeof result === "string" && result.trim()) {
+                return result.trim();
+            }
+        } catch (error) {
+            lastError = error;
+        }
+    }
+
+    if (lastError) {
+        throw lastError;
+    }
+    return "Aucun contenu disponible pour le moment.";
+}
+
 async function loadPatients() {
     state.patientLibraryEmpty = false;
     state.showPatientsCta = false;
@@ -219,16 +384,35 @@ async function loadPatients() {
         const libraryEmpty = roots.length === 0 && dirAbs === "";
         state.patientLibraryEmpty = libraryEmpty;
         state.showPatientsCta = libraryEmpty && patients.length === 0;
+        renderPatientOptions(patients);
+        const storedPatientId = localStorage.getItem(STORAGE_KEY);
+        const selected = patients.find(patient => patient.id === storedPatientId)
+            ? storedPatientId
+            : patients[0]?.id ?? null;
+        if (selected) {
+            state.currentPatientId = selected;
+            if (patientSelect) {
+                patientSelect.value = selected;
+            }
+        } else {
+            state.currentPatientId = null;
+            if (patientSelect) {
+                patientSelect.value = "";
+            }
+        }
         renderPatientsCta();
         showBanner("");
+        return patients;
     } catch (error) {
-@@ -162,67 +188,105 @@ async function loadSession(kind) {
-        console.error(`Erreur lors du chargement ${kind}`, error);
-        showBanner(
-            "Certaines données n'ont pas pu être chargées. Veuillez vérifier la connexion à l'API.",
-            "warning"
-        );
-        return "Aucun contenu disponible (erreur de chargement).";
+        console.error("[assist-cli] patients load failed", error);
+        state.patients = [];
+        state.currentPatientId = null;
+        state.patientLibraryEmpty = true;
+        state.showPatientsCta = true;
+        renderPatientOptions([]);
+        renderPatientsCta();
+        showBanner("Impossible de charger la liste des patients. Veuillez vérifier la connexion à l'API.", "warning");
+        return [];
     }
 }
 
@@ -244,11 +428,21 @@ async function updatePanel() {
 
     if (tabId === "pre" || tabId === "post") {
         panel.innerHTML = "<p class=\"loading\">Chargement…</p>";
-        const content = await loadSession(tabId === "pre" ? "pre" : "post");
-        const title = tabId === "pre" ? "Pré-séance" : "Post-séance";
-        panel.innerHTML = `<article class="notes"><h2>${title}</h2><pre>${escapeHtml(
-            content
-        )}</pre></article>`;
+        try {
+            const content = await loadSession(tabId === "pre" ? "pre" : "post");
+            const title = tabId === "pre" ? "Pré-séance" : "Post-séance";
+            panel.innerHTML = `<article class="notes"><h2>${title}</h2><pre>${escapeHtml(
+                content
+            )}</pre></article>`;
+            showBanner("");
+        } catch (error) {
+            console.error("Erreur lors du chargement des notes", error);
+            showBanner(
+                "Certaines données n'ont pas pu être chargées. Veuillez vérifier la connexion à l'API.",
+                "warning"
+            );
+            panel.innerHTML = "<p class=\"placeholder\">Aucun contenu disponible (erreur de chargement).</p>";
+        }
     } else if (tabId === "anatomie") {
         await loadAnatomyTab();
     } else {
@@ -329,3 +523,23 @@ if (brandLink) {
 }
 
 window.addEventListener("hashchange", handleHashChange);
+
+async function initializeApp() {
+    try {
+        const patients = await loadPatients();
+        if (patients.length === 0) {
+            panel.innerHTML = "<p class=\"placeholder\">Aucun patient disponible.</p>";
+        }
+    } catch (error) {
+        console.error("Initialisation impossible", error);
+        panel.innerHTML = "<p class=\"placeholder\">Erreur lors de l'initialisation de l'application.</p>";
+    } finally {
+        handleHashChange();
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeApp, { once: true });
+} else {
+    initializeApp();
+}
