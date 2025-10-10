@@ -436,18 +436,6 @@ def create_app(upload_dir: Optional[str] = None, archive_dir: Optional[str] = No
             config=app.config,
         )
 
-@app.get("/assets/<path:filename>")
-def legacy_assets(filename: str):
-    """Compatibility route: serve /assets/* from /static/assets/*."""
-    from flask import send_from_directory
-    from pathlib import Path as _Path
-    static_assets = _Path(app.static_folder) / "assets"
-    target = static_assets / filename
-    if target.exists() and target.is_file():
-        return send_from_directory(str(static_assets), filename)
-    return handle_error("Fichier introuvable.", 404)
-
-
 
     return app
 

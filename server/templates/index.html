@@ -36,7 +36,8 @@
         window.APP_DEBUG = {{ 'true' if debug_mode else 'false' }};
       })();
     </script>
-  </head>
+    <link rel="stylesheet" href="/static/css/router-fix.css">
+</head>
   <body
     data-active-tab=""
     data-openai-configured="{{ 'true' if openai_configured else 'false' }}"

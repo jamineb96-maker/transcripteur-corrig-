@@ -1,0 +1,2 @@
+/* Ensure hidden attribute and default panel hiding don't get overridden */
+[hidden] { display: none !important; }
