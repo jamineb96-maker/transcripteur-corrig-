@@ -450,6 +450,22 @@ def create_app(upload_dir: Optional[str] = None, archive_dir: Optional[str] = No
         except NameError:
             return jsonify({"ok": False, "message": "Fichier introuvable."}), 404
 
+    # ----------------------------------------------------------------------
+    # Register optional legacy post‑session blueprint
+    # ----------------------------------------------------------------------
+    # The application can expose a simplified legacy post‑session API under
+    # the ``/api/post_v1`` prefix.  This blueprint is defined in
+    # ``server/blueprints/post_v1.py`` and mirrors the historical
+    # ``transcribe``, ``prepare_plan`` and ``prepare_prompt`` routes.  If
+    # the module cannot be imported the registration is skipped
+    # silently.  Registering here ensures the routes are added even when
+    # ``create_app`` is invoked outside of ``server.run``.
+    try:
+        from .blueprints.post_v1 import post_v1_bp  # type: ignore
+        app.register_blueprint(post_v1_bp)
+    except Exception:
+        pass
+
 
 
     return app
