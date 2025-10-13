@@ -12,6 +12,8 @@ from pathlib import Path
 LOGGER = logging.getLogger(__name__)
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
+CLIENT_DIR = ROOT_DIR / "client"
+SERVER_STATIC_DIR = ROOT_DIR / "server" / "static"
 INSTANCE_DIR = ROOT_DIR / "instance"
 TEMPLATES_DIR = INSTANCE_DIR / "templates"
 ASSETS_DIR = INSTANCE_DIR / "assets"
@@ -156,6 +158,43 @@ def _ensure_json(path: Path, default) -> None:
         json.dump(default, handle)
 
 
+def _sync_static_asset(rel_path: str) -> None:
+    """Mirror ``server/static`` assets into the ``client`` bundle.
+
+    The Flask application serves ``/static`` from the ``client`` directory, yet
+    some legacy assets (such as the bootstrap tabs helper or base theme
+    stylesheets) still live under ``server/static``.  In development those files
+    were manually copied which meant a fresh checkout would miss them and the UI
+    would fail to initialise (stuck on the loading screen, missing dark-mode
+    toggle, etc.).
+
+    To make the bootstrap process deterministic we copy the required files on
+    startup when ``ensure_assets`` is invoked.  The copy is skipped if the
+    destination already contains identical content so repeated calls remain
+    cheap.
+    """
+
+    src = SERVER_STATIC_DIR / rel_path
+    if not src.exists():
+        LOGGER.warning("static_asset_missing", extra={"asset": rel_path})
+        return
+
+    dest = CLIENT_DIR / rel_path
+    dest.parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+        payload = src.read_bytes()
+        if dest.exists() and dest.read_bytes() == payload:
+            return
+        dest.write_bytes(payload)
+        LOGGER.debug("static_asset_synced", extra={"asset": rel_path})
+    except OSError as exc:  # pragma: no cover - filesystem errors are runtime only
+        LOGGER.warning(
+            "static_asset_sync_failed",
+            extra={"asset": rel_path, "error": str(exc)},
+        )
+
+
 def ensure_assets() -> AssetPaths:
     """Garantit la présence de l'arborescence et des actifs nécessaires."""
 
@@ -170,17 +209,12 @@ def ensure_assets() -> AssetPaths:
     _decode_signature()
     _rasterize_logo()
 
-    theme_fix_src = ROOT_DIR / "server" / "static" / "css" / "theme-dark-fixes.css"
-    if theme_fix_src.exists():
-        theme_fix_dest = ROOT_DIR / "client" / "css" / "theme-dark-fixes.css"
-        theme_fix_dest.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            src_payload = theme_fix_src.read_text(encoding="utf-8")
-            dest_payload = theme_fix_dest.read_text(encoding="utf-8") if theme_fix_dest.exists() else None
-            if dest_payload != src_payload:
-                theme_fix_dest.write_text(src_payload, encoding="utf-8")
-        except OSError as exc:
-            LOGGER.warning("theme_dark_fix_copy_failed", extra={"error": str(exc)})
+    static_assets = [
+        "css/theme-base.css",
+        "js/tabs_bootstrap.js",
+    ]
+    for asset in static_assets:
+        _sync_static_asset(asset)
 
     return AssetPaths(
         logo_svg=LOGO_SVG_PATH,
