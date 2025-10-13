@@ -1,0 +1,15 @@
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --bg-dark: #0f1115;
+  --fg-dark: #e8e8e8;
+  --accent: #2962ff;
+}
+html, body { background: var(--bg); color: var(--fg); }
+html.dark, [data-theme="dark"] { background: var(--bg-dark); color: var(--fg-dark); }
+html.dark body, [data-theme="dark"] body { background: var(--bg-dark); color: var(--fg-dark); }
+a { color: var(--accent); }
+[hidden] { display: none !important; }
+.tab-panel { padding: 1rem; }
+.progress { width: 100%; height: 8px; background: rgba(0,0,0,0.08); margin: 0.5rem 0; border-radius: 4px; overflow: hidden; }
+.progress__bar { height: 100%; background: var(--accent); width: 0%; transition: width .2s; }
