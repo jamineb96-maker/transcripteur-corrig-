@@ -27,16 +27,25 @@
   }
 
   // Ensure a container exists for each panel we can show
-  var root = document.getElementById('app') || document.querySelector('[data-panels-root]') || document.body;
+  var root =
+    document.querySelector('[data-tab-root]') ||
+    document.getElementById('app') ||
+    document.querySelector('[data-panels-root]') ||
+    document.body;
   function ensurePanel(name){
     name = (name||'').toLowerCase();
-    if (!name || name === 'home') return document.getElementById('tab-home');
+    if (!name || name === 'home') {
+      return document.getElementById('tab-home');
+    }
     var byId = document.getElementById('tab-'+name);
     if (byId) return byId;
+    var byData = document.querySelector('[data-tab="'+name+'"]');
+    if (byData) return byData;
     var panel = document.createElement('section');
     panel.id = 'tab-'+name;
     panel.className = 'tab-panel';
     panel.setAttribute('data-name', name);
+    panel.setAttribute('data-tab', name);
     panel.setAttribute('hidden','');
     panel.innerHTML = '<div class="panel__inner"><h2>'+name.replace(/_/g,' ')+'</h2><div class="panel__body" data-panel-body="'+name+'">Chargement…</div></div>';
     root.appendChild(panel);
