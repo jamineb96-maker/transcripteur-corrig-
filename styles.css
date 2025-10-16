@@ -16,6 +16,11 @@ body {
     flex-direction: column;
 }
 
+.brand-home-link[data-tab="home"],
+.brand-home-link.active {
+    text-decoration: none;
+}
+
 .app-header {
     display: flex;
     flex-wrap: wrap;
@@ -204,12 +209,115 @@ body {
     padding: 0 1rem 2rem;
 }
 
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.dashboard[hidden] {
+    display: none;
+}
+
+.dashboard__intro h1 {
+    margin: 0 0 0.5rem;
+    font-size: 2rem;
+    color: #1f2a44;
+}
+
+.dashboard__lead {
+    margin: 0;
+    color: #4b5563;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.dashboard__metrics {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.75rem 0 0;
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+.module-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.module-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: #ffffff;
+    padding: 1.25rem;
+    border-radius: 0.9rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.module-card:hover,
+.module-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 34px rgba(15, 23, 42, 0.12);
+    border-color: rgba(37, 99, 235, 0.35);
+    outline: none;
+}
+
+.module-card__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.module-card__header h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: #1f2937;
+}
+
+.module-card__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.12);
+    color: #1d4ed8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.module-card__description {
+    margin: 0;
+    color: #475569;
+    line-height: 1.55;
+}
+
+.module-card__metric {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #334155;
+    font-weight: 500;
+}
+
 .panel {
     background: #fff;
     border-radius: 0.75rem;
     box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
     padding: 1.5rem;
     min-height: 300px;
+}
+
+.panel[hidden] {
+    display: none;
 }
 
 .loading {
@@ -257,5 +365,9 @@ body {
     .tabs [data-nav-list] a {
         flex: 1 1 auto;
         text-align: center;
+    }
+
+    .module-cards {
+        grid-template-columns: 1fr;
     }
 }

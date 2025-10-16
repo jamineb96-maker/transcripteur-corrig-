@@ -1,6 +1,22 @@
 import { normalizePatients } from "./client/services/patients.js";
 
-const TABS = ["pre", "post", "constellation", "anatomie", "facturation", "agenda"];
+const HOME_TAB = "home";
+const TABS = [
+    "pre_session",
+    "post_session",
+    "journal_critique",
+    "documents_aide",
+    "library",
+    "constellation",
+    "anatomie3d",
+    "facturation",
+    "agenda",
+    "budget",
+];
+const SESSION_TAB_CONFIG = {
+    pre_session: { kind: "pre", title: "Pré-séance" },
+    post_session: { kind: "post", title: "Post-séance" },
+};
 const STORAGE_KEY = "ui:patient";
 const FEATURE_FLAGS_URL = "./static/config/feature_flags.json";
 
@@ -16,7 +32,7 @@ async function getFeatureFlags() {
 const state = {
     patients: [],
     currentPatientId: null,
-    currentTab: "pre",
+    currentTab: HOME_TAB,
     patientLibraryEmpty: false,
     showPatientsCta: false,
 };
@@ -24,9 +40,15 @@ const state = {
 const banner = document.getElementById("banner");
 const patientSelect = document.getElementById("patient-select");
 const panel = document.getElementById("panel");
+const homeSection = document.querySelector('[data-view="home"]');
+const homeSelectedElement = homeSection ? homeSection.querySelector('[data-intro-selected]') : null;
+const homeCountElement = homeSection ? homeSection.querySelector('[data-intro-count]') : null;
+const cardLinks = homeSection ? [...homeSection.querySelectorAll('[data-card-tab]')] : [];
+const cardMetricElements = homeSection ? homeSection.querySelectorAll('[data-card-metric]') : [];
+const anatomyCard = homeSection ? homeSection.querySelector('[data-card-tab="anatomie3d"]') : null;
 const tabsContainer = document.querySelector('[data-nav-list]');
 const brandLink = document.querySelector('[data-nav-action="home"]');
-const anatomyNavLink = document.querySelector('[data-nav-item="anatomie"]');
+const anatomyNavLink = document.querySelector('[data-nav-item="anatomie3d"]');
 const patientControls = document.querySelector('.patient-controls');
 const overflowContainer = document.querySelector('[data-nav-overflow]');
 const overflowToggle = document.querySelector('[data-nav-toggle="overflow"]');
@@ -113,11 +135,17 @@ let anatomyModule = null;
 
 getFeatureFlags().then(flags => {
     anatomyEnabled = flags?.anatomy3d_enabled !== false;
-    if (!anatomyEnabled && anatomyNavLink) {
-        const anchor = anatomyNavLink.closest("a");
-        if (anchor) {
-            anchor.setAttribute("hidden", "true");
-            anchor.style.display = "none";
+    if (!anatomyEnabled) {
+        if (anatomyNavLink) {
+            const anchor = anatomyNavLink.closest("a");
+            if (anchor) {
+                anchor.setAttribute("hidden", "true");
+                anchor.style.display = "none";
+            }
+        }
+        if (anatomyCard) {
+            anatomyCard.setAttribute("hidden", "true");
+            anatomyCard.style.display = "none";
         }
     }
 });
@@ -125,8 +153,8 @@ getFeatureFlags().then(flags => {
 function navigate(target) {
     closeOverflowMenu();
     const destination = typeof target === "string" ? target : null;
-    if (!destination || destination === "home") {
-        window.location.hash = "#pre";
+    if (!destination || destination === HOME_TAB) {
+        window.location.hash = `#${HOME_TAB}`;
         return;
     }
     if (TABS.includes(destination)) {
@@ -159,7 +187,8 @@ function renderPatientsCta() {
         return;
     }
     const existing = patientControls.querySelector('[data-patients-cta]');
-    const shouldShow = state.showPatientsCta && state.currentTab !== "anatomie";
+    const shouldShow =
+        state.showPatientsCta && state.currentTab !== "anatomie3d" && state.currentTab !== HOME_TAB;
     if (!shouldShow) {
         if (existing) {
             existing.remove();
@@ -200,6 +229,68 @@ function renderPatientOptions(patients) {
     patientSelect.disabled = patients.length === 0;
 }
 
+function findPatientById(id) {
+    if (!id) {
+        return null;
+    }
+    return state.patients.find(patient => patient.id === id) || null;
+}
+
+function updateHomeMetrics() {
+    const patient = findPatientById(state.currentPatientId);
+    if (homeSelectedElement) {
+        if (patient) {
+            homeSelectedElement.textContent = `Patient actuel : ${patient.displayName}`;
+        } else if (state.patients.length > 0) {
+            homeSelectedElement.textContent = "Patient actuel : sélectionnez un dossier";
+        } else {
+            homeSelectedElement.textContent = "Patient actuel : aucun patient disponible";
+        }
+    }
+    if (homeCountElement) {
+        homeCountElement.textContent = `Patients chargés : ${state.patients.length}`;
+    }
+}
+
+function updateCardMetrics() {
+    if (!cardMetricElements || cardMetricElements.length === 0) {
+        return;
+    }
+    const hasPatients = state.patients.length > 0;
+    const patient = findPatientById(state.currentPatientId);
+    let message;
+    if (!hasPatients) {
+        message = "Aucun patient disponible.";
+    } else if (patient) {
+        message = `Patient : ${patient.displayName}`;
+    } else {
+        message = "Sélectionnez un patient pour commencer.";
+    }
+    cardMetricElements.forEach(element => {
+        element.textContent = message;
+    });
+}
+
+function showHome() {
+    if (homeSection) {
+        homeSection.hidden = false;
+    }
+    if (panel) {
+        panel.hidden = true;
+        panel.innerHTML = "";
+    }
+    renderPatientsCta();
+}
+
+function showPanelView() {
+    if (homeSection) {
+        homeSection.hidden = true;
+    }
+    if (panel) {
+        panel.hidden = false;
+    }
+}
+
 function setActiveTab(tabId) {
     if (!tabsContainer) {
         return;
@@ -216,8 +307,12 @@ function setActiveTab(tabId) {
 function renderPlaceholder(tabId) {
     const placeholders = {
         constellation: "Module Constellation à venir.",
+        journal_critique: "Journal critique disponible prochainement.",
+        documents_aide: "Les documents d'aide seront bientôt accessibles.",
+        library: "Bibliothèque en cours de préparation.",
         facturation: "Gestion de facturation disponible prochainement.",
         agenda: "Agenda en cours de construction.",
+        budget: "Budget cognitif en préparation.",
     };
     return `<p class="placeholder">${placeholders[tabId] || "Section en préparation."}</p>`;
 }
@@ -291,8 +386,9 @@ async function resolveSessionContentFromCandidates(candidates) {
     return null;
 }
 
-async function loadSession(kind) {
-    const normalizedKind = kind === "post" ? "post" : "pre";
+async function loadSession(tabId) {
+    const config = SESSION_TAB_CONFIG[tabId] ?? SESSION_TAB_CONFIG.pre_session;
+    const normalizedKind = config.kind;
     const patientId = state.currentPatientId;
     if (!patientId) {
         return "Sélectionnez un patient pour afficher les notes.";
@@ -400,6 +496,8 @@ async function loadPatients() {
                 patientSelect.value = "";
             }
         }
+        updateHomeMetrics();
+        updateCardMetrics();
         renderPatientsCta();
         showBanner("");
         return patients;
@@ -411,6 +509,8 @@ async function loadPatients() {
         state.showPatientsCta = true;
         renderPatientOptions([]);
         renderPatientsCta();
+        updateHomeMetrics();
+        updateCardMetrics();
         showBanner("Impossible de charger la liste des patients. Veuillez vérifier la connexion à l'API.", "warning");
         return [];
     }
@@ -418,19 +518,26 @@ async function loadPatients() {
 
 async function updatePanel() {
     const tabId = state.currentTab;
+    showPanelView();
     setActiveTab(tabId);
     renderPatientsCta();
+    updateHomeMetrics();
+    updateCardMetrics();
 
     if (!state.currentPatientId && state.patients.length > 0) {
         state.currentPatientId = state.patients[0].id;
-        patientSelect.value = state.currentPatientId;
+        if (patientSelect) {
+            patientSelect.value = state.currentPatientId;
+        }
+        updateHomeMetrics();
+        updateCardMetrics();
     }
 
-    if (tabId === "pre" || tabId === "post") {
+    if (SESSION_TAB_CONFIG[tabId]) {
         panel.innerHTML = "<p class=\"loading\">Chargement…</p>";
         try {
-            const content = await loadSession(tabId === "pre" ? "pre" : "post");
-            const title = tabId === "pre" ? "Pré-séance" : "Post-séance";
+            const content = await loadSession(tabId);
+            const title = SESSION_TAB_CONFIG[tabId]?.title ?? "Notes";
             panel.innerHTML = `<article class="notes"><h2>${title}</h2><pre>${escapeHtml(
                 content
             )}</pre></article>`;
@@ -443,7 +550,7 @@ async function updatePanel() {
             );
             panel.innerHTML = "<p class=\"placeholder\">Aucun contenu disponible (erreur de chargement).</p>";
         }
-    } else if (tabId === "anatomie") {
+    } else if (tabId === "anatomie3d") {
         await loadAnatomyTab();
     } else {
         panel.innerHTML = renderPlaceholder(tabId);
@@ -494,26 +601,41 @@ function escapeHtml(value) {
 function handleHashChange() {
     closeOverflowMenu();
     const hash = window.location.hash.replace(/^#/, "");
-    if (TABS.includes(hash)) {
-        if (hash === "anatomie" && !anatomyEnabled) {
-            window.location.hash = "#pre";
-            return;
-        }
-        state.currentTab = hash;
-    } else {
-        state.currentTab = "pre";
-        if (!hash) {
-            window.location.hash = "#pre";
-        }
+    if (!hash) {
+        window.location.hash = `#${HOME_TAB}`;
+        return;
     }
+    if (hash === HOME_TAB) {
+        state.currentTab = HOME_TAB;
+        setActiveTab(null);
+        showHome();
+        updateHomeMetrics();
+        updateCardMetrics();
+        return;
+    }
+    if (!TABS.includes(hash)) {
+        window.location.hash = `#${HOME_TAB}`;
+        return;
+    }
+    if (hash === "anatomie3d" && !anatomyEnabled) {
+        window.location.hash = "#pre_session";
+        return;
+    }
+    state.currentTab = hash;
     updatePanel();
 }
 
-patientSelect.addEventListener("change", () => {
-    state.currentPatientId = patientSelect.value;
-    localStorage.setItem(STORAGE_KEY, state.currentPatientId);
-    updatePanel();
-});
+if (patientSelect) {
+    patientSelect.addEventListener("change", () => {
+        state.currentPatientId = patientSelect.value;
+        localStorage.setItem(STORAGE_KEY, state.currentPatientId);
+        updateHomeMetrics();
+        updateCardMetrics();
+        if (state.currentTab && state.currentTab !== HOME_TAB) {
+            updatePanel();
+        }
+    });
+}
 
 if (brandLink) {
     brandLink.addEventListener("click", event => {
@@ -522,12 +644,25 @@ if (brandLink) {
     });
 }
 
+cardLinks.forEach(link => {
+    link.addEventListener("click", event => {
+        event.preventDefault();
+        const tabId = link.dataset.cardTab;
+        if (tabId) {
+            navigate(tabId);
+        }
+    });
+});
+
 window.addEventListener("hashchange", handleHashChange);
 
 async function initializeApp() {
+    showHome();
+    updateHomeMetrics();
+    updateCardMetrics();
     try {
         const patients = await loadPatients();
-        if (patients.length === 0) {
+        if (patients.length === 0 && state.currentTab !== HOME_TAB) {
             panel.innerHTML = "<p class=\"placeholder\">Aucun patient disponible.</p>";
         }
     } catch (error) {
