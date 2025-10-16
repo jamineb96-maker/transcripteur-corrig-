@@ -1,6 +1,10 @@
 import { normalizePatients } from "./client/services/patients.js";
 
-const TABS = ["pre", "post", "constellation", "anatomie", "facturation", "agenda"];
+const TABS = ["pre_session", "post_session", "constellation", "anatomie3d", "facturation", "agenda"];
+const SESSION_TAB_CONFIG = {
+    pre_session: { kind: "pre", title: "Pré-séance" },
+    post_session: { kind: "post", title: "Post-séance" },
+};
 const STORAGE_KEY = "ui:patient";
 const FEATURE_FLAGS_URL = "./static/config/feature_flags.json";
 
@@ -16,7 +20,7 @@ async function getFeatureFlags() {
 const state = {
     patients: [],
     currentPatientId: null,
-    currentTab: "pre",
+    currentTab: "pre_session",
     patientLibraryEmpty: false,
     showPatientsCta: false,
 };
@@ -26,7 +30,7 @@ const patientSelect = document.getElementById("patient-select");
 const panel = document.getElementById("panel");
 const tabsContainer = document.querySelector('[data-nav-list]');
 const brandLink = document.querySelector('[data-nav-action="home"]');
-const anatomyNavLink = document.querySelector('[data-nav-item="anatomie"]');
+const anatomyNavLink = document.querySelector('[data-nav-item="anatomie3d"]');
 const patientControls = document.querySelector('.patient-controls');
 const overflowContainer = document.querySelector('[data-nav-overflow]');
 const overflowToggle = document.querySelector('[data-nav-toggle="overflow"]');
@@ -126,7 +130,7 @@ function navigate(target) {
     closeOverflowMenu();
     const destination = typeof target === "string" ? target : null;
     if (!destination || destination === "home") {
-        window.location.hash = "#pre";
+        window.location.hash = "#pre_session";
         return;
     }
     if (TABS.includes(destination)) {
@@ -159,7 +163,7 @@ function renderPatientsCta() {
         return;
     }
     const existing = patientControls.querySelector('[data-patients-cta]');
-    const shouldShow = state.showPatientsCta && state.currentTab !== "anatomie";
+    const shouldShow = state.showPatientsCta && state.currentTab !== "anatomie3d";
     if (!shouldShow) {
         if (existing) {
             existing.remove();
@@ -291,8 +295,9 @@ async function resolveSessionContentFromCandidates(candidates) {
     return null;
 }
 
-async function loadSession(kind) {
-    const normalizedKind = kind === "post" ? "post" : "pre";
+async function loadSession(tabId) {
+    const config = SESSION_TAB_CONFIG[tabId] ?? SESSION_TAB_CONFIG.pre_session;
+    const normalizedKind = config.kind;
     const patientId = state.currentPatientId;
     if (!patientId) {
         return "Sélectionnez un patient pour afficher les notes.";
@@ -426,11 +431,11 @@ async function updatePanel() {
         patientSelect.value = state.currentPatientId;
     }
 
-    if (tabId === "pre" || tabId === "post") {
+    if (SESSION_TAB_CONFIG[tabId]) {
         panel.innerHTML = "<p class=\"loading\">Chargement…</p>";
         try {
-            const content = await loadSession(tabId === "pre" ? "pre" : "post");
-            const title = tabId === "pre" ? "Pré-séance" : "Post-séance";
+            const content = await loadSession(tabId);
+            const title = SESSION_TAB_CONFIG[tabId]?.title ?? "Notes";
             panel.innerHTML = `<article class="notes"><h2>${title}</h2><pre>${escapeHtml(
                 content
             )}</pre></article>`;
@@ -443,7 +448,7 @@ async function updatePanel() {
             );
             panel.innerHTML = "<p class=\"placeholder\">Aucun contenu disponible (erreur de chargement).</p>";
         }
-    } else if (tabId === "anatomie") {
+    } else if (tabId === "anatomie3d") {
         await loadAnatomyTab();
     } else {
         panel.innerHTML = renderPlaceholder(tabId);
@@ -495,15 +500,16 @@ function handleHashChange() {
     closeOverflowMenu();
     const hash = window.location.hash.replace(/^#/, "");
     if (TABS.includes(hash)) {
-        if (hash === "anatomie" && !anatomyEnabled) {
-            window.location.hash = "#pre";
+        if (hash === "anatomie3d" && !anatomyEnabled) {
+            window.location.hash = "#pre_session";
             return;
         }
         state.currentTab = hash;
     } else {
-        state.currentTab = "pre";
-        if (!hash) {
-            window.location.hash = "#pre";
+        state.currentTab = "pre_session";
+        if (!hash || hash !== "pre_session") {
+            window.location.hash = "#pre_session";
+            return;
         }
     }
     updatePanel();
