@@ -17,10 +17,14 @@
                 <div class="nav-items" data-nav-list>
                     <a href="#pre_session" data-tab="pre_session" data-nav-item="pre_session">Pré-séance</a>
                     <a href="#post_session" data-tab="post_session" data-nav-item="post_session">Post-séance</a>
+                    <a href="#journal_critique" data-tab="journal_critique" data-nav-item="journal_critique">Journal critique</a>
+                    <a href="#documents_aide" data-tab="documents_aide" data-nav-item="documents_aide">Documents d'aide</a>
+                    <a href="#library" data-tab="library" data-nav-item="library">Bibliothèque</a>
                     <a href="#constellation" data-tab="constellation" data-nav-item="constellation">Constellation</a>
                     <a href="#anatomie3d" data-tab="anatomie3d" data-nav-item="anatomie3d">Anatomie</a>
                     <a href="#facturation" data-tab="facturation" data-nav-item="facturation">Facturation</a>
                     <a href="#agenda" data-tab="agenda" data-nav-item="agenda">Agenda</a>
+                    <a href="#budget" data-tab="budget" data-nav-item="budget">Budget cognitif</a>
                 </div>
             </nav>
             <div class="nav-overflow" data-nav-overflow data-empty="true">
@@ -39,7 +43,134 @@
     <div id="banner" class="banner" role="status" aria-live="polite"></div>
 
     <main class="content">
-        <section id="panel" class="panel" aria-live="polite"></section>
+        <section class="dashboard" data-view="home">
+            <header class="dashboard__intro" id="tab-home">
+                <h1>Tableau de bord clinique</h1>
+                <p class="dashboard__lead">
+                    Choisissez un module pour accompagner la prise en charge du patient. Les raccourcis ci-dessous s'adaptent
+                    automatiquement au patient sélectionné.
+                </p>
+                <p class="dashboard__metrics">
+                    <span data-intro-selected>Patient actuel&nbsp;: en cours de chargement…</span>
+                    <span aria-hidden="true">•</span>
+                    <span data-intro-count>Patients chargés&nbsp;: 0</span>
+                </p>
+            </header>
+
+            <div class="module-cards" role="list">
+                <a href="#pre_session" data-card-tab="pre_session" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Pré-séance</h2>
+                        <span class="module-card__badge">Briefing</span>
+                    </div>
+                    <p class="module-card__description">
+                        Préparez l'entretien, centralisez les notes clés et les objectifs de la séance.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="pre_session">Chargement des données…</p>
+                </a>
+
+                <a href="#post_session" data-card-tab="post_session" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Post-séance</h2>
+                        <span class="module-card__badge">Suivi</span>
+                    </div>
+                    <p class="module-card__description">
+                        Rédigez le compte rendu, notez les actions et planifiez les prochaines étapes.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="post_session">Chargement des données…</p>
+                </a>
+
+                <a href="#journal_critique" data-card-tab="journal_critique" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Journal critique</h2>
+                        <span class="module-card__badge">Narrations</span>
+                    </div>
+                    <p class="module-card__description">
+                        Composez des invitations narratives situées et exportez un journal critique.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="journal_critique">Chargement des données…</p>
+                </a>
+
+                <a href="#documents_aide" data-card-tab="documents_aide" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Documents d'aide</h2>
+                        <span class="module-card__badge">Supports</span>
+                    </div>
+                    <p class="module-card__description">
+                        Composez des PDF personnalisés situés et adaptables aux besoins détectés post-séance.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="documents_aide">Chargement des données…</p>
+                </a>
+
+                <a href="#library" data-card-tab="library" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Bibliothèque</h2>
+                        <span class="module-card__badge">Ressources</span>
+                    </div>
+                    <p class="module-card__description">
+                        Ingestion, curation et indexation de ressources cliniques pour alimenter les suggestions.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="library">Chargement des données…</p>
+                </a>
+
+                <a href="#constellation" data-card-tab="constellation" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Constellation</h2>
+                        <span class="module-card__badge">Vue globale</span>
+                    </div>
+                    <p class="module-card__description">
+                        Visualisez les liens et ressources autour du patient pour affiner le suivi.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="constellation">Chargement des données…</p>
+                </a>
+
+                <a href="#anatomie3d" data-card-tab="anatomie3d" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Anatomie 3D</h2>
+                        <span class="module-card__badge">Exploration</span>
+                    </div>
+                    <p class="module-card__description">
+                        Parcourez la modélisation anatomique pour contextualiser les gestes thérapeutiques.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="anatomie3d">Chargement des données…</p>
+                </a>
+
+                <a href="#facturation" data-card-tab="facturation" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Facturation</h2>
+                        <span class="module-card__badge">Gestion</span>
+                    </div>
+                    <p class="module-card__description">
+                        Suivez les actes, vérifiez les remboursements et gardez une vision financière claire.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="facturation">Chargement des données…</p>
+                </a>
+
+                <a href="#agenda" data-card-tab="agenda" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Agenda</h2>
+                        <span class="module-card__badge">Planification</span>
+                    </div>
+                    <p class="module-card__description">
+                        Synchronisez les rendez-vous, gérez les rappels et structurez vos suivis.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="agenda">Chargement des données…</p>
+                </a>
+
+                <a href="#budget" data-card-tab="budget" class="module-card" role="listitem">
+                    <div class="module-card__header">
+                        <h2>Budget cognitif</h2>
+                        <span class="module-card__badge">Synthèse</span>
+                    </div>
+                    <p class="module-card__description">
+                        Visualisez l'effort demandé par les interventions et gardez un équilibre thérapeutique.
+                    </p>
+                    <p class="module-card__metric" data-card-metric="budget">Chargement des données…</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="panel" class="panel" aria-live="polite" hidden></section>
     </main>
 
     <script>
