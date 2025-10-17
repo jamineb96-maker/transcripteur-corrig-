@@ -13,9 +13,28 @@ const TABS = [
     "agenda",
     "budget",
 ];
+const TAB_ALIASES = {
+    pre: "pre_session",
+    "pre-session": "pre_session",
+    post: "post_session",
+    "post-session": "post_session",
+    documents: "documents_aide",
+    "documents-aide": "documents_aide",
+    documentsaide: "documents_aide",
+    journal: "journal_critique",
+    "journal-critique": "journal_critique",
+    journalcritique: "journal_critique",
+    anatomie: "anatomie3d",
+    "anatomie-3d": "anatomie3d",
+    bibliotheque: "library",
+    librairie: "library",
+    "budget-cognitif": "budget",
+};
 const SESSION_TAB_CONFIG = {
     pre_session: { kind: "pre", title: "Pré-séance" },
     post_session: { kind: "post", title: "Post-séance" },
+    pre: { kind: "pre", title: "Pré-séance" },
+    post: { kind: "post", title: "Post-séance" },
 };
 const STORAGE_KEY = "ui:patient";
 const FEATURE_FLAGS_URL = "./static/config/feature_flags.json";
@@ -61,6 +80,29 @@ const overflowState = {
 const API_BASE = typeof window !== "undefined" && typeof window.__API_BASE__ === "string"
     ? window.__API_BASE__
     : "";
+
+const VALID_TABS = new Set(TABS);
+
+function normalizeTabId(value) {
+    if (value == null) {
+        return null;
+    }
+    const raw = String(value).trim();
+    if (!raw) {
+        return null;
+    }
+    const lowered = raw.toLowerCase();
+    if (lowered === HOME_TAB) {
+        return HOME_TAB;
+    }
+    if (VALID_TABS.has(lowered)) {
+        return lowered;
+    }
+    if (Object.prototype.hasOwnProperty.call(TAB_ALIASES, lowered)) {
+        return TAB_ALIASES[lowered];
+    }
+    return null;
+}
 
 function setOverflowExpanded(expanded) {
     overflowState.expanded = Boolean(expanded);
@@ -152,14 +194,12 @@ getFeatureFlags().then(flags => {
 
 function navigate(target) {
     closeOverflowMenu();
-    const destination = typeof target === "string" ? target : null;
-    if (!destination || destination === HOME_TAB) {
+    const normalized = normalizeTabId(target);
+    if (!normalized) {
         window.location.hash = `#${HOME_TAB}`;
         return;
     }
-    if (TABS.includes(destination)) {
-        window.location.hash = `#${destination}`;
-    }
+    window.location.hash = `#${normalized}`;
 }
 
 window.navigate = navigate;
@@ -601,11 +641,20 @@ function escapeHtml(value) {
 function handleHashChange() {
     closeOverflowMenu();
     const hash = window.location.hash.replace(/^#/, "");
+    const normalized = normalizeTabId(hash);
     if (!hash) {
         window.location.hash = `#${HOME_TAB}`;
         return;
     }
-    if (hash === HOME_TAB) {
+    if (!normalized) {
+        window.location.hash = `#${HOME_TAB}`;
+        return;
+    }
+    if (normalized !== hash) {
+        window.location.hash = `#${normalized}`;
+        return;
+    }
+    if (normalized === HOME_TAB) {
         state.currentTab = HOME_TAB;
         setActiveTab(null);
         showHome();
@@ -613,15 +662,11 @@ function handleHashChange() {
         updateCardMetrics();
         return;
     }
-    if (!TABS.includes(hash)) {
-        window.location.hash = `#${HOME_TAB}`;
-        return;
-    }
-    if (hash === "anatomie3d" && !anatomyEnabled) {
+    if (normalized === "anatomie3d" && !anatomyEnabled) {
         window.location.hash = "#pre_session";
         return;
     }
-    state.currentTab = hash;
+    state.currentTab = normalized;
     updatePanel();
 }
 
